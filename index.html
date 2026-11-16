@@ -3,104 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MTB timelapse</title>
+<title>Frigjort MTB, INAQ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&family=Lato:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500&family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* Plan: INAQ profil. Hvit flate, lyse fargeforløp fra profilen som dekor, svart tekst, Newsreader Light til overskrifter og Lato til tekst. Diagramfarger fra profilmanualen: blå for referanse, laksrød for scenario. Ett lyst tema. */
+/* Plan: INAQ profil. Hvit flate, svart tekst, overskrifter i display, tekst i Lato. Farge bare der den skiller løp: blå referanse, laksrød scenario 1, grønn scenario 2. Ett lyst tema. */
 :root{
-  --bg:#e5e8e8; --surface:#ffffff; --page:#ffffff; --ink:#000000; --muted:#000000; --line:#d4d9da;
-  --ref:#80b1d3; --scen:#fb8072; --scen2:#f4a340; --warn:#000000; --ok:#7fc97f;
-  --g1:#d1d9ed; --g2:#bfd9d6; --g3:#e8c2bf; --g4:#b0c4e8;
-  --display:"Newsreader","Palatino Linotype",Palatino,Georgia,serif; --body:"Lato",Corbel,"Segoe UI",Arial,sans-serif;
+  --bg:#e5e8e8; --surface:#ffffff; --page:#ffffff; --ink:#000000; --line:#d4d9da;
+  --ref:#80b1d3; --scen:#fb8072; --scen2:#7fc97f; --warn:#000000;
+  --display:"Newsreader","Palatino Linotype",Palatino,Georgia,serif; --dw:500;
+  --body:"Lato",Corbel,"Segoe UI",Arial,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--page);color:var(--ink);font-family:var(--body);font-weight:300;font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-weight:400;font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums}
 .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 40px;display:grid;gap:18px}
-h1{font-family:var(--display);font-weight:300;font-size:38px;line-height:1.15;letter-spacing:-.005em;margin:0;text-wrap:balance;max-width:22ch}
+h1{font-family:var(--display);font-weight:var(--dw);font-size:38px;line-height:1.15;margin:0;text-wrap:balance;max-width:22ch}
+h2.d{font-family:var(--display);font-weight:var(--dw);font-size:24px;margin:2px 0 10px}
 b,strong{font-weight:700}
-.sub{margin:10px 0 0;max-width:66ch;font-size:17px}
+.sub{margin:10px 0 0;max-width:68ch;font-size:17px}
+.topline{display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #000;padding-bottom:8px}
+.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:14px 0 6px}
+.logo{width:auto}
+.hero .logo{height:120px;margin:8px 8px 8px 16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:4px;color:#000;margin-right:4px}
+button,select,input{font:inherit;color:var(--ink)}
+select,input[type=number]{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input[type=number]{width:100%}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #000;outline-offset:2px}
 .player{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center}
-button,select{font:inherit;color:var(--ink)}
 .play{background:#000;color:#fff;border:0;border-radius:999px;width:46px;height:46px;cursor:pointer;display:grid;place-items:center}
-.play:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #000;outline-offset:2px}
-.date{font-family:var(--display);font-weight:300;font-size:30px;min-width:8.5ch;text-align:right}
-input[type=range]{width:100%;accent-color:var(--scen)}
-select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
-.params{display:grid;grid-template-columns:1fr 1fr auto;gap:18px;align-items:start}
+.date{font-family:var(--display);font-weight:var(--dw);font-size:30px;min-width:8.5ch;text-align:right}
+input[type=range]{width:100%;accent-color:#000}
+.setup{display:grid;grid-template-columns:1.25fr 1fr;gap:28px}
+.field{display:grid;gap:4px;font-size:13px;font-weight:700}
+.field span.h{font-weight:400}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+#tempsvg{width:100%;height:auto;display:block;margin-top:8px}
+#tempsvg text{font-family:var(--body);font-size:11px;fill:#000}
+.cap{font-size:13px;margin-top:4px}
+.params{display:grid;grid-template-columns:1fr 1fr auto;gap:18px;align-items:start;border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
 .pgroup h3{margin:0 0 8px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 .slider{display:grid;grid-template-columns:7.5em 1fr 4.5em;gap:10px;align-items:center;margin:4px 0}
-.slider output{text-align:right;font-weight:600}
+.slider output{text-align:right;font-weight:700}
 .presets{display:grid;gap:6px}
-.presets span{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .presets button{background:transparent;border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer;text-align:left}
-.presets button:hover{border-color:var(--scen)}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.kpi.hero{border-color:var(--scen);box-shadow:inset 4px 0 0 var(--scen)}
-.kpi .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.kpi .v{font-family:var(--display);font-weight:300;font-size:28px;white-space:nowrap;line-height:1.15;margin:4px 0 2px}
-.kpi .s{font-size:13px}
-.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.kpi.s2{border-top:3px solid var(--scen2)}
+.presets button:hover{border-color:#000}
+.freed{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:center;border-top:3px solid var(--scen)}
+.freed .big{font-family:var(--display);font-weight:var(--dw);font-size:60px;line-height:1;margin:8px 0 6px}
+.freed .note{font-size:13px;margin-top:8px;font-style:italic}
+#freedbar{width:100%;height:auto;display:block}
+#freedbar text{font-family:var(--body);font-size:13px;fill:#000}
 .s2card{border-top:3px solid var(--scen2);display:grid;grid-template-columns:300px 1fr 230px;gap:24px;align-items:start}
-.s2card h2{font-family:var(--display);font-weight:300;font-size:24px;margin:4px 0 10px}
 .ctl{display:grid;gap:10px}
-.ctl label{display:grid;gap:4px;font-size:13px;font-weight:700}
-.ctl .chk{display:flex;gap:8px;align-items:center;font-weight:300;font-size:14px}
-.ctl select{font-weight:300}
+.ctl .chk{display:flex;gap:8px;align-items:center;font-weight:400;font-size:14px}
 #measures{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:m}
 #measures li{display:grid;gap:2px;padding-left:34px;position:relative}
 #measures li::before{counter-increment:m;content:counter(m);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--scen2);display:grid;place-items:center;font-weight:700;font-size:13px}
-#measures li:last-child::before{content:"";background:transparent;border:2px solid #000;width:20px;height:20px}
+#measures li.frame::before{content:"";background:transparent;border:2px solid #000;width:20px;height:20px}
 #measures span{font-size:14px}
 #s2res{display:grid;gap:12px}
 #s2res div{display:grid}
-#s2res .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-#s2res .v{font-family:var(--display);font-weight:300;font-size:30px;line-height:1.1}
-#s2res .v.small{font-size:20px}
-.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:4px;color:#000}
+#s2res .v{font-family:var(--display);font-weight:var(--dw);font-size:28px;line-height:1.1}
+#s2res .v.small{font-size:19px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi.s2{border-top:3px solid var(--scen2)}
+.kpi .v{font-family:var(--display);font-weight:var(--dw);font-size:27px;line-height:1.15;margin:4px 0 2px;white-space:nowrap}
+.kpi .s{font-size:13px}
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .panel h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 2px;display:flex;align-items:center;gap:8px}
-.panel .meta{font-size:13px;margin:0 0 6px}
+.panel .meta{font-size:13px;margin:0 0 6px;min-height:3.9em}
 .cages{width:100%;height:auto;display:block}
 .bar{position:relative;height:22px;background:var(--bg);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-top:6px}
 .bar .fill{position:absolute;left:0;top:0;bottom:0}
-.bar .need{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
+.bar .gain{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--scen) 0 4px,transparent 4px 9px);opacity:.75}
+.bar .need{position:absolute;top:-2px;bottom:-2px;width:2px;background:#000}
 .barlbl{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;margin-top:4px}
-.barlbl b{color:var(--ink)}
-.chartcard h2{font-family:var(--display);font-weight:300;font-size:24px;margin:0 0 6px}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin-bottom:6px}
 .legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px}
 .chart-wrap{overflow-x:auto}
 #chart{width:100%;min-width:620px;height:auto;display:block}
 #chart text{fill:#000;font-size:12px;font-family:var(--body)}
-.foot{font-size:13px;max-width:78ch;display:grid;gap:10px}
+.warnline{font-weight:700}
+.foot{font-size:13px;max-width:80ch;display:grid;gap:10px}
+.foot p{margin:0}
 .disclaimer{border-top:1px solid #000;padding-top:12px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start}
-.disclaimer h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px}
-.disclaimer .logo{height:72px;width:auto;margin:8px}
-.topline{display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #000;padding-bottom:8px}
-.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:14px 0 6px}
-.hero .logo{height:120px;width:auto;margin:8px 8px 8px 16px}
-.foot p{margin:4px 0}
-.warn{color:var(--warn);font-weight:600}
-.freed{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:center;border-top:3px solid var(--scen)}
-.freed .note{font-size:13px;margin-top:8px;font-style:italic}
-.freed .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.freed .big{font-family:var(--display);font-weight:300;font-size:64px;line-height:1;color:var(--ink);margin:8px 0 6px}
-.freed .big.neg{font-style:italic}
-.freed .s{font-size:14px}
-.freed .s b{font-size:18px}
-#freedbar{width:100%;height:auto;display:block}
-#freedbar text{font-family:var(--body);font-size:13px;fill:#000}
-#freedbar rect,#freedbar line{transition:all .35s ease}
-.bar .gain{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--scen) 0 4px,transparent 4px 9px);opacity:.75}
-@media (max-width:820px){.freed{grid-template-columns:1fr}.freed .big{font-size:42px}}
-@media (max-width:1000px){.panels{grid-template-columns:1fr 1fr}.s2card{grid-template-columns:1fr 1fr}}
-@media (max-width:820px){.s2card{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.hero .logo{height:80px;order:-1}.disclaimer{grid-template-columns:1fr}h1{font-size:30px}.params{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.panels{grid-template-columns:1fr}.player{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}}
+.disclaimer .logo{height:72px;margin:8px}
+@media (max-width:1000px){.panels{grid-template-columns:1fr 1fr}.s2card{grid-template-columns:1fr 1fr}.setup{grid-template-columns:1fr}}
+@media (max-width:820px){.s2card,.hero,.disclaimer,.params,.panels,.freed{grid-template-columns:1fr}.hero .logo{height:80px;order:-1}h1{font-size:30px}.kpis{grid-template-columns:1fr 1fr}.player{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -110,7 +105,7 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
   <header class="hero">
     <div>
       <h1>Frigjort MTB ved større smolt og bedre vekst</h1>
-      <p class="sub">8 tillatelser à 780 tonn, 8 lokaliteter à 2 340 tonn og fire utsett per år. Scenario 1 produserer like mye som referansen og viser hvor mye MTB som blir ledig. Scenario 2 bruker samme vekst og smolt, men endrer driften for å fylle MTB jevnt og viser hvor mye mer som kan produseres.</p>
+      <p class="sub" id="herosub"></p>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="logo" role="img" aria-label="INAQ" viewBox="139.8 147.4 568.4 785.2">
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 145.574219 582.734375 L 145.574219 557.886719 C 200.46875 557.886719 278.265625 462.242188 309.394531 417.386719 C 278.265625 372.53125 200.46875 276.882812 145.574219 276.882812 L 145.574219 252.035156 C 228.597656 252.035156 330.472656 404.046875 334.769531 410.515625 L 339.328125 417.386719 L 334.769531 424.257812 C 330.472656 430.726562 228.601562 582.734375 145.574219 582.734375 "/>
@@ -121,7 +116,6 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 472.828125 900.96875 C 464.183594 906.433594 453.898438 909.164062 441.972656 909.164062 C 429.453125 909.164062 419.707031 906.480469 412.753906 901.113281 C 405.796875 895.746094 402.320312 888.59375 402.320312 879.648438 C 402.320312 871.699219 405.253906 865.042969 411.113281 859.675781 C 416.976562 854.304688 427.464844 851.625 442.570312 851.625 L 491.761719 851.625 L 491.761719 877.265625 C 487.78125 887.601562 481.476562 895.503906 472.828125 900.96875 M 496.382812 781.414062 C 485.351562 771.378906 469.699219 766.359375 449.429688 766.359375 C 437.101562 766.359375 425.378906 768.199219 414.246094 771.875 C 403.113281 775.550781 393.570312 780.769531 385.625 787.523438 L 395.167969 803.324219 C 401.523438 797.765625 409.273438 793.292969 418.421875 789.914062 C 427.5625 786.535156 437.203125 784.839844 447.34375 784.839844 C 462.046875 784.839844 473.125 788.421875 480.578125 795.574219 C 488.035156 802.730469 491.761719 812.96875 491.761719 826.285156 L 491.761719 835.824219 L 441.972656 835.824219 C 427.066406 835.824219 415.1875 837.863281 406.34375 841.9375 C 397.503906 846.015625 391.140625 851.375 387.265625 858.035156 C 383.390625 864.695312 381.453125 872.097656 381.453125 880.246094 C 381.453125 889.191406 383.734375 897.089844 388.308594 903.949219 C 392.878906 910.804688 399.492188 916.171875 408.132812 920.046875 C 416.78125 923.921875 426.964844 925.859375 438.695312 925.859375 C 453.601562 925.859375 465.972656 922.78125 475.808594 916.621094 C 482.988281 912.125 488.597656 906.515625 492.652344 899.796875 L 492.652344 924.371094 L 512.929688 924.371094 L 512.929688 827.179688 C 512.929688 806.707031 507.414062 791.449219 496.382812 781.414062 "/>
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 624.257812 907.078125 C 613.324219 907.078125 603.480469 904.546875 594.742188 899.472656 C 591.542969 897.621094 588.589844 895.484375 585.871094 893.074219 C 596.878906 883.761719 610.824219 878.566406 625.527344 878.566406 C 640.019531 878.566406 653.507812 883.632812 664.144531 892.203125 C 661.183594 894.96875 657.9375 897.40625 654.363281 899.472656 C 645.621094 904.546875 635.585938 907.078125 624.257812 907.078125 M 573.867188 813.761719 C 579.035156 804.621094 585.992188 797.511719 594.742188 792.445312 C 603.480469 787.378906 613.421875 784.839844 624.554688 784.839844 C 635.679688 784.839844 645.621094 787.378906 654.363281 792.445312 C 663.109375 797.511719 670.015625 804.621094 675.085938 813.761719 C 680.15625 822.90625 682.6875 833.636719 682.6875 845.960938 C 682.6875 858.085938 680.15625 868.769531 675.085938 878.007812 C 675 878.167969 674.902344 878.316406 674.8125 878.472656 C 661.207031 867.597656 644.003906 861.175781 625.527344 861.175781 C 606.746094 861.175781 588.917969 867.765625 574.828125 879.609375 C 574.507812 879.074219 574.175781 878.558594 573.867188 878.007812 C 568.699219 868.769531 566.117188 858.085938 566.117188 845.960938 C 566.117188 833.636719 568.699219 822.90625 573.867188 813.761719 M 693.867188 887.253906 C 700.726562 875.226562 704.15625 861.464844 704.15625 845.960938 C 704.15625 830.261719 700.726562 816.445312 693.867188 804.519531 C 687.011719 792.597656 677.566406 783.253906 665.546875 776.496094 C 653.519531 769.738281 639.757812 766.359375 624.257812 766.359375 C 608.945312 766.359375 595.339844 769.738281 583.410156 776.496094 C 571.484375 783.253906 562.042969 792.597656 555.085938 804.519531 C 548.128906 816.445312 544.652344 830.261719 544.652344 845.960938 C 544.652344 861.464844 548.128906 875.226562 555.085938 887.253906 C 562.042969 899.28125 571.527344 908.71875 583.558594 915.574219 C 595.582031 922.433594 609.148438 925.859375 624.257812 925.859375 C 639.558594 925.859375 653.273438 922.433594 665.398438 915.574219 C 669.773438 913.101562 673.800781 910.285156 677.488281 907.136719 C 681.5625 913.546875 684.5 920.789062 685.972656 928.621094 L 703.066406 925.40625 C 700.875 913.75 696.167969 903.097656 689.578125 893.957031 C 691.105469 891.820312 692.539062 889.585938 693.867188 887.253906 "/>
 </svg>
-
   </header>
 
   <section class="card player" aria-label="Avspilling">
@@ -131,44 +125,67 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
     <div class="date" id="date">30.04.2026</div>
   </section>
 
-  <section class="card params" aria-label="Forutsetninger">
-    <div class="pgroup">
-      <h3><span class="dot" style="background:var(--ref)"></span>Referanse</h3>
-      <div class="slider"><label for="rv">VF3</label><input type="range" id="rv" min="2.5" max="3.5" step="0.05" value="3"><output id="rvo"></output></div>
-      <div class="slider"><label for="rw">Smoltvekt</label><input type="range" id="rw" min="100" max="500" step="10" value="100"><output id="rwo"></output></div>
+  <section class="card" aria-label="Forutsetninger">
+    <div class="setup">
+      <div>
+        <div class="lbl">Område og sjøtemperatur</div>
+        <label class="field" style="margin-top:8px">Produksjonsområde
+          <select id="po"></select></label>
+        <svg id="tempsvg" viewBox="0 0 560 150" role="img" aria-label="Temperaturprofil gjennom året"></svg>
+        <div class="cap" id="tempcap"></div>
+      </div>
+      <div>
+        <div class="lbl">MTB og lokaliteter</div>
+        <div class="grid2" style="margin-top:8px">
+          <label class="field">Antall tillatelser<input type="number" id="nperm" min="1" max="40" step="1" value="8"></label>
+          <label class="field">MTB per tillatelse (tonn)<select id="permmtb"><option value="780" selected>780 tonn</option><option value="945">945 tonn (Troms og Finnmark)</option></select></label>
+          <label class="field">Antall lokaliteter<input type="number" id="nsites" min="1" max="16" step="1" value="8"></label>
+          <label class="field">MTB per lokalitet (tonn)<input type="number" id="sitemtb" min="100" max="10000" step="10" value="2340"></label>
+          <label class="field" style="grid-column:1/-1">Restriksjoner i beregningen
+            <select id="mode"><option value="both" selected>MTB selskap og MTB per lokalitet</option><option value="company">Bare MTB selskap</option><option value="site">Bare MTB per lokalitet</option></select></label>
+        </div>
+        <div class="cap" id="mtbcap"></div>
+      </div>
     </div>
-    <div class="pgroup">
-      <h3><span class="dot" style="background:var(--scen)"></span><span class="dot" style="background:var(--scen2);margin-left:-4px"></span>Scenario 1 og 2</h3>
-      <div class="slider"><label for="sv">VF3</label><input type="range" id="sv" min="2.5" max="3.5" step="0.05" value="3"><output id="svo"></output></div>
-      <div class="slider"><label for="sw">Smoltvekt</label><input type="range" id="sw" min="100" max="500" step="10" value="500"><output id="swo"></output></div>
-    </div>
-    <div class="presets">
-      <span>Hurtigvalg scenario 1 og 2</span>
-      <button data-v="3" data-w="500">Større smolt: 500 g</button>
-      <button data-v="3.5" data-w="100">Bedre vekst: VF3 3,5</button>
-      <button data-v="3.5" data-w="500">Begge</button>
+    <div class="params">
+      <div class="pgroup">
+        <h3><span class="dot" style="background:var(--ref)"></span>Referanse</h3>
+        <div class="slider"><label for="rv">VF3</label><input type="range" id="rv" min="2.5" max="3.5" step="0.05" value="3"><output id="rvo"></output></div>
+        <div class="slider"><label for="rw">Smoltvekt</label><input type="range" id="rw" min="100" max="500" step="10" value="100"><output id="rwo"></output></div>
+      </div>
+      <div class="pgroup">
+        <h3><span class="dot" style="background:var(--scen)"></span><span class="dot" style="background:var(--scen2);margin-left:-4px"></span>Scenario 1 og 2</h3>
+        <div class="slider"><label for="sv">VF3</label><input type="range" id="sv" min="2.5" max="3.5" step="0.05" value="3"><output id="svo"></output></div>
+        <div class="slider"><label for="sw">Smoltvekt</label><input type="range" id="sw" min="100" max="500" step="10" value="500"><output id="swo"></output></div>
+      </div>
+      <div class="presets">
+        <span class="lbl">Hurtigvalg scenario 1 og 2</span>
+        <button data-v="3" data-w="500">Større smolt: 500 g</button>
+        <button data-v="3.5" data-w="100">Bedre vekst: VF3 3,5</button>
+        <button data-v="3.5" data-w="500">Begge</button>
+      </div>
     </div>
   </section>
 
   <section class="card freed" aria-label="Frigjort MTB">
     <div>
-      <div class="l"><span class="tag" style="background:var(--scen)">Scenario 1</span> Frigjort MTB i stabil drift</div>
-      <div class="big" id="fbig">264 t</div>
-      <div class="s" id="fsub"></div>
+      <div class="lbl"><span class="tag" style="background:var(--scen)">Scenario 1</span> Frigjort MTB i stabil drift</div>
+      <div class="big" id="fbig"></div>
+      <div id="fsub"></div>
       <div class="note">Frigjort MTB er kapasitet som er ledig hele tiden så lenge driften er slik. Det er ikke tonn per år og summeres ikke over flere år.</div>
     </div>
-    <svg id="freedbar" viewBox="0 0 1000 140" role="img" aria-label="MTB behov for referanse og scenario 1 mot åtte tillatelser à 780 tonn"></svg>
+    <svg id="freedbar" viewBox="0 0 1000 140" role="img" aria-label="MTB behov for referanse og scenario 1 mot tillatelsene"></svg>
   </section>
 
   <section class="card s2card" aria-label="Tiltak i scenario 2">
     <div>
-      <div class="l" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Optimert drift</div>
-      <h2>Tiltak for å fylle MTB jevnt</h2>
+      <div class="lbl"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Optimert drift</div>
+      <h2 class="d">Tiltak for å fylle MTB jevnt</h2>
       <div class="ctl">
         <label class="chk"><input type="checkbox" id="auto" checked> Velg beste kombinasjon automatisk</label>
-        <label for="s2plan">Utsettsplan
-          <select id="s2plan"><option value="dagens">Som i dag: 4 utsett, ujevn avstand</option><option value="4">4 utsett, jevn avstand</option><option value="5">5 utsett, jevn avstand</option><option value="6">6 utsett, jevn avstand</option></select></label>
-        <label for="s2spread">Slakt
+        <label class="field" for="s2plan">Utsettsplan
+          <select id="s2plan"><option value="dagens">Som i dag: 4 utsett, ujevn avstand</option><option value="4">4 utsett, jevn avstand april til desember</option><option value="5">5 utsett, jevn avstand april til desember</option><option value="6">6 utsett, jevn avstand april til desember</option><option value="7">7 utsett, jevn avstand april til desember</option><option value="8">8 utsett, jevn avstand april til desember</option></select></label>
+        <label class="field" for="s2spread">Slakt
           <select id="s2spread"><option value="0">På én dag ved 5 kg</option><option value="30">Spredt over 1 måned</option><option value="61">Spredt over 2 måneder</option><option value="91">Spredt over 3 måneder</option></select></label>
         <label class="chk"><input type="checkbox" id="s2opt" checked> Tilpass gruppestørrelse per utsett</label>
       </div>
@@ -178,10 +195,10 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
   </section>
 
   <section class="kpis" aria-label="Nøkkeltall">
-    <div class="kpi s2"><div class="l"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Merproduksjon per år</div><div class="v" id="k1">0 t</div><div class="s" id="k1s"></div></div>
-    <div class="kpi"><div class="l">Produksjon per år</div><div class="v" id="k4"></div><div class="s" id="k4s"></div></div>
-    <div class="kpi"><div class="l">Smolt per år</div><div class="v" id="k3"></div><div class="s" id="k3s"></div></div>
-    <div class="kpi"><div class="l">Utnyttelse av MTB</div><div class="v" id="k2"></div><div class="s">snitt biomasse delt på topp, referanse → scenario 2</div></div>
+    <div class="kpi s2"><div class="lbl"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Merproduksjon per år</div><div class="v" id="k1"></div><div class="s" id="k1s"></div></div>
+    <div class="kpi"><div class="lbl">Produksjon per år</div><div class="v" id="k4"></div><div class="s">referanse og scenario 1 → scenario 2, rund vekt</div></div>
+    <div class="kpi"><div class="lbl">Smolt per år</div><div class="v" id="k3"></div><div class="s">referanse og scenario 1 → scenario 2</div></div>
+    <div class="kpi"><div class="lbl">Utnyttelse av MTB</div><div class="v" id="k2"></div><div class="s">snitt biomasse delt på MTB selskap, referanse → scenario 2</div></div>
   </section>
 
   <section class="panels">
@@ -190,21 +207,22 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
     <div class="card panel" id="pscen2"></div>
   </section>
 
-  <section class="card chartcard">
-    <h2>Samlet biomasse mot MTB selskap</h2>
-    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario 1: samme produksjon</span><span><i style="background:var(--scen2)"></i>Scenario 2: optimert drift</span><span><i style="background:var(--ink)"></i>MTB 6 240 tonn</span><span><i style="background:repeating-linear-gradient(45deg,var(--scen) 0 3px,transparent 3px 6px);height:8px"></i>Frigjort MTB i scenario 1</span></div>
-    <div class="chart-wrap"><svg id="chart" viewBox="0 0 1000 320" role="img" aria-label="Biomasse over tid for referanse og scenario mot MTB"></svg></div>
+  <section class="card">
+    <h2 class="d">Samlet biomasse mot MTB selskap</h2>
+    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario 1: samme produksjon</span><span><i style="background:var(--scen2)"></i>Scenario 2: optimert drift</span><span><i style="background:#000"></i><span id="legmtb">MTB selskap</span></span><span><i style="background:repeating-linear-gradient(45deg,var(--scen) 0 3px,transparent 3px 6px);height:8px"></i>Frigjort MTB i scenario 1</span></div>
+    <div class="chart-wrap"><svg id="chart" viewBox="0 0 1000 320" role="img" aria-label="Biomasse over tid for referanse, scenario 1 og scenario 2 mot MTB"></svg></div>
   </section>
 
   <footer class="foot">
-    <p><b>Forutsetninger:</b> konstant 9 °C, høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging, hele generasjonen slaktes ved høstevekt og står på én lokalitet. Utsett 30.04, 30.06, 31.08 og 30.12 hvert år fra 2026. Antall smolt per utsett settes slik at referansen akkurat fyller 6 240 tonn i stabil drift. Scenario 1 setter ut like mange smolt som referansen. Scenario 2 har samme vekst og smoltvekt som scenario 1. Tiltakene velges innenfor MTB selskap (6 240 tonn), MTB per lokalitet (2 340 tonn), én generasjon per lokalitet og 8 lokaliteter. Gruppestørrelsen optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over inntil 2 måneder.</p>
+    <p><b>Forutsetninger:</b> høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging og én generasjon per lokalitet. Referanse og scenario 1 setter ut 30.04, 30.06, 31.08 og 30.12 hvert år og slakter hele generasjonen den dagen snittvekten når 5 kg. Antall smolt per utsett settes så høyt som restriksjonene tillater i referansen, og scenario 1 setter ut like mange. Scenario 2 har samme vekst og smolt som scenario 1. Tiltakene velges innenfor restriksjonene og uten utsett i januar til mars. Gruppestørrelsen optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over inntil 2 måneder.</p>
+    <p><b>Temperatur:</b> ukesnitt for valgt produksjonsområde, 2015 til 2025. For hver uke er det tatt median over lokalitetene som rapporterte sjøtemperatur, og deretter snitt over årene. Ukeverdiene er interpolert til daglige verdier. Kilde: tidsserie per lokalitet levert av INAQ (2015 uke 1 til 2026 uke 47), med sjøtemperatur rapportert sammen med lusetellinger. Verdier under −1,5 °C og over 22 °C er tatt ut som feilregistreringer.</p>
     <p><b>Vekst:</b> W(t) = (W0^(1/3) + VF3/1000 × døgngrader)^3, vekt i gram. Iwama, G.K. og Tautz, A.F. (1981), Canadian Journal of Fisheries and Aquatic Sciences 38(6), 649–656, <a href="https://doi.org/10.1139/f81-087">doi.org/10.1139/f81-087</a>.</p>
-    <p>Fyllingen i merdene er biomasse delt på MTB per lokalitet. L1 til L8 er lokalitetene. Teksten «over 2 340 t» betyr at generasjonen er større enn MTB per lokalitet. U1 til U4 er utsett nr i året.</p>
+    <p>Fyllingen i merdene er biomasse delt på MTB per lokalitet. L1, L2 osv. er lokalitetene, U1, U2 osv. er utsett nr i året. «Over grensen» betyr at generasjonen er større enn MTB per lokalitet.</p>
     <div class="disclaimer">
       <div>
-        <h3>Ansvarsfraskrivelse</h3>
+        <div class="lbl" style="margin-bottom:4px">Ansvarsfraskrivelse</div>
         <p>Denne siden er utarbeidet av INAQ AS som et forenklet regneeksempel. Resultatene bygger på forutsetningene over og er ikke en prognose, en anbefaling eller rådgivning for konkrete beslutninger. Faktiske resultater avhenger blant annet av temperatur, dødelighet, lus og behandlinger, regelverk og driftsforhold på den enkelte lokalitet. INAQ AS tar ikke ansvar for beslutninger som tas på grunnlag av innholdet. Ta kontakt med INAQ for en vurdering tilpasset egen virksomhet.</p>
-        <p>© INAQ AS 2026 · inaq.no</p>
+        <p style="margin-top:6px">© INAQ AS 2026 · inaq.no</p>
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="logo" role="img" aria-label="INAQ" viewBox="139.8 147.4 568.4 785.2">
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 145.574219 582.734375 L 145.574219 557.886719 C 200.46875 557.886719 278.265625 462.242188 309.394531 417.386719 C 278.265625 372.53125 200.46875 276.882812 145.574219 276.882812 L 145.574219 252.035156 C 228.597656 252.035156 330.472656 404.046875 334.769531 410.515625 L 339.328125 417.386719 L 334.769531 424.257812 C 330.472656 430.726562 228.601562 582.734375 145.574219 582.734375 "/>
@@ -215,91 +233,73 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 472.828125 900.96875 C 464.183594 906.433594 453.898438 909.164062 441.972656 909.164062 C 429.453125 909.164062 419.707031 906.480469 412.753906 901.113281 C 405.796875 895.746094 402.320312 888.59375 402.320312 879.648438 C 402.320312 871.699219 405.253906 865.042969 411.113281 859.675781 C 416.976562 854.304688 427.464844 851.625 442.570312 851.625 L 491.761719 851.625 L 491.761719 877.265625 C 487.78125 887.601562 481.476562 895.503906 472.828125 900.96875 M 496.382812 781.414062 C 485.351562 771.378906 469.699219 766.359375 449.429688 766.359375 C 437.101562 766.359375 425.378906 768.199219 414.246094 771.875 C 403.113281 775.550781 393.570312 780.769531 385.625 787.523438 L 395.167969 803.324219 C 401.523438 797.765625 409.273438 793.292969 418.421875 789.914062 C 427.5625 786.535156 437.203125 784.839844 447.34375 784.839844 C 462.046875 784.839844 473.125 788.421875 480.578125 795.574219 C 488.035156 802.730469 491.761719 812.96875 491.761719 826.285156 L 491.761719 835.824219 L 441.972656 835.824219 C 427.066406 835.824219 415.1875 837.863281 406.34375 841.9375 C 397.503906 846.015625 391.140625 851.375 387.265625 858.035156 C 383.390625 864.695312 381.453125 872.097656 381.453125 880.246094 C 381.453125 889.191406 383.734375 897.089844 388.308594 903.949219 C 392.878906 910.804688 399.492188 916.171875 408.132812 920.046875 C 416.78125 923.921875 426.964844 925.859375 438.695312 925.859375 C 453.601562 925.859375 465.972656 922.78125 475.808594 916.621094 C 482.988281 912.125 488.597656 906.515625 492.652344 899.796875 L 492.652344 924.371094 L 512.929688 924.371094 L 512.929688 827.179688 C 512.929688 806.707031 507.414062 791.449219 496.382812 781.414062 "/>
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 624.257812 907.078125 C 613.324219 907.078125 603.480469 904.546875 594.742188 899.472656 C 591.542969 897.621094 588.589844 895.484375 585.871094 893.074219 C 596.878906 883.761719 610.824219 878.566406 625.527344 878.566406 C 640.019531 878.566406 653.507812 883.632812 664.144531 892.203125 C 661.183594 894.96875 657.9375 897.40625 654.363281 899.472656 C 645.621094 904.546875 635.585938 907.078125 624.257812 907.078125 M 573.867188 813.761719 C 579.035156 804.621094 585.992188 797.511719 594.742188 792.445312 C 603.480469 787.378906 613.421875 784.839844 624.554688 784.839844 C 635.679688 784.839844 645.621094 787.378906 654.363281 792.445312 C 663.109375 797.511719 670.015625 804.621094 675.085938 813.761719 C 680.15625 822.90625 682.6875 833.636719 682.6875 845.960938 C 682.6875 858.085938 680.15625 868.769531 675.085938 878.007812 C 675 878.167969 674.902344 878.316406 674.8125 878.472656 C 661.207031 867.597656 644.003906 861.175781 625.527344 861.175781 C 606.746094 861.175781 588.917969 867.765625 574.828125 879.609375 C 574.507812 879.074219 574.175781 878.558594 573.867188 878.007812 C 568.699219 868.769531 566.117188 858.085938 566.117188 845.960938 C 566.117188 833.636719 568.699219 822.90625 573.867188 813.761719 M 693.867188 887.253906 C 700.726562 875.226562 704.15625 861.464844 704.15625 845.960938 C 704.15625 830.261719 700.726562 816.445312 693.867188 804.519531 C 687.011719 792.597656 677.566406 783.253906 665.546875 776.496094 C 653.519531 769.738281 639.757812 766.359375 624.257812 766.359375 C 608.945312 766.359375 595.339844 769.738281 583.410156 776.496094 C 571.484375 783.253906 562.042969 792.597656 555.085938 804.519531 C 548.128906 816.445312 544.652344 830.261719 544.652344 845.960938 C 544.652344 861.464844 548.128906 875.226562 555.085938 887.253906 C 562.042969 899.28125 571.527344 908.71875 583.558594 915.574219 C 595.582031 922.433594 609.148438 925.859375 624.257812 925.859375 C 639.558594 925.859375 653.273438 922.433594 665.398438 915.574219 C 669.773438 913.101562 673.800781 910.285156 677.488281 907.136719 C 681.5625 913.546875 684.5 920.789062 685.972656 928.621094 L 703.066406 925.40625 C 700.875 913.75 696.167969 903.097656 689.578125 893.957031 C 691.105469 891.820312 692.539062 889.585938 693.867188 887.253906 "/>
 </svg>
-
     </div>
   </footer>
 </div>
 <script>
-// Ren modellfunksjon, samme logikk som Excel arket "Beregning"
-const DAY = 86400000;
-function utcDate(y, m, d) { return Date.UTC(y, m - 1, d); }
-function doyOf(ms) { const d = new Date(ms); return Math.round((ms - Date.UTC(d.getUTCFullYear(), 0, 1)) / DAY) + 1; }
+const PO_DATA={"1":{"w":[6.89,6.68,6.21,5.93,5.89,5.12,5.19,4.97,4.61,4.5,4.58,5.1,5.29,5.44,5.96,6.53,7.36,7.92,8.6,9.57,10.88,11.09,11.79,12.49,13.17,14.08,13.94,14.78,15.63,16.0,16.42,15.88,16.41,16.91,16.72,16.67,15.98,15.49,14.89,14.17,13.56,12.93,12.23,11.68,11.09,10.73,9.89,9.14,8.42,8.0,7.68,7.4],"sites":10,"obs":4085},"2":{"w":[7.16,6.68,6.54,6.47,6.17,5.67,5.58,5.54,5.56,5.55,5.55,5.74,5.98,6.08,6.6,7.14,7.69,8.25,8.79,9.69,10.49,11.61,12.37,12.82,13.34,14.11,14.61,14.38,14.72,15.7,16.24,16.05,16.2,16.53,16.35,16.36,16.13,15.48,14.99,14.28,13.5,12.98,12.5,11.84,11.26,10.7,10.17,9.65,9.27,8.9,8.39,7.69],"sites":43,"obs":16192},"3":{"w":[7.52,7.06,6.78,6.64,6.48,6.11,5.86,5.86,5.89,5.79,5.72,5.92,6.1,6.26,6.61,7.16,7.71,8.27,8.89,9.61,10.41,11.25,12.2,12.6,13.2,14.11,14.48,14.57,14.74,15.46,15.9,15.74,15.78,15.95,15.91,15.85,15.58,15.12,14.66,14.04,13.41,12.76,12.27,11.73,11.23,10.76,10.13,9.55,9.19,8.8,8.56,8.07],"sites":129,"obs":47314},"4":{"w":[7.7,7.37,7.0,6.77,6.45,6.21,6.02,6.0,5.99,5.96,5.96,6.02,6.09,6.27,6.58,7.09,7.53,7.98,8.46,9.04,9.7,10.37,10.85,11.15,11.86,12.82,13.59,13.85,13.91,14.65,14.93,14.93,15.01,15.05,15.01,15.03,14.75,14.41,14.02,13.49,12.95,12.45,11.96,11.49,11.07,10.6,10.11,9.56,9.13,8.82,8.53,8.18],"sites":134,"obs":44339},"5":{"w":[7.28,7.02,6.82,6.66,6.37,5.97,5.88,5.79,5.77,5.61,5.68,5.76,5.89,5.91,6.18,6.63,7.03,7.51,7.97,8.59,9.35,9.82,10.38,10.76,11.19,12.08,12.83,13.42,13.8,14.59,15.11,14.98,14.93,14.96,14.85,14.71,14.54,14.05,13.68,13.16,12.61,12.05,11.63,11.12,10.65,10.22,9.65,9.3,8.81,8.32,8.03,7.74],"sites":38,"obs":13639},"6":{"w":[7.02,6.81,6.65,6.53,6.31,6.08,6.02,5.98,5.91,5.78,5.76,5.84,5.91,6.0,6.12,6.47,6.73,7.1,7.46,8.02,8.62,9.13,9.61,10.14,10.65,11.21,11.78,12.28,12.81,13.53,13.98,14.02,14.03,14.0,13.98,13.98,13.83,13.49,13.08,12.65,12.14,11.57,11.01,10.51,10.01,9.65,9.09,8.61,8.18,7.78,7.72,7.45],"sites":117,"obs":39950},"7":{"w":[6.06,5.93,5.68,5.54,5.42,5.18,5.12,4.97,5.04,5.01,5.07,5.05,5.18,5.25,5.47,5.84,6.18,6.62,7.02,7.72,8.44,8.93,9.64,10.38,10.88,11.66,12.2,12.54,12.97,13.56,14.0,14.2,14.1,13.99,13.84,13.71,13.43,12.94,12.43,12.02,11.53,10.92,10.46,10.0,9.48,8.97,8.4,7.92,7.55,7.12,6.78,6.49],"sites":67,"obs":17594},"8":{"w":[5.84,5.55,5.35,5.14,4.98,4.81,4.77,4.7,4.73,4.66,4.63,4.73,4.83,4.87,5.09,5.42,5.73,6.11,6.54,7.1,7.73,8.38,9.09,9.69,10.22,10.87,11.49,11.95,12.42,13.11,13.49,13.6,13.59,13.3,13.06,12.92,12.73,12.34,11.82,11.33,10.9,10.37,9.87,9.42,8.95,8.6,7.98,7.59,7.2,6.89,6.55,6.29],"sites":93,"obs":31289},"9":{"w":[5.67,5.37,5.04,4.75,4.49,4.25,4.13,3.96,3.92,3.75,3.68,3.68,3.71,3.77,3.96,4.28,4.69,5.03,5.44,6.04,6.69,7.49,8.24,8.93,9.61,10.3,11.05,11.67,12.23,12.99,13.4,13.61,13.56,13.26,12.89,12.62,12.39,11.92,11.46,11.01,10.46,10.05,9.57,9.12,8.75,8.33,7.86,7.49,7.08,6.71,6.39,6.07],"sites":104,"obs":27758},"10":{"w":[5.54,5.22,4.9,4.66,4.37,4.14,4.01,3.75,3.73,3.55,3.5,3.51,3.55,3.61,3.84,4.11,4.4,4.72,5.14,5.64,6.29,7.01,7.72,8.32,9.06,9.74,10.31,10.98,11.48,12.04,12.42,12.83,12.9,12.56,12.2,11.9,11.68,11.29,10.86,10.44,10.03,9.56,9.09,8.76,8.44,8.09,7.62,7.29,6.95,6.59,6.23,5.91],"sites":71,"obs":22477},"11":{"w":[5.17,4.91,4.63,4.3,4.05,3.86,3.68,3.56,3.49,3.4,3.36,3.3,3.24,3.36,3.51,3.74,4.03,4.3,4.65,5.2,5.81,6.44,7.1,7.63,8.23,8.79,9.17,9.82,10.32,10.71,10.8,11.12,11.15,10.99,10.79,10.62,10.44,10.14,9.85,9.57,9.19,8.89,8.56,8.23,7.9,7.66,7.26,6.89,6.49,6.17,5.88,5.57],"sites":44,"obs":13344},"12":{"w":[5.0,4.76,4.41,4.15,3.92,3.68,3.54,3.34,3.31,3.23,3.16,3.03,2.98,3.01,3.13,3.39,3.59,3.79,4.18,4.69,5.22,5.78,6.45,6.98,7.63,8.39,8.77,9.34,9.94,10.19,10.27,10.34,10.42,10.32,10.24,10.06,9.96,9.64,9.26,8.94,8.62,8.33,8.01,7.81,7.52,7.2,6.88,6.61,6.26,5.94,5.68,5.38],"sites":70,"obs":22369},"13":{"w":[4.09,3.74,3.42,3.44,3.19,3.09,2.91,2.63,2.47,2.42,2.35,2.22,2.31,2.3,2.55,2.89,3.1,3.32,3.78,4.55,5.1,5.56,6.54,7.4,7.96,8.77,9.46,10.14,10.72,11.51,12.06,11.96,11.45,11.26,10.7,10.23,9.98,9.62,9.07,8.68,8.26,7.84,7.46,7.13,6.83,6.34,6.08,5.67,5.41,5.07,4.59,4.4],"sites":9,"obs":1855}};
+// Beregningsmotor: vekst etter VF3 med sesongtemperatur, stabil drift og tidslinje.
+const DAYMS = 86400000, AMAX = 1460;
 
-function runModel(p) {
-  // p: {ref:{vf3,w0}, scen:{vf3,w0}, T, HW (kg), mtb (t), sites, siteMtb (t), fallowMonths, plan:[ms], startYear, endMs}
-  const cyc = (s) => (Math.cbrt(p.HW * 1000) - Math.cbrt(s.w0)) / (s.vf3 / 1000 * p.T);
-  const wkg = (s, a) => Math.pow(Math.cbrt(s.w0) + s.vf3 / 1000 * p.T * a, 3) / 1000;
-  const doys = p.plan.map(doyOf);
-  function steady(s) {
-    const c = cyc(s); let peak = 0, sum = 0;
-    for (let d = 1; d <= 365; d++) {
-      let tot = 0;
-      for (const sd of doys) {
-        const a0 = ((d - sd) % 365 + 365) % 365;
-        for (let k = 0; k < 3; k++) { const a = a0 + 365 * k; if (a < c) tot += wkg(s, a); }
-      }
-      peak = Math.max(peak, tot); sum += tot;
-    }
-    return { peak, avg: sum / 365, cycle: c };
+// Ukesnitt (52 verdier) til daglig temperatur (365) og akkumulerte døgngrader over 6 år.
+function buildTemp(weekly) {
+  const T = new Float64Array(365);
+  for (let d = 0; d < 365; d++) {
+    const pos = (d + 0.5) / 7 - 0.5, i0 = Math.floor(pos), f = pos - i0;
+    const a = weekly[((i0 % 52) + 52) % 52], b = weekly[(((i0 + 1) % 52) + 52) % 52];
+    T[d] = Math.max(0, a + (b - a) * f);
   }
-  const sr = steady(p.ref), ss = steady(p.scen);
-  const N = Math.floor(p.mtb * 1000 / sr.peak / 1000) * 1000;
-  const start = Math.min(...p.plan);
-  const nDays = Math.round((p.endMs - start) / DAY) + 1;
-  const fallowDays = p.fallowMonths * 365.25 / 12;
-
-  function timeline(s, st) {
-    const gens = [];
-    const y0 = new Date(start).getUTCFullYear(), y1 = new Date(p.endMs).getUTCFullYear();
-    for (let y = y0; y <= y1; y++) p.plan.forEach((pm, i) => {
-      const d = new Date(pm); const ms = Date.UTC(y + (d.getUTCFullYear() - y0), d.getUTCMonth(), d.getUTCDate());
-      if (ms >= start && ms <= p.endMs) gens.push({ slot: i + 1, year: y + (d.getUTCFullYear() - y0), t0: Math.round((ms - start) / DAY) });
-    });
-    gens.sort((a, b) => a.t0 - b.t0);
-    // tildel lokalitet: første ledige
-    const freeFrom = new Array(p.sites).fill(-Infinity); let short = 0;
-    for (const g of gens) {
-      g.tH = g.t0 + st.cycle; g.tFree = g.tH + fallowDays;
-      let site = -1;
-      for (let i = 0; i < p.sites; i++) if (freeFrom[i] <= g.t0) { site = i; break; }
-      if (site < 0) short++; else freeFrom[site] = g.tFree;
-      g.site = site;
-    }
-    const total = new Float64Array(nDays), harvestCum = new Float64Array(nDays);
-    let cum = 0;
-    for (let t = 0; t < nDays; t++) {
-      let tot = 0;
-      for (const g of gens) {
-        const a = t - g.t0;
-        if (a >= 0 && a < st.cycle) tot += wkg(s, a);
-        if (t - 1 < g.tH && t >= g.tH) cum += N * p.HW / 1000;
-      }
-      total[t] = N * tot / 1000; harvestCum[t] = cum;
-    }
-    return { gens, total, harvestCum, short };
-  }
-  const tr = timeline(p.ref, sr), ts = timeline(p.scen, ss);
-  return {
-    N, start, nDays, fallowDays,
-    ref: { ...sr, ...tr, mtbNeed: N * sr.peak / 1000 },
-    scen: { ...ss, ...ts, mtbNeed: N * ss.peak / 1000 },
-    freedPeak: N * (sr.peak - ss.peak) / 1000,
-    freedAvg: N * (sr.avg - ss.avg) / 1000,
-    prodYear: p.plan.length * N * p.HW / 1000,
-    wkg
-  };
+  const C = new Float64Array(365 * 6 + 1);
+  for (let k = 0; k < 365 * 6; k++) C[k + 1] = C[k] + T[k % 365];
+  return { T, C };
 }
-// Scenario 2: optimert drift. Samme vekst og smolt som scenario 1, med valgbare tiltak:
-//  opts.spreadDays: slakt spredt jevnt over så mange dager, sentrert rundt dagen snittvekten når høstevekt
-//  opts.optimize:   tilpasset gruppestørrelse per utsett (lineær optimering, maks antall smolt)
-//  opts.plan:       utsettsdatoer (ms) for første år
-function lpMaxSum(A, b) {
-  // maks sum(x) gitt A x <= b, x >= 0, b >= 0. Tablåsimpleks med slakkvariabler, Blands regel.
-  const m = A.length, n = A[0].length, W = n + m + 1;
-  const T = []; for (let i = 0; i < m; i++) { const r = new Float64Array(W); for (let j = 0; j < n; j++) r[j] = A[i][j]; r[n + i] = 1; r[W - 1] = b[i]; T.push(r); }
-  const z = new Float64Array(W); for (let j = 0; j < n; j++) z[j] = -1;
+
+// Én utsettsdato (dag i året, 0 = 1. januar): vekstkurve, produksjonstid og biomasse per smolt.
+function slotModel(sp, env, doy, spread) {
+  const C = env.temp.C, k = sp.vf3 / 1000, c0 = Math.cbrt(sp.w0);
+  const W = new Float64Array(AMAX + 1); let cyc = -1;
+  for (let a = 0; a <= AMAX; a++) {
+    W[a] = Math.pow(c0 + k * (C[doy + a] - C[doy]), 3) / 1000;
+    if (cyc < 0 && W[a] >= env.HW) cyc = a;
+  }
+  const reached = cyc >= 0; if (!reached) cyc = AMAX;
+  const S = Math.min(spread || 0, cyc), h0 = cyc - S / 2, h1 = cyc + S / 2;
+  const bio = new Float64Array(AMAX + 1); let maxBio = 0;
+  for (let a = 0; a <= AMAX; a++) {
+    const f = S <= 0 ? (a < cyc ? 1 : 0) : Math.max(0, Math.min(1, 1 - (a - h0) / S));
+    bio[a] = W[a] * f; if (bio[a] > maxBio) maxBio = bio[a];
+  }
+  let hw;
+  if (S <= 0) hw = W[cyc]; else { let s = 0, n = 0; for (let a = Math.ceil(h0); a < h1 && a <= AMAX; a++) { s += W[a]; n++; } hw = s / n; }
+  return { doy, W, bio, cyc, h0, h1, S, hw, maxBio, reached,
+    wFrom: W[Math.max(0, Math.ceil(h0))], wTo: W[Math.min(AMAX, Math.floor(h1))] };
+}
+
+// Biomasse per smolt satt ut, per utsett og dag i året, i stabil drift.
+function steadyProfiles(slots) {
+  return slots.map(s => {
+    const r = new Float64Array(365);
+    for (let d = 0; d < 365; d++) {
+      const a0 = (d - s.doy + 365) % 365; let v = 0;
+      for (let a = a0; a <= AMAX; a += 365) v += s.bio[a];
+      r[d] = v;
+    }
+    return r;
+  });
+}
+function steadyStats(B, N) { // N per utsett (stk). Returnerer tonn.
+  let peak = 0, sum = 0;
+  for (let d = 0; d < 365; d++) { let v = 0; for (let i = 0; i < B.length; i++) v += N[i] * B[i][d]; v /= 1000; if (v > peak) peak = v; sum += v; }
+  return { peak, avg: sum / 365 };
+}
+
+// Lineær optimering: maks c·x gitt A x <= b, x >= 0 (b >= 0). Tablåsimpleks, Blands regel.
+function lpMax(c, A, b) {
+  const m = A.length, n = c.length, W = n + m + 1, T = [];
+  for (let i = 0; i < m; i++) { const r = new Float64Array(W); for (let j = 0; j < n; j++) r[j] = A[i][j]; r[n + i] = 1; r[W - 1] = b[i]; T.push(r); }
+  const z = new Float64Array(W); for (let j = 0; j < n; j++) z[j] = -c[j];
   const basis = []; for (let i = 0; i < m; i++) basis.push(n + i);
-  for (let it = 0; it < 500; it++) {
+  for (let it = 0; it < 1000; it++) {
     let e = -1; for (let j = 0; j < W - 1; j++) if (z[j] < -1e-10) { e = j; break; }
     if (e < 0) break;
     let r = -1, best = Infinity;
@@ -314,258 +314,300 @@ function lpMaxSum(A, b) {
   return x;
 }
 
-function runScen2(p, s, opts, start, nDays) {
-  const DAYMS = 86400000;
-  const k = s.vf3 / 1000 * p.T, c0 = Math.cbrt(s.w0), cyc = (Math.cbrt(p.HW * 1000) - c0) / k;
-  const S = Math.min(opts.spreadDays || 0, 2 * cyc * 0.9), h0 = cyc - S / 2, h1 = cyc + S / 2;
-  const w = a => Math.pow(c0 + k * a, 3) / 1000;
-  const frac = a => a < 0 ? 0 : (S <= 0 ? (a < cyc ? 1 : 0) : Math.max(0, Math.min(1, 1 - (a - h0) / S)));
-  const bio = a => w(a) * frac(a); // kg per smolt satt ut
-  // snitt slaktevekt
-  let hw; if (S <= 0) hw = w(cyc); else { let sum = 0; const K = 200; for (let i = 0; i < K; i++) sum += w(h0 + (i + .5) * S / K); hw = sum / K; }
-  const doyOf = ms => { const d = new Date(ms); return Math.round((ms - Date.UTC(d.getUTCFullYear(), 0, 1)) / DAYMS) + 1; };
-  const doys = opts.plan.map(doyOf), n = doys.length;
-  // stabil drift: biomasse per smolt per utsett, dag i året
-  const B = doys.map(sd => { const r = new Float64Array(365); for (let d = 1; d <= 365; d++) { const a0 = ((d - sd) % 365 + 365) % 365; let v = 0; for (let j = 0; j < 4; j++) v += bio(a0 + 365 * j); r[d - 1] = v; } return r; });
-  // største biomasse per smolt i én generasjon (for MTB per lokalitet, én generasjon per lokalitet)
-  let maxBio = 0; for (let a = 0; a < 1500; a += 0.5) maxBio = Math.max(maxBio, bio(a));
-  const capN = p.siteMtb * 1000 / maxBio; // maks smolt per utsett gitt MTB per lokalitet
-  let N, binding;
-  if (opts.optimize) {
-    const A = [], b = [];
-    for (let d = 0; d < 365; d++) { A.push(B.map(r => r[d])); b.push(p.mtb); } // tonn per 1000 smolt
-    for (let i = 0; i < n; i++) { const r = new Array(n).fill(0); r[i] = 1; A.push(r); b.push(capN / 1000); }
-    const x = lpMaxSum(A, b);
-    N = x.map(v => Math.floor(v + 1e-9) * 1000);
-  } else {
-    let pk = 0; for (let d = 0; d < 365; d++) { let v = 0; for (const r of B) v += r[d]; pk = Math.max(pk, v); }
-    const Ne = Math.floor(Math.min(p.mtb * 1000 / pk, capN) / 1000) * 1000; N = new Array(n).fill(Ne);
+// Antall smolt per utsett. Like grupper, eller optimert (maks produksjon).
+function chooseN(slots, B, env, optimize) {
+  const useCo = env.mode !== "site", useSite = env.mode !== "company";
+  const capSite = slots.map(s => env.siteMtb * 1000 / s.maxBio); // stk
+  if (!optimize) {
+    let cap = Infinity;
+    if (useCo) { let pk = 0; for (let d = 0; d < 365; d++) { let v = 0; for (const r of B) v += r[d]; pk = Math.max(pk, v); } cap = Math.min(cap, env.mtbCo * 1000 / pk); }
+    if (useSite) cap = Math.min(cap, ...capSite);
+    const Ne = Math.floor(cap / 1000) * 1000; return slots.map(() => Ne);
   }
-  let peak = 0, sum = 0; for (let d = 0; d < 365; d++) { let v = 0; B.forEach((r, i) => v += N[i] * r[d]); v /= 1000; peak = Math.max(peak, v); sum += v; }
-  // tidslinje fra modellstart
-  const gens = [];
-  const y0 = new Date(start).getUTCFullYear(), y1 = new Date(p.endMs).getUTCFullYear();
-  for (let y = y0 - 1; y <= y1; y++) opts.plan.forEach((pm, i) => {
-    const d = new Date(pm); const ms = Date.UTC(y + (d.getUTCFullYear() - y0), d.getUTCMonth(), d.getUTCDate());
-    if (ms >= start && ms <= p.endMs) gens.push({ slot: i + 1, year: new Date(ms).getUTCFullYear(), t0: Math.round((ms - start) / DAYMS), N: N[i] });
+  const A = [], b = [];
+  if (useCo) for (let d = 0; d < 365; d++) { A.push(B.map(r => r[d])); b.push(env.mtbCo); } // tonn per 1000 smolt
+  if (useSite) slots.forEach((s, i) => { const r = new Array(slots.length).fill(0); r[i] = 1; A.push(r); b.push(capSite[i] / 1000); });
+  const x = lpMax(slots.map(s => s.hw), A, b);
+  return x.map(v => Math.floor(v + 1e-9) * 1000);
+}
+
+// Tidslinje fra modellstart: generasjoner, lokaliteter og daglig biomasse.
+function timeline(slots, N, plan, env) {
+  const gens = [], y0 = new Date(env.start).getUTCFullYear(), y1 = new Date(env.end).getUTCFullYear();
+  for (let y = y0; y <= y1; y++) plan.forEach((p, i) => {
+    const ms = Date.UTC(y, p.m - 1, p.d);
+    if (ms >= env.start && ms <= env.end) gens.push({ slot: i, year: y, t0: Math.round((ms - env.start) / DAYMS), N: N[i] });
   });
   gens.sort((a, b) => a.t0 - b.t0);
-  const fallowDays = p.fallowMonths * 365.25 / 12, freeFrom = new Array(p.sites).fill(-Infinity); let short = 0;
+  const fallowDays = env.fallowMonths * 365.25 / 12, freeFrom = new Array(env.sites).fill(-Infinity); let short = 0;
   for (const g of gens) {
-    g.tH = g.t0 + h1; g.tH0 = g.t0 + h0; g.tFree = g.tH + fallowDays;
-    let site = -1; for (let i = 0; i < p.sites; i++) if (freeFrom[i] <= g.t0) { site = i; break; }
+    const s = slots[g.slot]; g.tH0 = g.t0 + s.h0; g.tH = g.t0 + s.h1; g.tFree = g.tH + fallowDays;
+    let site = -1; for (let i = 0; i < env.sites; i++) if (freeFrom[i] <= g.t0) { site = i; break; }
     if (site < 0) short++; else freeFrom[site] = g.tFree; g.site = site;
   }
-  const total = new Float64Array(nDays);
-  for (let t = 0; t < nDays; t++) { let v = 0; for (const g of gens) { const a = t - g.t0; if (a >= 0) v += g.N * bio(a); } total[t] = v / 1000; }
-  const prod = N.reduce((a, b) => a + b, 0) * hw / 1000;
-  return { maxBio, capN, N, Nsum: N.reduce((a, b) => a + b, 0), cycle: cyc, spread: S, hw, wFrom: w(Math.max(h0, 0)), wTo: w(h1), peak, avg: sum / 365, util: (sum / 365) / peak, mtbNeed: peak, prod, gens, total, short, w, frac, bio, h0, h1 };
+  const total = new Float64Array(env.nDays), occ = new Int16Array(env.nDays);
+  for (const g of gens) {
+    const s = slots[g.slot];
+    for (let t = g.t0; t < env.nDays; t++) { const a = t - g.t0; if (a > AMAX) break; total[t] += g.N * s.bio[a] / 1000; }
+    if (g.site >= 0) for (let t = Math.max(0, g.t0); t < Math.min(env.nDays, Math.ceil(g.tFree)); t++) occ[t]++;
+  }
+  let maxOcc = 0; for (let t = Math.max(0, env.nDays - 365); t < env.nDays; t++) maxOcc = Math.max(maxOcc, occ[t]);
+  return { gens, total, short, maxOcc };
 }
-const P={T:9,HW:5,mtb:6240,sites:8,siteMtb:2340,fallowMonths:2,
-  plan:[utcDate(2026,4,30),utcDate(2026,6,30),utcDate(2026,8,31),utcDate(2026,12,30)],endMs:utcDate(2029,12,31)};
+
+const planDoy = p => Math.round((Date.UTC(2026, p.m - 1, p.d) - Date.UTC(2026, 0, 1)) / DAYMS);
+function doyToMD(doy) { const d = new Date(Date.UTC(2026, 0, 1) + doy * DAYMS); return { m: d.getUTCMonth() + 1, d: d.getUTCDate() }; }
+// n utsett med jevn avstand mellom 1. april og 30. desember (ingen utsett i januar til mars)
+function evenPlan(n) { const a = 90, b = 363, out = []; for (let i = 0; i < n; i++) out.push(doyToMD(Math.round(a + i * (b - a) / (n - 1)))); return out; }
+
+// Ett løp: utsettsplan, slakteperiode og antall smolt.
+function runCase(sp, plan, spread, env, Nfixed, optimize) {
+  const slots = plan.map(p => slotModel(sp, env, planDoy(p), spread));
+  const B = steadyProfiles(slots);
+  const N = Nfixed ? plan.map(() => Nfixed) : chooseN(slots, B, env, optimize);
+  const st = steadyStats(B, N), tl = timeline(slots, N, plan, env);
+  const prod = N.reduce((s, v, i) => s + v * slots[i].hw, 0) / 1000;
+  const Nsum = N.reduce((a, b) => a + b, 0);
+  const maxGen = Math.max(...N.map((v, i) => v * slots[i].maxBio / 1000));
+  return { sp, plan, spread, slots, B, N, Nsum, prod, peak: st.peak, avg: st.avg, util: st.avg / st.peak, maxGen, ...tl };
+}
+
+
 const $=id=>document.getElementById(id);
 const nb=(x,d=0)=>x.toLocaleString("nb-NO",{minimumFractionDigits:d,maximumFractionDigits:d});
-const fmtDate=ms=>{const d=new Date(ms);return String(d.getUTCDate()).padStart(2,"0")+"."+String(d.getUTCMonth()+1).padStart(2,"0")+"."+d.getUTCFullYear();};
 const NS="http://www.w3.org/2000/svg";
 function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+const fmtDate=ms=>{const d=new Date(ms);return String(d.getUTCDate()).padStart(2,"0")+"."+String(d.getUTCMonth()+1).padStart(2,"0")+"."+d.getUTCFullYear();};
+const fmtMD=p=>String(p.d).padStart(2,"0")+"."+String(p.m).padStart(2,"0");
+const MNDS=d=>(d/(365.25/12));
+const PO_NAMES={1:"Svenskegrensen til Jæren",2:"Ryfylke",3:"Karmøy til Sotra",4:"Nordhordland til Stadt",5:"Stadt til Hustadvika",6:"Nordmøre og Sør-Trøndelag",7:"Nord-Trøndelag med Bindal",8:"Helgeland til Bodø",9:"Vestfjorden og Vesterålen",10:"Andøya til Senja",11:"Kvaløya til Loppa",12:"Vest-Finnmark",13:"Øst-Finnmark"};
+const DAGENS=[{m:4,d:30},{m:6,d:30},{m:8,d:31},{m:12,d:30}];
+const START=Date.UTC(2026,3,30), END=Date.UTC(2029,11,31), NDAYS=Math.round((END-START)/DAYMS)+1;
 
-let M=null,t=0,playing=false,last=null;
+let M=null,t=0,playing=false,last=null,acc=0,builtSites=-1;
 
-/* ---------- merdpaneler ---------- */
-const panels={};
-function buildPanel(key,title,color){
-  const host=$({ref:"pref",scen:"pscen",scen2:"pscen2"}[key]);
-  host.innerHTML=`<h2><span class="dot" style="background:var(--${color})"></span>${title}</h2><p class="meta" id="${key}meta"></p>`;
-  const svg=el("svg",{viewBox:"0 0 520 278",class:"cages",role:"img","aria-label":title+": åtte lokaliteter"},host);
-  const cages=[];
-  for(let i=0;i<8;i++){
-    const cx=65+(i%4)*130, cy=74+Math.floor(i/4)*136, r=44;
-    const g=el("g",{},svg);
-    const cp=el("clipPath",{id:`c${key}${i}`},g); el("circle",{cx,cy,r:r-3},cp);
-    el("circle",{cx,cy,r:r-3,fill:"var(--bg)"},g);
-    const water=el("rect",{x:cx-r,y:cy+r,width:2*r,height:0,fill:`var(--${color})`,"clip-path":`url(#c${key}${i})`,opacity:"0.85"},g);
-    const ring=el("circle",{cx,cy,r,fill:"none",stroke:"var(--line)","stroke-width":"3"},g);
-    const big=el("text",{x:cx,y:cy+3,"text-anchor":"middle","font-size":"22","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
-    const small=el("text",{x:cx,y:cy+24,"text-anchor":"middle","font-size":"14",fill:"var(--ink)"},g);
-    const name=el("text",{x:cx,y:cy+r+19,"text-anchor":"middle","font-size":"15",fill:"#000","font-family":"var(--body)"},g);
-    const flag=el("text",{x:cx,y:cy-r-6,"text-anchor":"middle","font-size":"14","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
-    cages.push({water,ring,big,small,name,flag,cx,cy,r});
+/* ---------- oppsett ---------- */
+(function initPO(){
+  const s=$("po");
+  for(let i=1;i<=13;i++){const o=document.createElement("option");o.value=i;o.textContent=`PO${i} ${PO_NAMES[i]}`;s.appendChild(o);}
+  const o=document.createElement("option");o.value="c9";o.textContent="Konstant 9 °C hele året";s.appendChild(o);
+  s.value="6";
+})();
+function readEnv(){
+  const po=$("po").value, weekly=po==="c9"?new Array(52).fill(9):PO_DATA[po].w;
+  const nperm=Math.max(1,Math.min(40,Math.round(+$("nperm").value||8))), permMtb=+$("permmtb").value;
+  const sites=Math.max(1,Math.min(16,Math.round(+$("nsites").value||8))), siteMtb=Math.max(100,+$("sitemtb").value||2340);
+  return {po,weekly,temp:buildTemp(weekly),HW:5,nperm,permMtb,mtbCo:nperm*permMtb,sites,siteMtb,fallowMonths:2,mode:$("mode").value,start:START,end:END,nDays:NDAYS};
+}
+
+/* ---------- temperaturprofil ---------- */
+function drawTemp(env){
+  const s=$("tempsvg"); s.innerHTML="";
+  const L=34,R=552,T0=10,B=118, T=env.temp.T, lo=0, hi=Math.max(18,Math.ceil(Math.max(...T)));
+  const x=d=>L+(R-L)*d/364, y=v=>B-(B-T0)*(v-lo)/(hi-lo);
+  el("rect",{x:L,y:T0,width:x(89)-L,height:B-T0,fill:"#e5e8e8"},s);
+  const nt=el("text",{x:(L+x(89))/2,y:T0+14,"text-anchor":"middle"},s); nt.textContent="ingen utsett";
+  for(let v=0;v<=hi;v+=5){el("line",{x1:L,x2:R,y1:y(v),y2:y(v),stroke:"#d4d9da"},s);const tx=el("text",{x:L-6,y:y(v)+4,"text-anchor":"end"},s);tx.textContent=v+"°";}
+  const mn=["jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des"], md=[0,31,59,90,120,151,181,212,243,273,304,334];
+  md.forEach((d,i)=>{const tx=el("text",{x:x(d+15),y:B+16,"text-anchor":"middle"},s);tx.textContent=mn[i];});
+  let p="";for(let d=0;d<365;d++)p+=(d?"L":"M")+x(d).toFixed(1)+","+y(T[d]).toFixed(1);
+  el("path",{d:p,fill:"none",stroke:"#000","stroke-width":"2"},s);
+  const mean=T.reduce((a,b)=>a+b,0)/365;
+  el("line",{x1:L,x2:R,y1:y(mean),y2:y(mean),stroke:"#000","stroke-dasharray":"3 4"},s);
+  // utsettsdatoer i dagens plan
+  DAGENS.forEach(pl=>{const d=planDoy(pl);el("circle",{cx:x(d),cy:y(T[d]),r:4,fill:"var(--ref)",stroke:"#000"},s);});
+  const mx=Math.max(...T), mi=Math.min(...T);
+  $("tempcap").innerHTML=env.po==="c9"?`Konstant 9 °C. Punktene er utsettene i dagens plan.`
+    :`Snitt ${nb(mean,1)} °C, fra ${nb(mi,1)} til ${nb(mx,1)} °C. Grunnlag: ${PO_DATA[env.po].sites} lokaliteter og ${nb(PO_DATA[env.po].obs)} ukeregistreringer, 2015 til 2025. Punktene er utsettene i dagens plan.`;
+}
+
+/* ---------- beregning ---------- */
+function s2options(){const pl=$("s2plan").value;return {key:pl,plan:pl==="dagens"?DAGENS:evenPlan(+pl),spread:+$("s2spread").value,optimize:$("s2opt").checked};}
+function pickBest(env,sp){
+  let best=null;
+  for(const pl of ["dagens","4","5","6","7","8"]) for(const sd of [0,30,61]){
+    const r=runCase(sp,pl==="dagens"?DAGENS:evenPlan(+pl),sd,env,null,true);
+    if(r.short>0) continue;
+    if(!best||r.prod>best.prod+1) best={prod:r.prod,pl,sd};
   }
-  const bar=document.createElement("div");bar.className="bar";bar.innerHTML=`<div class="fill" style="background:var(--${color})"></div><div class="gain"></div><div class="need"></div>`;host.appendChild(bar);
-  const lbl=document.createElement("div");lbl.className="barlbl";host.appendChild(lbl);
-  panels[key]={cages,fill:bar.querySelector(".fill"),gain:bar.querySelector(".gain"),need:bar.querySelector(".need"),lbl};
+  if(best){$("s2plan").value=best.pl;$("s2spread").value=String(best.sd);$("s2opt").checked=true;}
 }
-function drawPanel(key){
-  const S=M[key], p=panels[key];
-  const state=new Array(8).fill(null);
-  for(const g of S.gens){ if(g.site<0)continue; if(t>=g.t0&&t<g.tFree) state[g.site]={g,active:t<g.tH}; }
-  const two=key==="scen2";
-  state.forEach((s,i)=>{
-    const c=p.cages[i];
-    c.name.textContent=`L${i+1}`; c.flag.textContent=""; c.ring.setAttribute("stroke-width","3");
-    if(!s){c.water.setAttribute("height",0);c.ring.setAttribute("stroke","var(--line)");c.ring.setAttribute("stroke-dasharray","");c.big.textContent="Ledig";c.big.setAttribute("fill","#000");c.small.textContent="";return;}
-    if(s.active){
-      const a=t-s.g.t0, w=two?S.w(a):M.wkg(key==="ref"?cur.ref:cur.scen,a), bio=two?s.g.N*S.bio(a)/1000:S.N*w/1000, f=Math.min(bio/P.siteMtb,1);
-      const h=2*c.r*f; c.water.setAttribute("y",c.cy+c.r-h); c.water.setAttribute("height",h);
-      const over=bio>P.siteMtb;
-      c.ring.setAttribute("stroke",over?"#000":"var(--line)"); c.ring.setAttribute("stroke-width",over?"4":"3"); c.ring.setAttribute("stroke-dasharray","");
-      if(over) c.flag.textContent="over 2 340 t"; else if(two&&S.spread>0&&a>=S.h0) c.flag.textContent="slakter";
-      c.big.textContent=nb(bio)+" t"; c.big.setAttribute("fill","var(--ink)");
-      c.small.textContent=`${nb(w,2)} kg`; c.name.textContent=`L${i+1} · U${s.g.slot} ${s.g.year}`;
-    }else{
-      c.water.setAttribute("height",0); c.ring.setAttribute("stroke","#000"); c.ring.setAttribute("stroke-dasharray","5 5");
-      c.big.textContent="Brakk"; c.big.setAttribute("fill","#000");
-      c.small.textContent=`${Math.ceil(s.g.tFree-t)} d igjen`;
-    }
-  });
-  const cur_t=S.total[t], frac=cur_t/P.mtb;
-  p.fill.style.width=Math.min(frac,1)*100+"%";
-  p.need.style.left=Math.min(S.mtbNeed/P.mtb,1)*100+"%";
-  const g0=Math.min(S.mtbNeed/P.mtb,1); p.gain.style.left=g0*100+"%"; p.gain.style.width=(key==="scen"&&M.freedPeak>0?(1-g0)*100:0)+"%";
-  const inUse=state.filter(Boolean).length;
-  if(two) p.need.style.left=Math.min(S.peak/P.mtb,1)*100+"%";
-  p.lbl.innerHTML=`<span>Biomasse <b>${nb(cur_t)} t</b> av 6 240 t (${nb(frac*100,0)} %)</span><span>${key==="scen"&&M.freedPeak>0?`<b>Ledig ${nb(M.freedPeak)} t</b> · `:""}${inUse} av 8 lokaliteter i bruk</span>`;
+function compute(){
+  const env=readEnv();
+  const cur={ref:{vf3:+$("rv").value,w0:+$("rw").value},scen:{vf3:+$("sv").value,w0:+$("sw").value}};
+  $("rvo").textContent=nb(cur.ref.vf3,2); $("rwo").textContent=cur.ref.w0+" g";
+  $("svo").textContent=nb(cur.scen.vf3,2); $("swo").textContent=cur.scen.w0+" g";
+  const ref=runCase(cur.ref,DAGENS,0,env,null,false);
+  const s1=runCase(cur.scen,DAGENS,0,env,ref.N[0]);
+  if($("auto").checked) pickBest(env,cur.scen);
+  const o=s2options(); const s2=runCase(cur.scen,o.plan,o.spread,env,null,o.optimize);
+  M={env,cur,ref,scen:s1,scen2:s2,o,freed:ref.peak-s1.peak,freedAvg:ref.avg-s1.avg};
+  if(builtSites!==env.sites){buildPanels(env.sites);builtSites=env.sites;}
+  $("scrub").max=NDAYS-1; t=Math.min(t,NDAYS-1);
+  drawTemp(env); texts(); drawFreed(); drawMeasures(); buildChart(); render();
 }
-let cur=null;
 
-/* ---------- frigjort MTB ---------- */
+/* ---------- tekster og nøkkeltall ---------- */
+function rangeMnd(r){const c=r.slots.map(s=>MNDS(s.cyc));const a=Math.min(...c),b=Math.max(...c);return Math.abs(a-b)<0.15?`${nb(a,1)} mnd`:`${nb(a,1)} til ${nb(b,1)} mnd`;}
+function shortTxt(r){return r.short?` ${r.short} utsett fikk ikke ledig lokalitet.`:"";}
+function texts(){
+  const {env,ref,scen,scen2,cur}=M, poTxt=env.po==="c9"?"konstant 9 °C":`temperatur fra PO${env.po}`;
+  $("herosub").textContent=`${env.nperm} tillatelser à ${nb(env.permMtb)} tonn (${nb(env.mtbCo)} tonn), ${env.sites} lokaliteter à ${nb(env.siteMtb)} tonn og ${poTxt}. Scenario 1 produserer like mye som referansen og viser hvor mye MTB som blir ledig. Scenario 2 bruker samme vekst og smolt, men endrer driften for å fylle MTB jevnt.`;
+  $("mtbcap").textContent=`MTB selskap ${nb(env.mtbCo)} t. Samlet MTB for lokalitetene ${nb(env.sites*env.siteMtb)} t. Brakklegging 2 måneder, én generasjon per lokalitet.`;
+  $("legmtb").textContent=`MTB selskap ${nb(env.mtbCo)} tonn`;
+  const dP=scen2.prod-ref.prod;
+  $("k1").textContent=(dP<0?"−":"+")+nb(Math.abs(dP))+" t";
+  $("k1s").textContent=`${dP<0?"−":"+"}${nb(Math.abs(dP/ref.prod*100),0)} % mot referansen, samme MTB på ${nb(env.mtbCo)} t`;
+  $("k4").textContent=nb(ref.prod)+" → "+nb(scen2.prod)+" t";
+  $("k3").textContent=nb(ref.Nsum/1e6,2)+" → "+nb(scen2.Nsum/1e6,2)+" mill";
+  $("k2").textContent=nb(ref.avg/env.mtbCo*100,0)+" → "+nb(scen2.avg/env.mtbCo*100,0)+" %";
+  $("refmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g smolt, ${rangeMnd(ref)} i sjø. ${nb(ref.N[0])} smolt per utsett. MTB behov ${nb(ref.peak)} t.`+shortTxt(ref);
+  $("scenmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt, ${rangeMnd(scen)} i sjø. Like mange smolt som referansen. MTB behov ${nb(scen.peak)} t.`+shortTxt(scen);
+  $("scen2meta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt, ${scen2.N.length} utsett per år. MTB behov ${nb(scen2.peak)} t.`+shortTxt(scen2);
+}
+
+/* ---------- frigjort MTB (scenario 1) ---------- */
 function drawFreed(){
-  const fs=$("freedbar"); fs.innerHTML="";
-  const fr=M.freedPeak, neg=fr<0, rN=M.ref.mtbNeed, sN=M.scen.mtbNeed;
-  $("fbig").textContent=(neg?"−":"")+nb(Math.abs(fr))+" t"; $("fbig").classList.toggle("neg",neg);
-  $("fsub").innerHTML=neg?`Scenarioet trenger <b>${nb(-fr)} t</b> mer MTB enn referansen for samme produksjon, ${nb(-fr/780,2)} tillatelser.`
-    :`Tilsvarer <b>${nb(fr/780,2)} tillatelser</b> à 780 t, eller ${nb(fr/P.mtb*100,1)} % av selskapets MTB, ved samme produksjon på ${nb(M.prodYear)} t per år. Ved jevn biomasse: ${nb(M.freedAvg)} t.`;
-  const defs=el("defs",{},fs), col=neg?"var(--warn)":"var(--scen)";
+  const {env,ref,scen}=M, fs=$("freedbar"); fs.innerHTML="";
+  const fr=M.freed, neg=fr<0, rN=ref.peak, sN=scen.peak, pm=env.permMtb;
+  $("fbig").textContent=(neg?"−":"")+nb(Math.abs(fr))+" t";
+  $("fsub").innerHTML=neg?`Scenario 1 trenger <b>${nb(-fr)} t</b> mer MTB enn referansen for samme produksjon, ${nb(-fr/pm,2)} tillatelser.`
+    :`Tilsvarer <b>${nb(fr/pm,2)} tillatelser</b> à ${nb(pm)} t, eller ${nb(fr/env.mtbCo*100,1)} % av selskapets MTB, ved samme produksjon på ${nb(ref.prod)} t per år. Ved jevn biomasse: ${nb(M.freedAvg)} t.`;
+  const col=neg?"#000":"var(--scen)", defs=el("defs",{},fs);
   const pat=el("pattern",{id:"hatch",width:"10",height:"10",patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
   el("rect",{width:"10",height:"10",fill:col,opacity:"0.2"},pat); el("rect",{width:"5",height:"10",fill:col},pat);
-  const nT=Math.max(8,Math.ceil(Math.max(sN,rN)/780-1e-9)), G=12, W=Math.min(96,(800-(nT-1)*G)/nT), X=1000-(nT*W+(nT-1)*G), Y=26, H=92;
+  const nT=Math.max(env.nperm,Math.ceil(Math.max(sN,rN)/pm-1e-9)), G=nT>12?6:12, W=Math.min(96,(800-(nT-1)*G)/nT), X=1000-(nT*W+(nT-1)*G), Y=26, H=92;
   for(let k=0;k<nT;k++){
-    const x0=X+k*(W+G), lo=k*780, hi=lo+780, extra=k>=8;
-    const used=Math.max(0,Math.min(Math.min(sN,rN),hi)-lo)/780;
-    const gainTop=Math.max(0,Math.min(Math.max(sN,rN),hi)-lo)/780;
-    el("rect",{x:x0,y:Y,width:W,height:H,rx:6,fill:"rgba(255,255,255,.75)",stroke:extra?"#000":"rgba(0,0,0,.25)","stroke-dasharray":extra?"5 4":"","stroke-width":"1.5"},fs);
+    const x0=X+k*(W+G), lo=k*pm, hi=lo+pm, extra=k>=env.nperm;
+    const used=Math.max(0,Math.min(Math.min(sN,rN),hi)-lo)/pm, top=Math.max(0,Math.min(Math.max(sN,rN),hi)-lo)/pm;
+    el("rect",{x:x0,y:Y,width:W,height:H,rx:6,fill:"#fff",stroke:extra?"#000":"rgba(0,0,0,.25)","stroke-dasharray":extra?"5 4":"","stroke-width":"1.5"},fs);
     if(used>0) el("rect",{x:x0,y:Y+H*(1-used),width:W,height:H*used,rx:used>0.97?6:0,fill:"var(--ref)"},fs);
-    if(gainTop-used>0.005){
-      el("rect",{x:x0,y:Y+H*(1-gainTop),width:W,height:H*(gainTop-used),fill:"url(#hatch)",stroke:col,"stroke-width":"2"},fs);
-      const pct=el("text",{x:x0+W/2,y:Y-8,"text-anchor":"middle",style:"fill:#000;font-weight:700;font-size:14px"},fs);
-      pct.textContent=nb((gainTop-used)*100,0)+" %";
+    if(top-used>0.005){
+      el("rect",{x:x0,y:Y+H*(1-top),width:W,height:H*(top-used),fill:"url(#hatch)",stroke:col,"stroke-width":"2"},fs);
+      const pc=el("text",{x:x0+W/2,y:Y-8,"text-anchor":"middle",style:"font-weight:700;font-size:14px"},fs); pc.textContent=nb((top-used)*100,0)+" %";
     }
     const tt=el("text",{x:x0+W/2,y:Y+H+18,"text-anchor":"middle"},fs); tt.textContent=extra?"mangler":"T"+(k+1);
   }
-  const t1=el("text",{x:0,y:Y+20,style:"fill:#000;font-weight:700"},fs); t1.textContent="Åtte tillatelser";
-  const t2=el("text",{x:0,y:Y+38},fs); t2.textContent="à 780 tonn";
-  const kx=0, ky=Y+62;
-  el("rect",{x:kx,y:ky,width:12,height:12,fill:"var(--ref)"},fs); const k1=el("text",{x:kx+18,y:ky+11},fs); k1.textContent="i bruk";
-  el("rect",{x:kx,y:ky+18,width:12,height:12,fill:"url(#hatch)",stroke:col},fs); const k2=el("text",{x:kx+18,y:ky+29},fs); k2.textContent=neg?"økt behov":"frigjort";
+  const t1=el("text",{x:0,y:Y+20,style:"font-weight:700"},fs); t1.textContent=`${env.nperm} tillatelser`;
+  const t2=el("text",{x:0,y:Y+38},fs); t2.textContent=`à ${nb(pm)} tonn`;
+  el("rect",{x:0,y:Y+62,width:12,height:12,fill:"var(--ref)"},fs); const k1=el("text",{x:18,y:Y+73},fs); k1.textContent="i bruk";
+  el("rect",{x:0,y:Y+80,width:12,height:12,fill:"url(#hatch)",stroke:col},fs); const k2=el("text",{x:18,y:Y+91},fs); k2.textContent=neg?"økt behov":"frigjort";
+}
+
+/* ---------- tiltak i scenario 2 ---------- */
+function drawMeasures(){
+  const {env,scen2:S,o}=M, n=S.N.length, pl=o.key;
+  const equal=S.N.every(v=>v===S.N[0]);
+  const sl=S.slots, wf=Math.min(...sl.map(s=>s.wFrom)), wt=Math.max(...sl.map(s=>s.wTo)), hw=S.prod*1000/S.Nsum;
+  const items=[
+    [pl==="dagens"?"Utsettsplan som i dag":`${n} utsett per år, april til desember`, pl==="dagens"?"30.04, 30.06, 31.08 og 30.12.":`${o.plan.map(fmtMD).join(", ")}. I dag: 4 utsett med 2, 2, 4 og 4 måneders mellomrom.`],
+    [o.spread>0?`Slakt spredt over ${o.spread<45?"1 måned":o.spread<75?"2 måneder":"3 måneder"}`:"Slakt på én dag", o.spread>0?`Slaktevekt fra ${nb(wf,1)} til ${nb(wt,1)} kg, snitt ${nb(hw,2)} kg.`:`Hele generasjonen slaktes ved ${nb(hw,2)} kg i snitt.`],
+    [o.optimize?(equal?"Gruppestørrelse optimert, lik i alle utsett":"Tilpasset gruppestørrelse per utsett"):"Lik gruppestørrelse", equal?`${nb(S.N[0])} smolt per utsett, ${nb(S.Nsum/1e6,2)} mill per år.`:`${S.N.map((v,i)=>"U"+(i+1)+" "+nb(v/1000)+"k").join(", ")}. Sum ${nb(S.Nsum/1e6,2)} mill per år.`]
+  ];
+  const mtxt={both:`MTB selskap ${nb(env.mtbCo)} t og MTB per lokalitet ${nb(env.siteMtb)} t`,company:`MTB selskap ${nb(env.mtbCo)} t`,site:`MTB per lokalitet ${nb(env.siteMtb)} t`}[env.mode];
+  $("measures").innerHTML=items.map(([h,d])=>`<li><b>${h}</b><span>${d}</span></li>`).join("")+`<li class="frame"><b>Rammer som holdes</b><span>${mtxt}, én generasjon per lokalitet, ${env.sites} lokaliteter og ingen utsett i januar til mars.</span></li>`;
+  const capSite=S.slots.map(s=>env.siteMtb*1000/s.maxBio);
+  const cSite=env.mode!=="company"&&S.N.some((v,i)=>v>=capSite[i]-1000), cCo=env.mode!=="site"&&S.peak>=env.mtbCo*0.99;
+  const bind=cSite&&cCo?"MTB selskap og per lokalitet":cSite?"MTB per lokalitet":cCo?"MTB selskap":"Antall lokaliteter";
+  $("s2res").innerHTML=`<div><span class="lbl">Produksjon per år</span><span class="v">${nb(S.prod)} t</span></div><div><span class="lbl">Utnyttelse av MTB</span><span class="v">${nb(S.avg/env.mtbCo*100,0)} %</span></div><div><span class="lbl">Begrenses av</span><span class="v small">${bind}</span></div><div><span class="lbl">Lokaliteter i bruk</span><span class="v small">${S.maxOcc} av ${env.sites} inkl. brakklegging</span></div>`;
+}
+
+/* ---------- merdpaneler ---------- */
+const panels={};
+const PANELS=[["ref","Referanse","ref","pref"],["scen","Scenario 1: samme produksjon","scen","pscen"],["scen2","Scenario 2: optimert drift","scen2","pscen2"]];
+function buildPanels(n){
+  for(const [key,title,color,hostId] of PANELS){
+    const host=$(hostId);
+    host.innerHTML=`<h2><span class="dot" style="background:var(--${color})"></span>${title}</h2><p class="meta" id="${key}meta"></p>`;
+    const rows=Math.ceil(n/4), svg=el("svg",{viewBox:`0 0 520 ${rows*136+6}`,class:"cages",role:"img","aria-label":`${title}: ${n} lokaliteter`},host);
+    const cages=[];
+    for(let i=0;i<n;i++){
+      const cx=65+(i%4)*130, cy=74+Math.floor(i/4)*136, r=44, g=el("g",{},svg);
+      const cp=el("clipPath",{id:`c${key}${i}`},g); el("circle",{cx,cy,r:r-3},cp);
+      el("circle",{cx,cy,r:r-3,fill:"var(--bg)"},g);
+      const water=el("rect",{x:cx-r,y:cy+r,width:2*r,height:0,fill:`var(--${color})`,"clip-path":`url(#c${key}${i})`},g);
+      const ring=el("circle",{cx,cy,r,fill:"none",stroke:"var(--line)","stroke-width":"3"},g);
+      const big=el("text",{x:cx,y:cy+3,"text-anchor":"middle","font-size":"22","font-weight":"700","font-family":"var(--body)"},g);
+      const small=el("text",{x:cx,y:cy+24,"text-anchor":"middle","font-size":"14","font-family":"var(--body)"},g);
+      const name=el("text",{x:cx,y:cy+r+19,"text-anchor":"middle","font-size":"15","font-family":"var(--body)"},g);
+      const flag=el("text",{x:cx,y:cy-r-6,"text-anchor":"middle","font-size":"14","font-weight":"700","font-family":"var(--body)"},g);
+      cages.push({water,ring,big,small,name,flag,cx,cy,r});
+    }
+    const bar=document.createElement("div");bar.className="bar";bar.innerHTML=`<div class="fill" style="background:var(--${color})"></div><div class="gain"></div><div class="need"></div>`;host.appendChild(bar);
+    const lbl=document.createElement("div");lbl.className="barlbl";host.appendChild(lbl);
+    panels[key]={cages,fill:bar.querySelector(".fill"),gain:bar.querySelector(".gain"),need:bar.querySelector(".need"),lbl};
+  }
+}
+function drawPanel(key){
+  const {env}=M, S=M[key], p=panels[key], state=new Array(env.sites).fill(null);
+  for(const g of S.gens){ if(g.site<0)continue; if(t>=g.t0&&t<g.tFree) state[g.site]={g,active:t<g.tH}; }
+  state.forEach((s,i)=>{
+    const c=p.cages[i];
+    c.name.textContent=`L${i+1}`; c.flag.textContent=""; c.ring.setAttribute("stroke-width","3"); c.ring.setAttribute("stroke-dasharray","");
+    if(!s){c.water.setAttribute("height",0);c.ring.setAttribute("stroke","var(--line)");c.big.textContent="Ledig";c.small.textContent="";return;}
+    const sl=S.slots[s.g.slot], a=Math.max(0,Math.min(AMAX,t-s.g.t0));
+    if(s.active){
+      const w=sl.W[a], bio=s.g.N*sl.bio[a]/1000, f=Math.min(bio/env.siteMtb,1), h=2*c.r*f;
+      c.water.setAttribute("y",c.cy+c.r-h); c.water.setAttribute("height",h);
+      const over=bio>env.siteMtb+0.5;
+      c.ring.setAttribute("stroke",over?"#000":"var(--line)"); c.ring.setAttribute("stroke-width",over?"4":"3");
+      if(over) c.flag.textContent="over grensen"; else if(sl.S>0&&a>=sl.h0) c.flag.textContent="slakter";
+      c.big.textContent=nb(bio)+" t"; c.small.textContent=`${nb(w,2)} kg`; c.name.textContent=`L${i+1} · U${s.g.slot+1} ${s.g.year}`;
+    }else{
+      c.water.setAttribute("height",0); c.ring.setAttribute("stroke","#000"); c.ring.setAttribute("stroke-dasharray","5 5");
+      c.big.textContent="Brakk"; c.small.textContent=`${Math.ceil(s.g.tFree-t)} d igjen`;
+    }
+  });
+  const cur=S.total[t], frac=cur/env.mtbCo, need=Math.min(S.peak/env.mtbCo,1);
+  p.fill.style.width=Math.min(frac,1)*100+"%"; p.need.style.left=need*100+"%";
+  p.gain.style.left=need*100+"%"; p.gain.style.width=(key==="scen"&&M.freed>0?Math.min(M.ref.peak/env.mtbCo,1)*100-need*100:0)+"%";
+  const inUse=state.filter(Boolean).length;
+  p.lbl.innerHTML=`<span>Biomasse <b>${nb(cur)} t</b> av ${nb(env.mtbCo)} t (${nb(frac*100,0)} %)</span><span>${key==="scen"&&M.freed>0?`<b>Ledig ${nb(M.freed)} t</b> · `:""}${inUse} av ${env.sites} lokaliteter i bruk</span>`;
 }
 
 /* ---------- graf ---------- */
-const svg=$("chart"); const X0=56,X1=985,Y0=286,Y1=18;
-let xs,ys,cursor,clipRect;
+const svg=$("chart"); const X0=56,X1=985,Y0=286,Y1=18; let xs,ys,cursor,clipRect;
 function buildChart(){
-  svg.innerHTML="";
-  const n=M.nDays, ymax=Math.ceil(Math.max(7000,...M.ref.total,...M.scen.total,...M.scen2.total)/1000)*1000;
-  xs=i=>X0+(X1-X0)*i/(n-1); ys=v=>Y0-(Y0-Y1)*v/ymax;
+  const {env,ref,scen,scen2}=M; svg.innerHTML="";
+  const top=Math.max(env.mtbCo*1.1,...ref.total,...scen.total,...scen2.total), step=top>12000?2000:1000, ymax=Math.ceil(top/step)*step;
+  xs=i=>X0+(X1-X0)*i/(NDAYS-1); ys=v=>Y0-(Y0-Y1)*v/ymax;
   const defs=el("defs",{},svg); const cp=el("clipPath",{id:"prog"},defs); clipRect=el("rect",{x:X0,y:0,width:0,height:320},cp);
-  for(let v=0;v<=ymax;v+=1000){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:"var(--line)","stroke-width":"1"},svg);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},svg);tx.textContent=nb(v);}
-  const y0=new Date(M.start).getUTCFullYear();
-  for(let y=y0+1;y<=2029;y++){const i=Math.round((Date.UTC(y,0,1)-M.start)/86400000);el("line",{x1:xs(i),x2:xs(i),y1:Y1,y2:Y0,stroke:"var(--line)","stroke-width":"1"},svg);const tx=el("text",{x:xs(i)+4,y:Y0+18},svg);tx.textContent=y;}
+  for(let v=0;v<=ymax;v+=step){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:"var(--line)"},svg);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},svg);tx.textContent=nb(v);}
+  for(let y=2027;y<=2029;y++){const i=Math.round((Date.UTC(y,0,1)-START)/DAYMS);el("line",{x1:xs(i),x2:xs(i),y1:Y1,y2:Y0,stroke:"var(--line)"},svg);const tx=el("text",{x:xs(i)+4,y:Y0+18},svg);tx.textContent=y;}
   const tx0=el("text",{x:X0,y:Y0+18},svg);tx0.textContent="mai 2026";
   const path=a=>{let d="";for(let i=0;i<a.length;i+=2)d+=(i?"L":"M")+xs(i).toFixed(1)+","+ys(a[i]).toFixed(1);return d;};
-  // MTB behov scenario i stabil drift (siste år)
-  const iSS=Math.round((Date.UTC(2028,0,1)-M.start)/86400000);
+  const iSS=Math.round((Date.UTC(2028,0,1)-START)/DAYMS);
   const pd=el("pattern",{id:"hatch2",width:"8",height:"8",patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},defs);
   el("rect",{width:"8",height:"8",fill:"var(--scen)",opacity:"0.15"},pd); el("rect",{width:"3",height:"8",fill:"var(--scen)",opacity:"0.8"},pd);
-  const yA=Math.min(ys(P.mtb),ys(M.scen.mtbNeed)), yB=Math.max(ys(P.mtb),ys(M.scen.mtbNeed));
+  const yA=Math.min(ys(ref.peak),ys(scen.peak)), yB=Math.max(ys(ref.peak),ys(scen.peak));
   el("rect",{x:xs(iSS),y:yA,width:X1-xs(iSS),height:Math.max(1,yB-yA),fill:"url(#hatch2)"},svg);
-  el("line",{x1:xs(iSS),x2:X1,y1:ys(M.scen.mtbNeed),y2:ys(M.scen.mtbNeed),stroke:"var(--scen)","stroke-dasharray":"4 4","stroke-width":"1.5"},svg);
-  const fl=el("text",{x:X1-4,y:yA-8,"text-anchor":"end",style:"fill:#000;font-weight:700;font-size:15px"},svg);
-  fl.textContent="Scenario 1: "+(M.freedPeak>=0?"frigjort ":"økt behov ")+nb(Math.abs(M.freedPeak))+" t";
-  // spøkelseskurver (hele forløpet) og fremdrift
-  for(const [k,c] of [["ref","ref"],["scen","scen"],["scen2","scen2"]]){
-    el("path",{d:path(M[k].total),fill:"none",stroke:`var(--${c})`,"stroke-width":"1.5",opacity:"0.22"},svg);
-  }
+  const fl=el("text",{x:X1-4,y:Math.min(yA,ys(env.mtbCo))-8,"text-anchor":"end",style:"font-weight:700;font-size:15px"},svg);
+  fl.textContent="Scenario 1: "+(M.freed>=0?"frigjort ":"økt behov ")+nb(Math.abs(M.freed))+" t";
+  for(const k of ["ref","scen","scen2"]) el("path",{d:path(M[k].total),fill:"none",stroke:`var(--${k})`,"stroke-width":"1.5",opacity:"0.25"},svg);
   const g=el("g",{"clip-path":"url(#prog)"},svg);
-  el("path",{d:path(M.ref.total),fill:"none",stroke:"var(--ref)","stroke-width":"2.2"},g);
-  el("path",{d:path(M.scen.total),fill:"none",stroke:"var(--scen)","stroke-width":"2.4"},g);
-  el("path",{d:path(M.scen2.total),fill:"none",stroke:"var(--scen2)","stroke-width":"2.4"},g);
-  el("line",{x1:X0,x2:X1,y1:ys(P.mtb),y2:ys(P.mtb),stroke:"var(--ink)","stroke-width":"2"},svg);
-  cursor=el("line",{x1:X0,x2:X0,y1:Y1,y2:Y0,stroke:"var(--ink)","stroke-width":"1",opacity:"0.6"},svg);
+  for(const k of ["ref","scen","scen2"]) el("path",{d:path(M[k].total),fill:"none",stroke:`var(--${k})`,"stroke-width":"2.4"},g);
+  el("line",{x1:X0,x2:X1,y1:ys(env.mtbCo),y2:ys(env.mtbCo),stroke:"#000","stroke-width":"2"},svg);
+  cursor=el("line",{x1:X0,x2:X0,y1:Y1,y2:Y0,stroke:"#000","stroke-width":"1",opacity:"0.6"},svg);
 }
 function drawChart(){const x=xs(t);clipRect.setAttribute("width",x-X0);cursor.setAttribute("x1",x);cursor.setAttribute("x2",x);}
 
-/* ---------- tiltak i scenario 2 ---------- */
-function evenPlan(n){const s0=P.plan[0],out=[];for(let i=0;i<n;i++)out.push(s0+Math.round(i*365/n)*86400000);return out;}
-function s2opts(){const pl=$("s2plan").value;return {plan:pl==="dagens"?P.plan:evenPlan(+pl),spreadDays:+$("s2spread").value,optimize:$("s2opt").checked};}
-function pickBest(){
-  let best=null;
-  for(const pl of ["dagens","4","5","6"]) for(const sp of [0,30,61]){
-    const o={plan:pl==="dagens"?P.plan:evenPlan(+pl),spreadDays:sp,optimize:true};
-    const r=runScen2(P,cur.scen,o,M.start,M.nDays);
-    if(r.short>0) continue;
-    if(!best||r.prod>best.prod+1) best={prod:r.prod,pl,sp};
-  }
-  if(best){$("s2plan").value=best.pl;$("s2spread").value=String(best.sp);$("s2opt").checked=true;}
-}
-const MND=d=>d===0?"én dag":d<45?"1 måned":d<75?"2 måneder":"3 måneder";
-function drawMeasures(o){
-  const S=M.scen2, pl=$("s2plan").value, n=S.N.length;
-  const fmtD=ms=>{const d=new Date(ms);return String(d.getUTCDate()).padStart(2,"0")+"."+String(d.getUTCMonth()+1).padStart(2,"0");};
-  const equal=S.N.every(v=>v===S.N[0]);
-  const items=[
-    [pl==="dagens"?"Utsettsplan som i dag":`${n} utsett per år med jevn avstand`, pl==="dagens"?"4 utsett: 30.04, 30.06, 31.08 og 30.12":`${o.plan.map(fmtD).join(", ")}. I dag: 4 utsett med 2, 2, 4 og 4 måneders mellomrom.`],
-    [o.spreadDays>0?`Slakt spredt over ${MND(o.spreadDays)}`:"Slakt på én dag", o.spreadDays>0?`Slaktevekt fra ${nb(S.wFrom,1)} til ${nb(S.wTo,1)} kg, snitt ${nb(S.hw,2)} kg.`:`Hele generasjonen slaktes ved ${nb(S.hw,2)} kg.`],
-    [o.optimize?(equal?"Gruppestørrelse optimert (lik i alle utsett)":"Tilpasset gruppestørrelse per utsett"):"Lik gruppestørrelse", equal?`${nb(S.N[0])} smolt per utsett, ${nb(S.Nsum/1e6,2)} mill per år.`:`${S.N.map((v,i)=>"U"+(i+1)+" "+nb(v/1000)+"k").join(", ")}. Sum ${nb(S.Nsum/1e6,2)} mill per år.`],
-    ["Rammer som holdes", `MTB selskap 6 240 t (topp ${nb(S.peak)} t), MTB per lokalitet 2 340 t, én generasjon per lokalitet og 8 lokaliteter.`]
-  ];
-  $("measures").innerHTML=items.map(([h,d])=>`<li><b>${h}</b><span>${d}</span></li>`).join("");
-  const cSite=S.N.some(v=>v>=S.capN-1000), cCo=S.peak>=P.mtb*0.99;
-  const bind=cSite&&cCo?"MTB selskap og per lokalitet":cSite?"MTB per lokalitet":cCo?"MTB selskap":"Antall lokaliteter";
-  let maxOcc=0;{const occ=new Int16Array(M.nDays);for(const g of S.gens){if(g.site<0)continue;for(let t=Math.max(0,g.t0);t<Math.min(M.nDays,Math.ceil(g.tFree));t++)occ[t]++;}for(let t=M.nDays-365;t<M.nDays;t++)maxOcc=Math.max(maxOcc,occ[t]);}
-  $("s2res").innerHTML=`<div><span class="l">Produksjon per år</span><span class="v">${nb(S.prod)} t</span></div><div><span class="l">Utnyttelse av MTB</span><span class="v">${nb(S.util*100,0)} %</span></div><div><span class="l">Begrenses av</span><span class="v small">${bind}</span></div><div><span class="l">Lokaliteter i bruk</span><span class="v small">${maxOcc} av 8 inkl. brakklegging</span></div>`;
-}
+/* ---------- avspilling ---------- */
+function render(){ $("scrub").value=t; $("date").textContent=fmtDate(START+t*DAYMS); drawPanel("ref"); drawPanel("scen"); drawPanel("scen2"); drawChart(); }
+function setPlay(on){playing=on;$("playicon").setAttribute("d",on?"M4 2h4v14H4zM10 2h4v14h-4z":"M4 2l12 7-12 7z");$("play").setAttribute("aria-label",on?"Pause":"Spill av");last=null;if(on){if(t>=NDAYS-1)t=0;requestAnimationFrame(tick);}}
+function tick(ts){ if(!playing)return; if(last!==null){acc+=(ts-last)/1000*(+$("speed").value);const step=Math.floor(acc);if(step>0){acc-=step;t=Math.min(t+step,NDAYS-1);render();if(t>=NDAYS-1){setPlay(false);return;}}} last=ts; requestAnimationFrame(tick); }
+let pending=false; function schedule(){ if(pending)return; pending=true; requestAnimationFrame(()=>{pending=false;compute();}); }
 
-/* ---------- styring ---------- */
-function recompute(){
-  cur={ref:{vf3:+$("rv").value,w0:+$("rw").value},scen:{vf3:+$("sv").value,w0:+$("sw").value}};
-  $("rvo").textContent=nb(cur.ref.vf3,2); $("rwo").textContent=cur.ref.w0+" g";
-  $("svo").textContent=nb(cur.scen.vf3,2); $("swo").textContent=cur.scen.w0+" g";
-  M=runModel({...P,...cur});
-  M.ref.N=M.N; M.scen.N=M.N;
-  if($("auto").checked) pickBest();
-  const o=s2opts(); M.scen2=runScen2(P,cur.scen,o,M.start,M.nDays); M.prod2=M.scen2.prod;
-  drawMeasures(o);
-  $("scrub").max=M.nDays-1; t=Math.min(t,M.nDays-1);
-  const fr=M.freedPeak;
-  const dP=M.prod2-M.prodYear;
-  $("k1").textContent=(dP<0?"−":"+")+nb(Math.abs(dP))+" t";
-  $("k1s").textContent=`${dP<0?"−":"+"}${nb(Math.abs(dP/M.prodYear*100),0)} % mot referansen, med samme MTB på 6 240 t`;
-  drawFreed();
-
-  $("scen2meta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g, ${M.scen2.N.length} utsett per år. MTB behov ${nb(M.scen2.peak)} t.`+(M.scen2.short?` ${M.scen2.short} utsett fikk ikke ledig lokalitet.`:"");
-  const refU=M.ref.avg/M.ref.peak;
-  $("k2").textContent=nb(refU*100,0)+" → "+nb(M.scen2.util*100,0)+" %";
-  $("k3").textContent=nb(M.N*P.plan.length/1e6,2)+" → "+nb(M.scen2.Nsum/1e6,2)+" mill"; $("k3s").textContent="referanse og scenario 1 → scenario 2";
-  $("k4").textContent=nb(M.prodYear)+" → "+nb(M.prod2)+" t"; $("k4s").textContent="referanse og scenario 1 → scenario 2, rund vekt";
-  $("refmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g smolt, ${nb(M.ref.cycle/(365.25/12),1)} mnd i sjø. MTB behov ${nb(M.ref.mtbNeed)} t.`+(M.ref.short?` ${M.ref.short} utsett fikk ikke ledig lokalitet.`:"");
-  $("scenmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt, ${nb(M.scen.cycle/(365.25/12),1)} mnd i sjø. MTB behov ${nb(M.scen.mtbNeed)} t.`+(M.scen.short?` ${M.scen.short} utsett fikk ikke ledig lokalitet.`:"");
-  buildChart(); render();
-}
-function render(){ $("scrub").value=t; $("date").textContent=fmtDate(M.start+t*86400000); drawPanel("ref"); drawPanel("scen"); drawPanel("scen2"); drawChart(); }
-function setPlay(on){playing=on;$("playicon").setAttribute("d",on?"M4 2h4v14H4zM10 2h4v14h-4z":"M4 2l12 7-12 7z");$("play").setAttribute("aria-label",on?"Pause":"Spill av");last=null;if(on){if(t>=M.nDays-1)t=0;requestAnimationFrame(tick);}}
-let acc=0;
-function tick(ts){ if(!playing)return; if(last!==null){acc+=(ts-last)/1000*(+$("speed").value);const step=Math.floor(acc);if(step>0){acc-=step;t=Math.min(t+step,M.nDays-1);render();if(t>=M.nDays-1){setPlay(false);return;}}} last=ts; requestAnimationFrame(tick); }
-
-buildPanel("ref","Referanse","ref"); buildPanel("scen","Scenario 1: samme produksjon","scen"); buildPanel("scen2","Scenario 2: optimert drift","scen2");
-["rv","rw","sv","sw"].forEach(id=>$(id).addEventListener("input",recompute));
-["s2plan","s2spread","s2opt"].forEach(id=>$(id).addEventListener("change",()=>{$("auto").checked=false;recompute();}));
-$("auto").addEventListener("change",recompute);
-document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{$("sv").value=b.dataset.v;$("sw").value=b.dataset.w;recompute();}));
+["rv","rw","sv","sw"].forEach(id=>$(id).addEventListener("input",schedule));
+["po","nperm","permmtb","nsites","sitemtb","mode"].forEach(id=>$(id).addEventListener("change",schedule));
+["s2plan","s2spread","s2opt"].forEach(id=>$(id).addEventListener("change",()=>{$("auto").checked=false;schedule();}));
+$("auto").addEventListener("change",schedule);
+document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{$("sv").value=b.dataset.v;$("sw").value=b.dataset.w;schedule();}));
 $("scrub").addEventListener("input",e=>{t=+e.target.value;render();});
 $("play").addEventListener("click",()=>setPlay(!playing));
-document.addEventListener("keydown",e=>{if(e.code==="Space"&&e.target.tagName!=="INPUT"&&e.target.tagName!=="SELECT"&&e.target.tagName!=="BUTTON"){e.preventDefault();setPlay(!playing);}});
-recompute();
+document.addEventListener("keydown",e=>{if(e.code==="Space"&&!["INPUT","SELECT","BUTTON"].includes(e.target.tagName)){e.preventDefault();setPlay(!playing);}});
+compute();
 if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPlay(true);
+
 </script>
 </body>
 </html>
