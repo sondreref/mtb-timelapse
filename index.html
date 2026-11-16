@@ -10,7 +10,7 @@
 /* Plan: INAQ profil. Hvit flate, lyse fargeforløp fra profilen som dekor, svart tekst, Newsreader Light til overskrifter og Lato til tekst. Diagramfarger fra profilmanualen: blå for referanse, laksrød for scenario. Ett lyst tema. */
 :root{
   --bg:#e5e8e8; --surface:#ffffff; --page:#ffffff; --ink:#000000; --muted:#000000; --line:#d4d9da;
-  --ref:#80b1d3; --scen:#fb8072; --warn:#fdb462; --ok:#7fc97f;
+  --ref:#80b1d3; --scen:#fb8072; --scen2:#f4a340; --warn:#000000; --ok:#7fc97f;
   --g1:#d1d9ed; --g2:#bfd9d6; --g3:#e8c2bf; --g4:#b0c4e8;
   --display:"Newsreader","Palatino Linotype",Palatino,Georgia,serif; --body:"Lato",Corbel,"Segoe UI",Arial,sans-serif;
   color-scheme:light;
@@ -43,9 +43,11 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 .kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .kpi.hero{border-color:var(--scen);box-shadow:inset 4px 0 0 var(--scen)}
 .kpi .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.kpi .v{font-family:var(--display);font-weight:300;font-size:34px;line-height:1.15;margin:4px 0 2px}
+.kpi .v{font-family:var(--display);font-weight:300;font-size:28px;white-space:nowrap;line-height:1.15;margin:4px 0 2px}
 .kpi .s{font-size:13px}
-.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kpi.s2{border-top:3px solid var(--scen2)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:4px;color:#000}
 .panel h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 2px;display:flex;align-items:center;gap:8px}
 .panel .meta{font-size:13px;margin:0 0 6px}
 .cages{width:100%;height:auto;display:block}
@@ -65,11 +67,11 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 .disclaimer h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px}
 .disclaimer .logo{height:72px;width:auto;margin:8px}
 .topline{display:flex;justify-content:space-between;font-size:13px;border-bottom:1px solid #000;padding-bottom:8px}
-.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:34px 36px;border-radius:10px;background:linear-gradient(120deg,var(--g4),var(--g1) 40%,var(--g2) 75%,var(--g3))}
-.hero .logo{height:130px;width:auto;margin:16px}
+.hero{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:14px 0 6px}
+.hero .logo{height:120px;width:auto;margin:8px 8px 8px 16px}
 .foot p{margin:4px 0}
 .warn{color:var(--warn);font-weight:600}
-.freed{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:center;background:linear-gradient(115deg,var(--g1),var(--g2) 55%,var(--g3));border:0}
+.freed{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:center;border-top:3px solid var(--scen)}
 .freed .note{font-size:13px;margin-top:8px;font-style:italic}
 .freed .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .freed .big{font-family:var(--display);font-weight:300;font-size:64px;line-height:1;color:var(--ink);margin:8px 0 6px}
@@ -81,6 +83,7 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 #freedbar rect,#freedbar line{transition:all .35s ease}
 .bar .gain{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--scen) 0 4px,transparent 4px 9px);opacity:.75}
 @media (max-width:820px){.freed{grid-template-columns:1fr}.freed .big{font-size:42px}}
+@media (max-width:1000px){.panels{grid-template-columns:1fr 1fr}}
 @media (max-width:820px){.hero{grid-template-columns:1fr}.hero .logo{height:80px;order:-1}.disclaimer{grid-template-columns:1fr}h1{font-size:30px}.params{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.panels{grid-template-columns:1fr}.player{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -91,7 +94,7 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
   <header class="hero">
     <div>
       <h1>Frigjort MTB ved større smolt og bedre vekst</h1>
-      <p class="sub">8 tillatelser à 780 tonn, 8 lokaliteter à 2 340 tonn og fire utsett per år. Begge løp produserer like mye. Forskjellen i biomasse i stabil drift er MTB som blir ledig.</p>
+      <p class="sub">8 tillatelser à 780 tonn, 8 lokaliteter à 2 340 tonn og fire utsett per år. Scenario 1 produserer like mye som referansen og viser hvor mye MTB som blir ledig. Scenario 2 bruker den ledige MTB til flere smolt og viser hvor mye mer som kan produseres.</p>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="logo" role="img" aria-label="INAQ" viewBox="139.8 147.4 568.4 785.2">
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 145.574219 582.734375 L 145.574219 557.886719 C 200.46875 557.886719 278.265625 462.242188 309.394531 417.386719 C 278.265625 372.53125 200.46875 276.882812 145.574219 276.882812 L 145.574219 252.035156 C 228.597656 252.035156 330.472656 404.046875 334.769531 410.515625 L 339.328125 417.386719 L 334.769531 424.257812 C 330.472656 430.726562 228.601562 582.734375 145.574219 582.734375 "/>
@@ -119,12 +122,12 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
       <div class="slider"><label for="rw">Smoltvekt</label><input type="range" id="rw" min="100" max="500" step="10" value="100"><output id="rwo"></output></div>
     </div>
     <div class="pgroup">
-      <h3><span class="dot" style="background:var(--scen)"></span>Scenario</h3>
+      <h3><span class="dot" style="background:var(--scen)"></span><span class="dot" style="background:var(--scen2);margin-left:-4px"></span>Scenario 1 og 2</h3>
       <div class="slider"><label for="sv">VF3</label><input type="range" id="sv" min="2.5" max="3.5" step="0.05" value="3"><output id="svo"></output></div>
       <div class="slider"><label for="sw">Smoltvekt</label><input type="range" id="sw" min="100" max="500" step="10" value="500"><output id="swo"></output></div>
     </div>
     <div class="presets">
-      <span>Hurtigvalg scenario</span>
+      <span>Hurtigvalg scenario 1 og 2</span>
       <button data-v="3" data-w="500">Større smolt: 500 g</button>
       <button data-v="3.5" data-w="100">Bedre vekst: VF3 3,5</button>
       <button data-v="3.5" data-w="500">Begge</button>
@@ -133,36 +136,37 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 
   <section class="card freed" aria-label="Frigjort MTB">
     <div>
-      <div class="l">Frigjort MTB i stabil drift</div>
+      <div class="l"><span class="tag" style="background:var(--scen)">Scenario 1</span> Frigjort MTB i stabil drift</div>
       <div class="big" id="fbig">264 t</div>
       <div class="s" id="fsub"></div>
       <div class="note">Frigjort MTB er kapasitet som er ledig hele tiden så lenge driften er slik. Det er ikke tonn per år og summeres ikke over flere år.</div>
     </div>
-    <svg id="freedbar" viewBox="0 0 1000 140" role="img" aria-label="MTB behov for referanse og scenario mot åtte tillatelser à 780 tonn"></svg>
+    <svg id="freedbar" viewBox="0 0 1000 140" role="img" aria-label="MTB behov for referanse og scenario 1 mot åtte tillatelser à 780 tonn"></svg>
   </section>
 
   <section class="kpis" aria-label="Nøkkeltall">
-    <div class="kpi"><div class="l">Mulig merproduksjon per år</div><div class="v" id="k1">0 t</div><div class="s" id="k1s"></div></div>
-    <div class="kpi"><div class="l">Produksjonstid i sjø</div><div class="v" id="k2"></div><div class="s">referanse → scenario</div></div>
-    <div class="kpi"><div class="l">Smolt per utsett</div><div class="v" id="k3"></div><div class="s">likt i begge løp</div></div>
-    <div class="kpi"><div class="l">Produksjon per år</div><div class="v" id="k4"></div><div class="s">tonn rund vekt, likt i begge løp</div></div>
+    <div class="kpi s2"><div class="l"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Merproduksjon per år</div><div class="v" id="k1">0 t</div><div class="s" id="k1s"></div></div>
+    <div class="kpi"><div class="l">Produksjon per år</div><div class="v" id="k4"></div><div class="s" id="k4s"></div></div>
+    <div class="kpi"><div class="l">Smolt per utsett</div><div class="v" id="k3"></div><div class="s" id="k3s"></div></div>
+    <div class="kpi"><div class="l">Produksjonstid i sjø</div><div class="v" id="k2"></div><div class="s">referanse → scenario 1 og 2</div></div>
   </section>
 
   <section class="panels">
     <div class="card panel" id="pref"></div>
     <div class="card panel" id="pscen"></div>
+    <div class="card panel" id="pscen2"></div>
   </section>
 
   <section class="card chartcard">
     <h2>Samlet biomasse mot MTB selskap</h2>
-    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario</span><span><i style="background:var(--ink)"></i>MTB 6 240 tonn</span><span><i style="background:var(--scen);opacity:.5;height:8px"></i>MTB behov scenario, stabil drift</span></div>
+    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario 1: samme produksjon</span><span><i style="background:var(--scen2)"></i>Scenario 2: flere smolt, full MTB</span><span><i style="background:var(--ink)"></i>MTB 6 240 tonn</span><span><i style="background:repeating-linear-gradient(45deg,var(--scen) 0 3px,transparent 3px 6px);height:8px"></i>Frigjort MTB i scenario 1</span></div>
     <div class="chart-wrap"><svg id="chart" viewBox="0 0 1000 320" role="img" aria-label="Biomasse over tid for referanse og scenario mot MTB"></svg></div>
   </section>
 
   <footer class="foot">
-    <p><b>Forutsetninger:</b> konstant 9 °C, høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging, hele generasjonen slaktes ved høstevekt og står på én lokalitet. Utsett 30.04, 30.06, 31.08 og 30.12 hvert år fra 2026. Antall smolt per utsett settes slik at referansen akkurat fyller 6 240 tonn i stabil drift. Scenarioet setter ut like mange smolt.</p>
+    <p><b>Forutsetninger:</b> konstant 9 °C, høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging, hele generasjonen slaktes ved høstevekt og står på én lokalitet. Utsett 30.04, 30.06, 31.08 og 30.12 hvert år fra 2026. Antall smolt per utsett settes slik at referansen akkurat fyller 6 240 tonn i stabil drift. Scenario 1 setter ut like mange smolt som referansen. Scenario 2 har samme vekst og smoltvekt som scenario 1, men setter ut så mange smolt at det også fyller 6 240 tonn i stabil drift.</p>
     <p><b>Vekst:</b> W(t) = (W0^(1/3) + VF3/1000 × døgngrader)^3, vekt i gram. Iwama, G.K. og Tautz, A.F. (1981), Canadian Journal of Fisheries and Aquatic Sciences 38(6), 649–656, <a href="https://doi.org/10.1139/f81-087">doi.org/10.1139/f81-087</a>.</p>
-    <p>Fyllingen i merdene er biomasse delt på MTB per lokalitet. Teksten «over 2 340 t» betyr at generasjonen er større enn MTB per lokalitet. U1 til U4 er utsett nr i året.</p>
+    <p>Fyllingen i merdene er biomasse delt på MTB per lokalitet. L1 til L8 er lokalitetene. Teksten «over 2 340 t» betyr at generasjonen er større enn MTB per lokalitet. U1 til U4 er utsett nr i året.</p>
     <div class="disclaimer">
       <div>
         <h3>Ansvarsfraskrivelse</h3>
@@ -265,21 +269,21 @@ let M=null,t=0,playing=false,last=null;
 /* ---------- merdpaneler ---------- */
 const panels={};
 function buildPanel(key,title,color){
-  const host=$(key==="ref"?"pref":"pscen");
+  const host=$({ref:"pref",scen:"pscen",scen2:"pscen2"}[key]);
   host.innerHTML=`<h2><span class="dot" style="background:var(--${color})"></span>${title}</h2><p class="meta" id="${key}meta"></p>`;
-  const svg=el("svg",{viewBox:"0 0 520 262",class:"cages",role:"img","aria-label":title+": åtte lokaliteter"},host);
+  const svg=el("svg",{viewBox:"0 0 520 278",class:"cages",role:"img","aria-label":title+": åtte lokaliteter"},host);
   const cages=[];
   for(let i=0;i<8;i++){
-    const cx=65+(i%4)*130, cy=72+Math.floor(i/4)*128, r=44;
+    const cx=65+(i%4)*130, cy=74+Math.floor(i/4)*136, r=44;
     const g=el("g",{},svg);
     const cp=el("clipPath",{id:`c${key}${i}`},g); el("circle",{cx,cy,r:r-3},cp);
     el("circle",{cx,cy,r:r-3,fill:"var(--bg)"},g);
     const water=el("rect",{x:cx-r,y:cy+r,width:2*r,height:0,fill:`var(--${color})`,"clip-path":`url(#c${key}${i})`,opacity:"0.85"},g);
     const ring=el("circle",{cx,cy,r,fill:"none",stroke:"var(--line)","stroke-width":"3"},g);
-    const big=el("text",{x:cx,y:cy+3,"text-anchor":"middle","font-size":"17","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
-    const small=el("text",{x:cx,y:cy+21,"text-anchor":"middle","font-size":"11",fill:"var(--ink)"},g);
-    const name=el("text",{x:cx,y:cy+r+16,"text-anchor":"middle","font-size":"12",fill:"#000","font-family":"var(--body)"},g);
-    const flag=el("text",{x:cx,y:cy-r-6,"text-anchor":"middle","font-size":"11","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
+    const big=el("text",{x:cx,y:cy+3,"text-anchor":"middle","font-size":"22","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
+    const small=el("text",{x:cx,y:cy+24,"text-anchor":"middle","font-size":"14",fill:"var(--ink)"},g);
+    const name=el("text",{x:cx,y:cy+r+19,"text-anchor":"middle","font-size":"15",fill:"#000","font-family":"var(--body)"},g);
+    const flag=el("text",{x:cx,y:cy-r-6,"text-anchor":"middle","font-size":"14","font-weight":"700",fill:"#000","font-family":"var(--body)"},g);
     cages.push({water,ring,big,small,name,flag,cx,cy,r});
   }
   const bar=document.createElement("div");bar.className="bar";bar.innerHTML=`<div class="fill" style="background:var(--${color})"></div><div class="gain"></div><div class="need"></div>`;host.appendChild(bar);
@@ -292,20 +296,20 @@ function drawPanel(key){
   for(const g of S.gens){ if(g.site<0)continue; if(t>=g.t0&&t<g.tFree) state[g.site]={g,active:t<g.tH}; }
   state.forEach((s,i)=>{
     const c=p.cages[i];
-    c.name.textContent=`Lokalitet ${i+1}`; c.flag.textContent=""; c.ring.setAttribute("stroke-width","3");
+    c.name.textContent=`L${i+1}`; c.flag.textContent=""; c.ring.setAttribute("stroke-width","3");
     if(!s){c.water.setAttribute("height",0);c.ring.setAttribute("stroke","var(--line)");c.ring.setAttribute("stroke-dasharray","");c.big.textContent="Ledig";c.big.setAttribute("fill","#000");c.small.textContent="";return;}
     if(s.active){
-      const w=M.wkg(key==="ref"?cur.ref:cur.scen,t-s.g.t0), bio=M.N*w/1000, f=Math.min(bio/P.siteMtb,1);
+      const w=M.wkg(key==="ref"?cur.ref:cur.scen,t-s.g.t0), bio=S.N*w/1000, f=Math.min(bio/P.siteMtb,1);
       const h=2*c.r*f; c.water.setAttribute("y",c.cy+c.r-h); c.water.setAttribute("height",h);
       const over=bio>P.siteMtb;
       c.ring.setAttribute("stroke",over?"#000":"var(--line)"); c.ring.setAttribute("stroke-width",over?"4":"3"); c.ring.setAttribute("stroke-dasharray","");
       if(over) c.flag.textContent="over 2 340 t";
       c.big.textContent=nb(bio)+" t"; c.big.setAttribute("fill","var(--ink)");
-      c.small.textContent=`${nb(w,2)} kg`; c.name.textContent=`Lokalitet ${i+1} · U${s.g.slot} ${s.g.year}`;
+      c.small.textContent=`${nb(w,2)} kg`; c.name.textContent=`L${i+1} · U${s.g.slot} ${s.g.year}`;
     }else{
       c.water.setAttribute("height",0); c.ring.setAttribute("stroke","#000"); c.ring.setAttribute("stroke-dasharray","5 5");
       c.big.textContent="Brakk"; c.big.setAttribute("fill","#000");
-      c.small.textContent=`${Math.ceil(s.g.tFree-t)} dager igjen`;
+      c.small.textContent=`${Math.ceil(s.g.tFree-t)} d igjen`;
     }
   });
   const cur_t=S.total[t], frac=cur_t/P.mtb;
@@ -313,7 +317,7 @@ function drawPanel(key){
   p.need.style.left=Math.min(S.mtbNeed/P.mtb,1)*100+"%";
   const g0=Math.min(S.mtbNeed/P.mtb,1); p.gain.style.left=g0*100+"%"; p.gain.style.width=(key==="scen"&&M.freedPeak>0?(1-g0)*100:0)+"%";
   const inUse=state.filter(Boolean).length;
-  p.lbl.innerHTML=`<span>Biomasse <b>${nb(cur_t)} t</b> av 6 240 t (${nb(frac*100,0)} %)</span><span>${key==="scen"&&M.freedPeak>0?`<b>Frigjort ${nb(M.freedPeak)} t</b> · `:""}${inUse} av 8 lokaliteter i bruk</span>`;
+  p.lbl.innerHTML=`<span>Biomasse <b>${nb(cur_t)} t</b> av 6 240 t (${nb(frac*100,0)} %)</span><span>${key==="scen"&&M.freedPeak>0?`<b>Ledig ${nb(M.freedPeak)} t</b> · `:""}${inUse} av 8 lokaliteter i bruk</span>`;
 }
 let cur=null;
 
@@ -353,7 +357,7 @@ const svg=$("chart"); const X0=56,X1=985,Y0=286,Y1=18;
 let xs,ys,cursor,clipRect;
 function buildChart(){
   svg.innerHTML="";
-  const n=M.nDays, ymax=Math.ceil(Math.max(7000,...M.ref.total,...M.scen.total)/1000)*1000;
+  const n=M.nDays, ymax=Math.ceil(Math.max(7000,...M.ref.total,...M.scen.total,...M.scen2.total)/1000)*1000;
   xs=i=>X0+(X1-X0)*i/(n-1); ys=v=>Y0-(Y0-Y1)*v/ymax;
   const defs=el("defs",{},svg); const cp=el("clipPath",{id:"prog"},defs); clipRect=el("rect",{x:X0,y:0,width:0,height:320},cp);
   for(let v=0;v<=ymax;v+=1000){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:"var(--line)","stroke-width":"1"},svg);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},svg);tx.textContent=nb(v);}
@@ -369,14 +373,15 @@ function buildChart(){
   el("rect",{x:xs(iSS),y:yA,width:X1-xs(iSS),height:Math.max(1,yB-yA),fill:"url(#hatch2)"},svg);
   el("line",{x1:xs(iSS),x2:X1,y1:ys(M.scen.mtbNeed),y2:ys(M.scen.mtbNeed),stroke:"var(--scen)","stroke-dasharray":"4 4","stroke-width":"1.5"},svg);
   const fl=el("text",{x:X1-4,y:yA-8,"text-anchor":"end",style:"fill:#000;font-weight:700;font-size:15px"},svg);
-  fl.textContent=(M.freedPeak>=0?"Frigjort ":"Økt behov ")+nb(Math.abs(M.freedPeak))+" t";
+  fl.textContent="Scenario 1: "+(M.freedPeak>=0?"frigjort ":"økt behov ")+nb(Math.abs(M.freedPeak))+" t";
   // spøkelseskurver (hele forløpet) og fremdrift
-  for(const [k,c] of [["ref","ref"],["scen","scen"]]){
+  for(const [k,c] of [["ref","ref"],["scen","scen"],["scen2","scen2"]]){
     el("path",{d:path(M[k].total),fill:"none",stroke:`var(--${c})`,"stroke-width":"1.5",opacity:"0.22"},svg);
   }
   const g=el("g",{"clip-path":"url(#prog)"},svg);
   el("path",{d:path(M.ref.total),fill:"none",stroke:"var(--ref)","stroke-width":"2.2"},g);
   el("path",{d:path(M.scen.total),fill:"none",stroke:"var(--scen)","stroke-width":"2.4"},g);
+  el("path",{d:path(M.scen2.total),fill:"none",stroke:"var(--scen2)","stroke-width":"2.4"},g);
   el("line",{x1:X0,x2:X1,y1:ys(P.mtb),y2:ys(P.mtb),stroke:"var(--ink)","stroke-width":"2"},svg);
   cursor=el("line",{x1:X0,x2:X0,y1:Y1,y2:Y0,stroke:"var(--ink)","stroke-width":"1",opacity:"0.6"},svg);
 }
@@ -388,24 +393,30 @@ function recompute(){
   $("rvo").textContent=nb(cur.ref.vf3,2); $("rwo").textContent=cur.ref.w0+" g";
   $("svo").textContent=nb(cur.scen.vf3,2); $("swo").textContent=cur.scen.w0+" g";
   M=runModel({...P,...cur});
+  const N2=Math.floor(P.mtb*1000/M.scen.peak/1000)*1000, k=N2/M.N;
+  M.ref.N=M.N; M.scen.N=M.N;
+  M.scen2={...M.scen,N:N2,total:M.scen.total.map(v=>v*k),mtbNeed:N2*M.scen.peak/1000};
+  M.prod2=P.plan.length*N2*P.HW/1000;
   $("scrub").max=M.nDays-1; t=Math.min(t,M.nDays-1);
   const fr=M.freedPeak;
-  const fullR=P.plan.length*P.HW*P.mtb/M.ref.peak, fullS=P.plan.length*P.HW*P.mtb/M.scen.peak, dP=fullS-fullR;
+  const dP=M.prod2-M.prodYear;
   $("k1").textContent=(dP<0?"−":"+")+nb(Math.abs(dP))+" t";
-  $("k1s").textContent=`per år, om frigjort MTB brukes til flere smolt (${dP<0?"−":"+"}${nb(Math.abs(dP/fullR*100),0)} %)`;
+  $("k1s").textContent=`${dP<0?"−":"+"}${nb(Math.abs(dP/M.prodYear*100),0)} % mot referansen, med samme MTB på 6 240 t`;
   drawFreed();
   $("k2").textContent=nb(M.ref.cycle/(365.25/12),1)+" → "+nb(M.scen.cycle/(365.25/12),1)+" mnd";
-  $("k3").textContent=nb(M.N); $("k4").textContent=nb(M.prodYear)+" t";
+  $("scen2meta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g, ${nb(M.scen2.N)} smolt per utsett. MTB behov ${nb(M.scen2.mtbNeed)} t.`;
+  $("k3").textContent=nb(M.N)+" → "+nb(M.scen2.N); $("k3s").textContent="referanse og scenario 1 → scenario 2";
+  $("k4").textContent=nb(M.prodYear)+" → "+nb(M.prod2)+" t"; $("k4s").textContent="referanse og scenario 1 → scenario 2, rund vekt";
   $("refmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g smolt. MTB behov i stabil drift ${nb(M.ref.mtbNeed)} t.`+(M.ref.short?` ${M.ref.short} utsett fikk ikke ledig lokalitet.`:"");
   $("scenmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt. MTB behov i stabil drift ${nb(M.scen.mtbNeed)} t.`+(M.scen.short?` ${M.scen.short} utsett fikk ikke ledig lokalitet.`:"");
   buildChart(); render();
 }
-function render(){ $("scrub").value=t; $("date").textContent=fmtDate(M.start+t*86400000); drawPanel("ref"); drawPanel("scen"); drawChart(); }
+function render(){ $("scrub").value=t; $("date").textContent=fmtDate(M.start+t*86400000); drawPanel("ref"); drawPanel("scen"); drawPanel("scen2"); drawChart(); }
 function setPlay(on){playing=on;$("playicon").setAttribute("d",on?"M4 2h4v14H4zM10 2h4v14h-4z":"M4 2l12 7-12 7z");$("play").setAttribute("aria-label",on?"Pause":"Spill av");last=null;if(on){if(t>=M.nDays-1)t=0;requestAnimationFrame(tick);}}
 let acc=0;
 function tick(ts){ if(!playing)return; if(last!==null){acc+=(ts-last)/1000*(+$("speed").value);const step=Math.floor(acc);if(step>0){acc-=step;t=Math.min(t+step,M.nDays-1);render();if(t>=M.nDays-1){setPlay(false);return;}}} last=ts; requestAnimationFrame(tick); }
 
-buildPanel("ref","Referanse","ref"); buildPanel("scen","Scenario","scen");
+buildPanel("ref","Referanse","ref"); buildPanel("scen","Scenario 1: samme produksjon","scen"); buildPanel("scen2","Scenario 2: flere smolt","scen2");
 ["rv","rw","sv","sw"].forEach(id=>$(id).addEventListener("input",recompute));
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{$("sv").value=b.dataset.v;$("sw").value=b.dataset.w;recompute();}));
 $("scrub").addEventListener("input",e=>{t=+e.target.value;render();});
