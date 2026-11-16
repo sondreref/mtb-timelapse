@@ -47,6 +47,22 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 .kpi .s{font-size:13px}
 .panels{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .kpi.s2{border-top:3px solid var(--scen2)}
+.s2card{border-top:3px solid var(--scen2);display:grid;grid-template-columns:300px 1fr 230px;gap:24px;align-items:start}
+.s2card h2{font-family:var(--display);font-weight:300;font-size:24px;margin:4px 0 10px}
+.ctl{display:grid;gap:10px}
+.ctl label{display:grid;gap:4px;font-size:13px;font-weight:700}
+.ctl .chk{display:flex;gap:8px;align-items:center;font-weight:300;font-size:14px}
+.ctl select{font-weight:300}
+#measures{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:m}
+#measures li{display:grid;gap:2px;padding-left:34px;position:relative}
+#measures li::before{counter-increment:m;content:counter(m);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--scen2);display:grid;place-items:center;font-weight:700;font-size:13px}
+#measures li:last-child::before{content:"";background:transparent;border:2px solid #000;width:20px;height:20px}
+#measures span{font-size:14px}
+#s2res{display:grid;gap:12px}
+#s2res div{display:grid}
+#s2res .l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+#s2res .v{font-family:var(--display);font-weight:300;font-size:30px;line-height:1.1}
+#s2res .v.small{font-size:20px}
 .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 6px;border-radius:4px;color:#000}
 .panel h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:0 0 2px;display:flex;align-items:center;gap:8px}
 .panel .meta{font-size:13px;margin:0 0 6px}
@@ -83,8 +99,8 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 #freedbar rect,#freedbar line{transition:all .35s ease}
 .bar .gain{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,var(--scen) 0 4px,transparent 4px 9px);opacity:.75}
 @media (max-width:820px){.freed{grid-template-columns:1fr}.freed .big{font-size:42px}}
-@media (max-width:1000px){.panels{grid-template-columns:1fr 1fr}}
-@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .logo{height:80px;order:-1}.disclaimer{grid-template-columns:1fr}h1{font-size:30px}.params{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.panels{grid-template-columns:1fr}.player{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}}
+@media (max-width:1000px){.panels{grid-template-columns:1fr 1fr}.s2card{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){.s2card{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.hero .logo{height:80px;order:-1}.disclaimer{grid-template-columns:1fr}h1{font-size:30px}.params{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.panels{grid-template-columns:1fr}.player{grid-template-columns:auto 1fr}.date{grid-column:1/-1;text-align:left}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -94,7 +110,7 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
   <header class="hero">
     <div>
       <h1>Frigjort MTB ved større smolt og bedre vekst</h1>
-      <p class="sub">8 tillatelser à 780 tonn, 8 lokaliteter à 2 340 tonn og fire utsett per år. Scenario 1 produserer like mye som referansen og viser hvor mye MTB som blir ledig. Scenario 2 bruker den ledige MTB til flere smolt og viser hvor mye mer som kan produseres.</p>
+      <p class="sub">8 tillatelser à 780 tonn, 8 lokaliteter à 2 340 tonn og fire utsett per år. Scenario 1 produserer like mye som referansen og viser hvor mye MTB som blir ledig. Scenario 2 bruker samme vekst og smolt, men endrer driften for å fylle MTB jevnt og viser hvor mye mer som kan produseres.</p>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="logo" role="img" aria-label="INAQ" viewBox="139.8 147.4 568.4 785.2">
 <path fill-rule="nonzero" fill="rgb(0%, 0%, 0%)" fill-opacity="1" d="M 145.574219 582.734375 L 145.574219 557.886719 C 200.46875 557.886719 278.265625 462.242188 309.394531 417.386719 C 278.265625 372.53125 200.46875 276.882812 145.574219 276.882812 L 145.574219 252.035156 C 228.597656 252.035156 330.472656 404.046875 334.769531 410.515625 L 339.328125 417.386719 L 334.769531 424.257812 C 330.472656 430.726562 228.601562 582.734375 145.574219 582.734375 "/>
@@ -144,11 +160,28 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
     <svg id="freedbar" viewBox="0 0 1000 140" role="img" aria-label="MTB behov for referanse og scenario 1 mot åtte tillatelser à 780 tonn"></svg>
   </section>
 
+  <section class="card s2card" aria-label="Tiltak i scenario 2">
+    <div>
+      <div class="l" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Optimert drift</div>
+      <h2>Tiltak for å fylle MTB jevnt</h2>
+      <div class="ctl">
+        <label class="chk"><input type="checkbox" id="auto" checked> Velg beste kombinasjon automatisk</label>
+        <label for="s2plan">Utsettsplan
+          <select id="s2plan"><option value="dagens">Som i dag: 4 utsett, ujevn avstand</option><option value="4">4 utsett, jevn avstand</option><option value="5">5 utsett, jevn avstand</option><option value="6">6 utsett, jevn avstand</option></select></label>
+        <label for="s2spread">Slakt
+          <select id="s2spread"><option value="0">På én dag ved 5 kg</option><option value="30">Spredt over 1 måned</option><option value="61">Spredt over 2 måneder</option><option value="91">Spredt over 3 måneder</option></select></label>
+        <label class="chk"><input type="checkbox" id="s2opt" checked> Tilpass gruppestørrelse per utsett</label>
+      </div>
+    </div>
+    <ol id="measures"></ol>
+    <div id="s2res"></div>
+  </section>
+
   <section class="kpis" aria-label="Nøkkeltall">
     <div class="kpi s2"><div class="l"><span class="tag" style="background:var(--scen2)">Scenario 2</span> Merproduksjon per år</div><div class="v" id="k1">0 t</div><div class="s" id="k1s"></div></div>
     <div class="kpi"><div class="l">Produksjon per år</div><div class="v" id="k4"></div><div class="s" id="k4s"></div></div>
-    <div class="kpi"><div class="l">Smolt per utsett</div><div class="v" id="k3"></div><div class="s" id="k3s"></div></div>
-    <div class="kpi"><div class="l">Produksjonstid i sjø</div><div class="v" id="k2"></div><div class="s">referanse → scenario 1 og 2</div></div>
+    <div class="kpi"><div class="l">Smolt per år</div><div class="v" id="k3"></div><div class="s" id="k3s"></div></div>
+    <div class="kpi"><div class="l">Utnyttelse av MTB</div><div class="v" id="k2"></div><div class="s">snitt biomasse delt på topp, referanse → scenario 2</div></div>
   </section>
 
   <section class="panels">
@@ -159,12 +192,12 @@ select{background:var(--surface);border:1px solid var(--line);border-radius:6px;
 
   <section class="card chartcard">
     <h2>Samlet biomasse mot MTB selskap</h2>
-    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario 1: samme produksjon</span><span><i style="background:var(--scen2)"></i>Scenario 2: flere smolt, full MTB</span><span><i style="background:var(--ink)"></i>MTB 6 240 tonn</span><span><i style="background:repeating-linear-gradient(45deg,var(--scen) 0 3px,transparent 3px 6px);height:8px"></i>Frigjort MTB i scenario 1</span></div>
+    <div class="legend"><span><i style="background:var(--ref)"></i>Referanse</span><span><i style="background:var(--scen)"></i>Scenario 1: samme produksjon</span><span><i style="background:var(--scen2)"></i>Scenario 2: optimert drift</span><span><i style="background:var(--ink)"></i>MTB 6 240 tonn</span><span><i style="background:repeating-linear-gradient(45deg,var(--scen) 0 3px,transparent 3px 6px);height:8px"></i>Frigjort MTB i scenario 1</span></div>
     <div class="chart-wrap"><svg id="chart" viewBox="0 0 1000 320" role="img" aria-label="Biomasse over tid for referanse og scenario mot MTB"></svg></div>
   </section>
 
   <footer class="foot">
-    <p><b>Forutsetninger:</b> konstant 9 °C, høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging, hele generasjonen slaktes ved høstevekt og står på én lokalitet. Utsett 30.04, 30.06, 31.08 og 30.12 hvert år fra 2026. Antall smolt per utsett settes slik at referansen akkurat fyller 6 240 tonn i stabil drift. Scenario 1 setter ut like mange smolt som referansen. Scenario 2 har samme vekst og smoltvekt som scenario 1, men setter ut så mange smolt at det også fyller 6 240 tonn i stabil drift.</p>
+    <p><b>Forutsetninger:</b> konstant 9 °C, høstevekt 5 kg rund vekt, ingen dødelighet, ingen lus og ingen avlusninger, 2 måneder brakklegging, hele generasjonen slaktes ved høstevekt og står på én lokalitet. Utsett 30.04, 30.06, 31.08 og 30.12 hvert år fra 2026. Antall smolt per utsett settes slik at referansen akkurat fyller 6 240 tonn i stabil drift. Scenario 1 setter ut like mange smolt som referansen. Scenario 2 har samme vekst og smoltvekt som scenario 1. Tiltakene velges innenfor MTB selskap (6 240 tonn), MTB per lokalitet (2 340 tonn), én generasjon per lokalitet og 8 lokaliteter. Gruppestørrelsen optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over inntil 2 måneder.</p>
     <p><b>Vekst:</b> W(t) = (W0^(1/3) + VF3/1000 × døgngrader)^3, vekt i gram. Iwama, G.K. og Tautz, A.F. (1981), Canadian Journal of Fisheries and Aquatic Sciences 38(6), 649–656, <a href="https://doi.org/10.1139/f81-087">doi.org/10.1139/f81-087</a>.</p>
     <p>Fyllingen i merdene er biomasse delt på MTB per lokalitet. L1 til L8 er lokalitetene. Teksten «over 2 340 t» betyr at generasjonen er større enn MTB per lokalitet. U1 til U4 er utsett nr i året.</p>
     <div class="disclaimer">
@@ -256,6 +289,78 @@ function runModel(p) {
     wkg
   };
 }
+// Scenario 2: optimert drift. Samme vekst og smolt som scenario 1, med valgbare tiltak:
+//  opts.spreadDays: slakt spredt jevnt over så mange dager, sentrert rundt dagen snittvekten når høstevekt
+//  opts.optimize:   tilpasset gruppestørrelse per utsett (lineær optimering, maks antall smolt)
+//  opts.plan:       utsettsdatoer (ms) for første år
+function lpMaxSum(A, b) {
+  // maks sum(x) gitt A x <= b, x >= 0, b >= 0. Tablåsimpleks med slakkvariabler, Blands regel.
+  const m = A.length, n = A[0].length, W = n + m + 1;
+  const T = []; for (let i = 0; i < m; i++) { const r = new Float64Array(W); for (let j = 0; j < n; j++) r[j] = A[i][j]; r[n + i] = 1; r[W - 1] = b[i]; T.push(r); }
+  const z = new Float64Array(W); for (let j = 0; j < n; j++) z[j] = -1;
+  const basis = []; for (let i = 0; i < m; i++) basis.push(n + i);
+  for (let it = 0; it < 500; it++) {
+    let e = -1; for (let j = 0; j < W - 1; j++) if (z[j] < -1e-10) { e = j; break; }
+    if (e < 0) break;
+    let r = -1, best = Infinity;
+    for (let i = 0; i < m; i++) { const a = T[i][e]; if (a > 1e-12) { const q = T[i][W - 1] / a; if (q < best - 1e-12 || (Math.abs(q - best) <= 1e-12 && basis[i] < basis[r])) { best = q; r = i; } } }
+    if (r < 0) break;
+    const pr = T[r], pv = pr[e]; for (let j = 0; j < W; j++) pr[j] /= pv;
+    for (let i = 0; i < m; i++) if (i !== r) { const f = T[i][e]; if (f !== 0) { const row = T[i]; for (let j = 0; j < W; j++) row[j] -= f * pr[j]; } }
+    const f = z[e]; for (let j = 0; j < W; j++) z[j] -= f * pr[j];
+    basis[r] = e;
+  }
+  const x = new Array(n).fill(0); basis.forEach((v, i) => { if (v < n) x[v] = T[i][W - 1]; });
+  return x;
+}
+
+function runScen2(p, s, opts, start, nDays) {
+  const DAYMS = 86400000;
+  const k = s.vf3 / 1000 * p.T, c0 = Math.cbrt(s.w0), cyc = (Math.cbrt(p.HW * 1000) - c0) / k;
+  const S = Math.min(opts.spreadDays || 0, 2 * cyc * 0.9), h0 = cyc - S / 2, h1 = cyc + S / 2;
+  const w = a => Math.pow(c0 + k * a, 3) / 1000;
+  const frac = a => a < 0 ? 0 : (S <= 0 ? (a < cyc ? 1 : 0) : Math.max(0, Math.min(1, 1 - (a - h0) / S)));
+  const bio = a => w(a) * frac(a); // kg per smolt satt ut
+  // snitt slaktevekt
+  let hw; if (S <= 0) hw = w(cyc); else { let sum = 0; const K = 200; for (let i = 0; i < K; i++) sum += w(h0 + (i + .5) * S / K); hw = sum / K; }
+  const doyOf = ms => { const d = new Date(ms); return Math.round((ms - Date.UTC(d.getUTCFullYear(), 0, 1)) / DAYMS) + 1; };
+  const doys = opts.plan.map(doyOf), n = doys.length;
+  // stabil drift: biomasse per smolt per utsett, dag i året
+  const B = doys.map(sd => { const r = new Float64Array(365); for (let d = 1; d <= 365; d++) { const a0 = ((d - sd) % 365 + 365) % 365; let v = 0; for (let j = 0; j < 4; j++) v += bio(a0 + 365 * j); r[d - 1] = v; } return r; });
+  // største biomasse per smolt i én generasjon (for MTB per lokalitet, én generasjon per lokalitet)
+  let maxBio = 0; for (let a = 0; a < 1500; a += 0.5) maxBio = Math.max(maxBio, bio(a));
+  const capN = p.siteMtb * 1000 / maxBio; // maks smolt per utsett gitt MTB per lokalitet
+  let N, binding;
+  if (opts.optimize) {
+    const A = [], b = [];
+    for (let d = 0; d < 365; d++) { A.push(B.map(r => r[d])); b.push(p.mtb); } // tonn per 1000 smolt
+    for (let i = 0; i < n; i++) { const r = new Array(n).fill(0); r[i] = 1; A.push(r); b.push(capN / 1000); }
+    const x = lpMaxSum(A, b);
+    N = x.map(v => Math.floor(v + 1e-9) * 1000);
+  } else {
+    let pk = 0; for (let d = 0; d < 365; d++) { let v = 0; for (const r of B) v += r[d]; pk = Math.max(pk, v); }
+    const Ne = Math.floor(Math.min(p.mtb * 1000 / pk, capN) / 1000) * 1000; N = new Array(n).fill(Ne);
+  }
+  let peak = 0, sum = 0; for (let d = 0; d < 365; d++) { let v = 0; B.forEach((r, i) => v += N[i] * r[d]); v /= 1000; peak = Math.max(peak, v); sum += v; }
+  // tidslinje fra modellstart
+  const gens = [];
+  const y0 = new Date(start).getUTCFullYear(), y1 = new Date(p.endMs).getUTCFullYear();
+  for (let y = y0 - 1; y <= y1; y++) opts.plan.forEach((pm, i) => {
+    const d = new Date(pm); const ms = Date.UTC(y + (d.getUTCFullYear() - y0), d.getUTCMonth(), d.getUTCDate());
+    if (ms >= start && ms <= p.endMs) gens.push({ slot: i + 1, year: new Date(ms).getUTCFullYear(), t0: Math.round((ms - start) / DAYMS), N: N[i] });
+  });
+  gens.sort((a, b) => a.t0 - b.t0);
+  const fallowDays = p.fallowMonths * 365.25 / 12, freeFrom = new Array(p.sites).fill(-Infinity); let short = 0;
+  for (const g of gens) {
+    g.tH = g.t0 + h1; g.tH0 = g.t0 + h0; g.tFree = g.tH + fallowDays;
+    let site = -1; for (let i = 0; i < p.sites; i++) if (freeFrom[i] <= g.t0) { site = i; break; }
+    if (site < 0) short++; else freeFrom[site] = g.tFree; g.site = site;
+  }
+  const total = new Float64Array(nDays);
+  for (let t = 0; t < nDays; t++) { let v = 0; for (const g of gens) { const a = t - g.t0; if (a >= 0) v += g.N * bio(a); } total[t] = v / 1000; }
+  const prod = N.reduce((a, b) => a + b, 0) * hw / 1000;
+  return { maxBio, capN, N, Nsum: N.reduce((a, b) => a + b, 0), cycle: cyc, spread: S, hw, wFrom: w(Math.max(h0, 0)), wTo: w(h1), peak, avg: sum / 365, util: (sum / 365) / peak, mtbNeed: peak, prod, gens, total, short, w, frac, bio, h0, h1 };
+}
 const P={T:9,HW:5,mtb:6240,sites:8,siteMtb:2340,fallowMonths:2,
   plan:[utcDate(2026,4,30),utcDate(2026,6,30),utcDate(2026,8,31),utcDate(2026,12,30)],endMs:utcDate(2029,12,31)};
 const $=id=>document.getElementById(id);
@@ -294,16 +399,17 @@ function drawPanel(key){
   const S=M[key], p=panels[key];
   const state=new Array(8).fill(null);
   for(const g of S.gens){ if(g.site<0)continue; if(t>=g.t0&&t<g.tFree) state[g.site]={g,active:t<g.tH}; }
+  const two=key==="scen2";
   state.forEach((s,i)=>{
     const c=p.cages[i];
     c.name.textContent=`L${i+1}`; c.flag.textContent=""; c.ring.setAttribute("stroke-width","3");
     if(!s){c.water.setAttribute("height",0);c.ring.setAttribute("stroke","var(--line)");c.ring.setAttribute("stroke-dasharray","");c.big.textContent="Ledig";c.big.setAttribute("fill","#000");c.small.textContent="";return;}
     if(s.active){
-      const w=M.wkg(key==="ref"?cur.ref:cur.scen,t-s.g.t0), bio=S.N*w/1000, f=Math.min(bio/P.siteMtb,1);
+      const a=t-s.g.t0, w=two?S.w(a):M.wkg(key==="ref"?cur.ref:cur.scen,a), bio=two?s.g.N*S.bio(a)/1000:S.N*w/1000, f=Math.min(bio/P.siteMtb,1);
       const h=2*c.r*f; c.water.setAttribute("y",c.cy+c.r-h); c.water.setAttribute("height",h);
       const over=bio>P.siteMtb;
       c.ring.setAttribute("stroke",over?"#000":"var(--line)"); c.ring.setAttribute("stroke-width",over?"4":"3"); c.ring.setAttribute("stroke-dasharray","");
-      if(over) c.flag.textContent="over 2 340 t";
+      if(over) c.flag.textContent="over 2 340 t"; else if(two&&S.spread>0&&a>=S.h0) c.flag.textContent="slakter";
       c.big.textContent=nb(bio)+" t"; c.big.setAttribute("fill","var(--ink)");
       c.small.textContent=`${nb(w,2)} kg`; c.name.textContent=`L${i+1} · U${s.g.slot} ${s.g.year}`;
     }else{
@@ -317,6 +423,7 @@ function drawPanel(key){
   p.need.style.left=Math.min(S.mtbNeed/P.mtb,1)*100+"%";
   const g0=Math.min(S.mtbNeed/P.mtb,1); p.gain.style.left=g0*100+"%"; p.gain.style.width=(key==="scen"&&M.freedPeak>0?(1-g0)*100:0)+"%";
   const inUse=state.filter(Boolean).length;
+  if(two) p.need.style.left=Math.min(S.peak/P.mtb,1)*100+"%";
   p.lbl.innerHTML=`<span>Biomasse <b>${nb(cur_t)} t</b> av 6 240 t (${nb(frac*100,0)} %)</span><span>${key==="scen"&&M.freedPeak>0?`<b>Ledig ${nb(M.freedPeak)} t</b> · `:""}${inUse} av 8 lokaliteter i bruk</span>`;
 }
 let cur=null;
@@ -387,28 +494,61 @@ function buildChart(){
 }
 function drawChart(){const x=xs(t);clipRect.setAttribute("width",x-X0);cursor.setAttribute("x1",x);cursor.setAttribute("x2",x);}
 
+/* ---------- tiltak i scenario 2 ---------- */
+function evenPlan(n){const s0=P.plan[0],out=[];for(let i=0;i<n;i++)out.push(s0+Math.round(i*365/n)*86400000);return out;}
+function s2opts(){const pl=$("s2plan").value;return {plan:pl==="dagens"?P.plan:evenPlan(+pl),spreadDays:+$("s2spread").value,optimize:$("s2opt").checked};}
+function pickBest(){
+  let best=null;
+  for(const pl of ["dagens","4","5","6"]) for(const sp of [0,30,61]){
+    const o={plan:pl==="dagens"?P.plan:evenPlan(+pl),spreadDays:sp,optimize:true};
+    const r=runScen2(P,cur.scen,o,M.start,M.nDays);
+    if(r.short>0) continue;
+    if(!best||r.prod>best.prod+1) best={prod:r.prod,pl,sp};
+  }
+  if(best){$("s2plan").value=best.pl;$("s2spread").value=String(best.sp);$("s2opt").checked=true;}
+}
+const MND=d=>d===0?"én dag":d<45?"1 måned":d<75?"2 måneder":"3 måneder";
+function drawMeasures(o){
+  const S=M.scen2, pl=$("s2plan").value, n=S.N.length;
+  const fmtD=ms=>{const d=new Date(ms);return String(d.getUTCDate()).padStart(2,"0")+"."+String(d.getUTCMonth()+1).padStart(2,"0");};
+  const equal=S.N.every(v=>v===S.N[0]);
+  const items=[
+    [pl==="dagens"?"Utsettsplan som i dag":`${n} utsett per år med jevn avstand`, pl==="dagens"?"4 utsett: 30.04, 30.06, 31.08 og 30.12":`${o.plan.map(fmtD).join(", ")}. I dag: 4 utsett med 2, 2, 4 og 4 måneders mellomrom.`],
+    [o.spreadDays>0?`Slakt spredt over ${MND(o.spreadDays)}`:"Slakt på én dag", o.spreadDays>0?`Slaktevekt fra ${nb(S.wFrom,1)} til ${nb(S.wTo,1)} kg, snitt ${nb(S.hw,2)} kg.`:`Hele generasjonen slaktes ved ${nb(S.hw,2)} kg.`],
+    [o.optimize?(equal?"Gruppestørrelse optimert (lik i alle utsett)":"Tilpasset gruppestørrelse per utsett"):"Lik gruppestørrelse", equal?`${nb(S.N[0])} smolt per utsett, ${nb(S.Nsum/1e6,2)} mill per år.`:`${S.N.map((v,i)=>"U"+(i+1)+" "+nb(v/1000)+"k").join(", ")}. Sum ${nb(S.Nsum/1e6,2)} mill per år.`],
+    ["Rammer som holdes", `MTB selskap 6 240 t (topp ${nb(S.peak)} t), MTB per lokalitet 2 340 t, én generasjon per lokalitet og 8 lokaliteter.`]
+  ];
+  $("measures").innerHTML=items.map(([h,d])=>`<li><b>${h}</b><span>${d}</span></li>`).join("");
+  const cSite=S.N.some(v=>v>=S.capN-1000), cCo=S.peak>=P.mtb*0.99;
+  const bind=cSite&&cCo?"MTB selskap og per lokalitet":cSite?"MTB per lokalitet":cCo?"MTB selskap":"Antall lokaliteter";
+  let maxOcc=0;{const occ=new Int16Array(M.nDays);for(const g of S.gens){if(g.site<0)continue;for(let t=Math.max(0,g.t0);t<Math.min(M.nDays,Math.ceil(g.tFree));t++)occ[t]++;}for(let t=M.nDays-365;t<M.nDays;t++)maxOcc=Math.max(maxOcc,occ[t]);}
+  $("s2res").innerHTML=`<div><span class="l">Produksjon per år</span><span class="v">${nb(S.prod)} t</span></div><div><span class="l">Utnyttelse av MTB</span><span class="v">${nb(S.util*100,0)} %</span></div><div><span class="l">Begrenses av</span><span class="v small">${bind}</span></div><div><span class="l">Lokaliteter i bruk</span><span class="v small">${maxOcc} av 8 inkl. brakklegging</span></div>`;
+}
+
 /* ---------- styring ---------- */
 function recompute(){
   cur={ref:{vf3:+$("rv").value,w0:+$("rw").value},scen:{vf3:+$("sv").value,w0:+$("sw").value}};
   $("rvo").textContent=nb(cur.ref.vf3,2); $("rwo").textContent=cur.ref.w0+" g";
   $("svo").textContent=nb(cur.scen.vf3,2); $("swo").textContent=cur.scen.w0+" g";
   M=runModel({...P,...cur});
-  const N2=Math.floor(P.mtb*1000/M.scen.peak/1000)*1000, k=N2/M.N;
   M.ref.N=M.N; M.scen.N=M.N;
-  M.scen2={...M.scen,N:N2,total:M.scen.total.map(v=>v*k),mtbNeed:N2*M.scen.peak/1000};
-  M.prod2=P.plan.length*N2*P.HW/1000;
+  if($("auto").checked) pickBest();
+  const o=s2opts(); M.scen2=runScen2(P,cur.scen,o,M.start,M.nDays); M.prod2=M.scen2.prod;
+  drawMeasures(o);
   $("scrub").max=M.nDays-1; t=Math.min(t,M.nDays-1);
   const fr=M.freedPeak;
   const dP=M.prod2-M.prodYear;
   $("k1").textContent=(dP<0?"−":"+")+nb(Math.abs(dP))+" t";
   $("k1s").textContent=`${dP<0?"−":"+"}${nb(Math.abs(dP/M.prodYear*100),0)} % mot referansen, med samme MTB på 6 240 t`;
   drawFreed();
-  $("k2").textContent=nb(M.ref.cycle/(365.25/12),1)+" → "+nb(M.scen.cycle/(365.25/12),1)+" mnd";
-  $("scen2meta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g, ${nb(M.scen2.N)} smolt per utsett. MTB behov ${nb(M.scen2.mtbNeed)} t.`;
-  $("k3").textContent=nb(M.N)+" → "+nb(M.scen2.N); $("k3s").textContent="referanse og scenario 1 → scenario 2";
+
+  $("scen2meta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g, ${M.scen2.N.length} utsett per år. MTB behov ${nb(M.scen2.peak)} t.`+(M.scen2.short?` ${M.scen2.short} utsett fikk ikke ledig lokalitet.`:"");
+  const refU=M.ref.avg/M.ref.peak;
+  $("k2").textContent=nb(refU*100,0)+" → "+nb(M.scen2.util*100,0)+" %";
+  $("k3").textContent=nb(M.N*P.plan.length/1e6,2)+" → "+nb(M.scen2.Nsum/1e6,2)+" mill"; $("k3s").textContent="referanse og scenario 1 → scenario 2";
   $("k4").textContent=nb(M.prodYear)+" → "+nb(M.prod2)+" t"; $("k4s").textContent="referanse og scenario 1 → scenario 2, rund vekt";
-  $("refmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g smolt. MTB behov i stabil drift ${nb(M.ref.mtbNeed)} t.`+(M.ref.short?` ${M.ref.short} utsett fikk ikke ledig lokalitet.`:"");
-  $("scenmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt. MTB behov i stabil drift ${nb(M.scen.mtbNeed)} t.`+(M.scen.short?` ${M.scen.short} utsett fikk ikke ledig lokalitet.`:"");
+  $("refmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g smolt, ${nb(M.ref.cycle/(365.25/12),1)} mnd i sjø. MTB behov ${nb(M.ref.mtbNeed)} t.`+(M.ref.short?` ${M.ref.short} utsett fikk ikke ledig lokalitet.`:"");
+  $("scenmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g smolt, ${nb(M.scen.cycle/(365.25/12),1)} mnd i sjø. MTB behov ${nb(M.scen.mtbNeed)} t.`+(M.scen.short?` ${M.scen.short} utsett fikk ikke ledig lokalitet.`:"");
   buildChart(); render();
 }
 function render(){ $("scrub").value=t; $("date").textContent=fmtDate(M.start+t*86400000); drawPanel("ref"); drawPanel("scen"); drawPanel("scen2"); drawChart(); }
@@ -416,8 +556,10 @@ function setPlay(on){playing=on;$("playicon").setAttribute("d",on?"M4 2h4v14H4zM
 let acc=0;
 function tick(ts){ if(!playing)return; if(last!==null){acc+=(ts-last)/1000*(+$("speed").value);const step=Math.floor(acc);if(step>0){acc-=step;t=Math.min(t+step,M.nDays-1);render();if(t>=M.nDays-1){setPlay(false);return;}}} last=ts; requestAnimationFrame(tick); }
 
-buildPanel("ref","Referanse","ref"); buildPanel("scen","Scenario 1: samme produksjon","scen"); buildPanel("scen2","Scenario 2: flere smolt","scen2");
+buildPanel("ref","Referanse","ref"); buildPanel("scen","Scenario 1: samme produksjon","scen"); buildPanel("scen2","Scenario 2: optimert drift","scen2");
 ["rv","rw","sv","sw"].forEach(id=>$(id).addEventListener("input",recompute));
+["s2plan","s2spread","s2opt"].forEach(id=>$(id).addEventListener("change",()=>{$("auto").checked=false;recompute();}));
+$("auto").addEventListener("change",recompute);
 document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("click",()=>{$("sv").value=b.dataset.v;$("sw").value=b.dataset.w;recompute();}));
 $("scrub").addEventListener("input",e=>{t=+e.target.value;render();});
 $("play").addEventListener("click",()=>setPlay(!playing));
