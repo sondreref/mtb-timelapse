@@ -142,6 +142,17 @@ select{max-width:100%}
 .sitetab select{padding:2px 4px;font-size:13px}
 .mtab input.mx{width:5.5em}
 .chk{display:flex;gap:8px;align-items:center}
+.egen{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.egen input{width:5.5em;padding:4px 6px}
+.egen button,.btnlink,#copytmpl,#clearplan,#usepaste{background:transparent;border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;color:#000;text-decoration:none;font-size:14px}
+.msgs{margin:0 0 10px;padding-left:18px;font-size:13px}
+.msgs li.w{font-weight:700}
+.ytab{width:100%;border-collapse:collapse;font-size:13px}
+.ytab th,.ytab td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
+.ytab th:first-child,.ytab td:first-child{text-align:left}
+.ytab th{font-size:12px;border-bottom:1px solid #000}
+#planchart{width:100%;min-width:620px;height:auto;display:block;margin-top:10px}
+#planchart text{font-family:var(--body);font-size:12px;fill:#000}
 .cols2>*{min-width:0}
 .field select{width:100%;min-width:0}
 .btnrow{display:flex;gap:8px;margin:8px 0}
@@ -208,7 +219,7 @@ select{max-width:100%}
 
   <!-- ================= FANE 1 ================= -->
   <div class="tabpane" id="t1" role="tabpanel" aria-labelledby="tb-t1">
-    <p class="fixed"><b>Fast eksempel:</b> 8 tillatelser à 780 tonn (6 240 tonn), 8 lokaliteter à 2 340 tonn, konstant 9 °C, utsett 30.04, 30.06, 31.08 og 30.12, slakt ved 5 kg, ingen dødelighet og ingen lus. Scenarioet setter ut like mange smolt som referansen, så produksjonen er lik. Forskjellen i MTB behov er MTB som blir ledig.</p>
+    <p class="fixed"><b>Fast eksempel:</b> 8 tillatelser à 780 tonn (6 240 tonn), 8 lokaliteter à 2 340 tonn, konstant 9 °C, utsett 30.04, 30.06, 31.08 og 30.12, slakt over 1 måned rundt 5 kg, ingen dødelighet og ingen lus. Scenarioet setter ut like mange smolt som referansen, så produksjonen er lik. Forskjellen i MTB behov er MTB som blir ledig.</p>
     <section class="card freed" aria-label="Frigjort MTB">
       <div>
         <div class="lbl"><span class="tag" style="background:var(--scen)">Scenario</span> Frigjort MTB i stabil drift</div>
@@ -237,7 +248,7 @@ select{max-width:100%}
 
   <!-- ================= FANE 2 ================= -->
   <div class="tabpane" id="t2" role="tabpanel" aria-labelledby="tb-t2" hidden>
-    <p class="fixed"><b>Fast eksempel:</b> som i fane 1, men nå bruker scenarioet den ledige kapasiteten. Tiltakene velges innenfor MTB selskap (6 240 tonn), MTB per lokalitet (2 340 tonn), én generasjon per lokalitet, 8 lokaliteter og ingen utsett i januar til mars.</p>
+    <p class="fixed"><b>Fast eksempel:</b> som i fane 1, men nå bruker scenarioet den ledige kapasiteten. Tiltakene velges innenfor MTB selskap (6 240 tonn), MTB per lokalitet (2 340 tonn), én generasjon per lokalitet, 8 lokaliteter, ingen utsett 15.01 til 31.03, minst 100 000 smolt per utsett og slakt over minst 1 måned.</p>
     <section class="card s2card" aria-label="Tiltak i optimert drift">
       <div>
         <div class="lbl"><span class="tag" style="background:var(--scen2)">Optimert drift</span></div>
@@ -298,15 +309,18 @@ select{max-width:100%}
         <tbody>
           <tr><td><b>Strategiske</b></td><td></td><td><label class="chk"><input type="checkbox" id="auto3" checked> Velg plan og slakt som gir høyest netto produksjon</label></td></tr>
           <tr><td>Vekst og smolt (skyveknappene over)</td><td id="d3bio"></td><td id="m3bio"></td></tr>
-          <tr><td>Utsettsplan og tidspunkt</td><td>Som i dag: 30.04, 30.06, 31.08, 30.12</td><td><select id="plan3" class="planSel"></select></td></tr>
+          <tr><td>Utsettsplan og tidspunkt</td><td><select id="dplan3"><option value="dagens">Standard: 30.04, 30.06, 31.08, 30.12</option><option value="egen">Egen årsplan (under)</option></select></td><td><select id="plan3" class="planSel"></select></td></tr>
+          <tr><td colspan="3"><div class="lbl" style="margin-bottom:6px">Egen årsplan, gjentas hvert år</div><div id="egenplan" class="egen"></div><p class="note2" style="margin:6px 0 0">Velg «Egen årsplan» i en av kolonnene over for å bruke den. Utsett er stengt fra 15.01 til 31.03.</p><p class="note2 warnline" id="egenmsg" style="margin:4px 0 0"></p></td></tr>
           <tr><td><b>Optimaliserende</b></td><td></td><td></td></tr>
-          <tr><td>Slakt</td><td>På én dag ved 5 kg</td><td><select id="spread3" class="spreadSel"></select></td></tr>
+          <tr><td>Slakt</td><td>Over 1 måned rundt 5 kg</td><td><select id="spread3" class="spreadSel"></select></td></tr>
           <tr><td>Gruppestørrelse</td><td>Lik i alle utsett</td><td><label class="chk"><input type="checkbox" id="opt3" checked> Tilpass per utsett</label></td></tr>
           <tr><td><b>Forebyggende</b> (standard for alle lokaliteter, kan overstyres i tabellen over)</td><td></td><td></td></tr>
           <tr><td>Barriere</td><td>Som i dag (inngår i historiske data)</td><td><select id="bar3" class="barSel"></select></td></tr>
           <tr><td>Måneder i lukket eller semilukket merd etter utsett</td><td>0</td><td><input type="number" id="cl3" min="0" max="12" step="1" value="0"></td></tr>
           <tr><td><b>Kontrollerende</b> (kan overstyres per lokalitet)</td><td></td><td></td></tr>
           <tr><td>Rensefisk utover dagens bruk</td><td>Som i dag</td><td><select id="cf3"><option value="nei">Nei</option><option value="ja">Ja</option></select></td></tr>
+          <tr><td><b>Dødelighet</b></td><td></td><td></td></tr>
+          <tr><td>Dødelighet i sjø per år, alle årsaker (%)</td><td><input type="number" id="mort3" min="0" max="60" step="0.1" value="14.2"></td><td id="mortinfo" class="note2"></td></tr>
           <tr><td><b>Behandlende</b></td><td></td><td></td></tr>
           <tr><td>Behandlingsmetoder</td><td id="mixd"></td><td>Se tabellen under</td></tr>
         </tbody>
@@ -323,6 +337,23 @@ select{max-width:100%}
         <label class="field">Restriksjoner<select id="mode3"><option value="both">MTB selskap og per lokalitet</option><option value="company">Bare MTB selskap</option><option value="site">Bare MTB per lokalitet</option></select></label>
       </div></details>
     </section>
+    <section class="card" id="plancard">
+      <div class="lbl">Produksjonsplan</div>
+      <h2 class="d">Kontroller en faktisk plan</h2>
+      <p class="note2" style="margin:0 0 10px">Last opp en plan som Excel (xlsx) eller CSV, eller lim inn fra Excel. Planen leses bare i nettleseren og blir ikke lastet opp eller lagret noe sted. Kolonner: generasjon, merd, lokalitetsnr, lokalitetsnavn, utsettsdato, antall smolt, smoltvekt (g), planlagt slaktestart, slakteslutt og slaktevekt (kg). Bare utsettsdato og lokalitet er påkrevd. Rader med samme lokalitet og generasjon slås sammen. Veksten følger VF3 for dagens drift og temperaturen over.</p>
+      <div class="btnrow" style="flex-wrap:wrap">
+        <label class="field" style="font-weight:400">Velg fil<input type="file" id="planfile" accept=".xlsx,.csv,.txt"></label>
+        <a id="tmpl" download="produksjonsplan_mal.csv" class="btnlink">Last ned mal (CSV)</a>
+        <a class="btnlink" id="tmplx" download="Produksjonsplan_mal.xlsx" href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,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">Last ned mal (Excel)</a>
+        <button id="copytmpl" type="button">Kopier mal</button>
+        <button id="clearplan" type="button">Fjern plan</button>
+      </div>
+      <details><summary class="lbl" style="cursor:pointer">Lim inn tabell</summary>
+        <textarea id="planpaste" rows="6" style="width:100%;font:13px/1.4 var(--body);margin-top:8px" placeholder="Kopier cellene i Excel, med overskriftsraden, og lim inn her"></textarea>
+        <button id="usepaste" type="button">Bruk innlimt tabell</button></details>
+      <div id="planout" style="margin-top:12px"></div>
+    </section>
+
     <section class="card"><h2 class="d">Fra dagens drift til drift med tiltak</h2>
       <p class="note2" style="margin:0 0 8px">Netto produksjon per år, tonn rund vekt. Netto betyr at produksjonen er justert for endringen i tap fra avlusning mot dagens drift.</p>
       <svg id="wf3" viewBox="0 0 1000 300" role="img" aria-label="Netto produksjon per år trinn for trinn"></svg></section>
@@ -340,8 +371,10 @@ select{max-width:100%}
   </div>
 
   <footer class="foot">
-    <p><b>Felles forutsetninger:</b> høstevekt 5 kg rund vekt, ingen dødelighet utover det som følger av avlusning i fane 3, 2 måneders brakklegging, én generasjon per lokalitet og ingen utsett i januar til mars ved optimering. Antall smolt per utsett settes så høyt som restriksjonene tillater. Gruppestørrelser optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over inntil 2 måneder. Store selskap setter ut på flere lokaliteter samtidig. Modellen velger flest mulig lokaliteter per utsett uten at noen generasjon står uten lokalitet, og fordeler fisken etter lokalitetenes MTB.</p>
+    <p><b>Felles forutsetninger:</b> høstevekt 5 kg rund vekt, ingen dødelighet utover det som følger av avlusning i fane 3, 2 måneders brakklegging og én generasjon per lokalitet. Tre driftsregler gjelder alle løp, også dagens drift: slakt av en generasjon tar minst 1 måned, ingen utsett fra 15.01 til 31.03, og hvert utsett er minst 100 000 smolt. Antall smolt per utsett settes så høyt som restriksjonene tillater. Ved optimering er hvert utsett enten tomt eller minst 100 000 smolt. Gruppestørrelser optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over 1 og 2 måneder. Store selskap setter ut på flere lokaliteter samtidig. Modellen velger flest mulig lokaliteter per utsett uten at noen generasjon står uten lokalitet, og fordeler fisken etter lokalitetenes MTB.</p>
     <p><b>Selskap og lokaliteter (fane 3):</b> Akvakulturregisteret, uttrekk per 16.11.2026 (Fiskeridirektoratet). Kommersielle tillatelser til matfisk av laks, ørret og regnbueørret i sjø, inkludert grønne tillatelser og tillatelser med 5 % MTB økning. MTB per område er summen av tillatelsene i området. Biomassetaket regnes per produksjonsområde, med valg om å slå sammen områder (felles biomassetak). Dette bygger på et høringsutkast og bør kontrolleres mot gjeldende akvakulturdriftsforskrift. Lokalitetene er de som er knyttet til selskapets tillatelser, med kapasitet fra registeret. Registrerte tiltak (nedsenket, lukket eller semilukket) er hentet fra tidsserien.</p>
+    <p><b>Dødelighet (fane 3):</b> dødelighet i sjø for alle årsaker er satt til 14,2 % per år etter Veterinærinstituttets beregning for 2025, og kan endres. Modellens forventede dødelighet fra avlusning i dagens drift trekkes fra, og resten brukes som jevn daglig risiko for annen dødelighet i alle løp. Færre avlusninger gir dermed en gevinst uten at dødeligheten telles to ganger.</p>
+    <p><b>Produksjonsplan (fane 3):</b> en importert plan simuleres dag for dag fra første utsett til siste slakt. Hvert utsett vokser etter VF3 for dagens drift og temperaturen for området, med annen dødelighet som over. Slakt følger planlagt start og slutt (jevnt uttak). Uten slaktedatoer slaktes utsettet over 1 måned rundt planlagt slaktevekt eller 5 kg. Kortere slakteperiode enn 1 måned utvides til 1 måned og flagges, det samme gjelder utsett i stengt periode og utsett under 100 000 smolt (summert over lokaliteter med samme utsettsdato). Produksjonen er slaktet volum per kalenderår. Avlusninger regnes per lokalitet med samme rate som ellers, uten og med de forebyggende og kontrollerende tiltakene som er valgt over.</p>
     <p><b>Temperatur:</b> fane 1 og 2 bruker konstant 9 °C. Fane 3 bruker ukesnitt 2015 til 2025 for selskapets lokaliteter i området (median over lokalitetene hver uke, snitt over årene), fra tidsserien per lokalitet levert av INAQ. Mangler data, brukes snittet for produksjonsområdet.</p>
     <p><b>Lus og avlusninger:</b> modellen regner avlusninger per lokalitet, ut fra hvilke generasjoner som står der. Forventet antall er en empirisk rate per lokalitet og uke i sjø, anslått med Poisson regresjon på tidsserien for 2021 til 2025 (138 464 lokalitetsuker i sjø, 21 718 rapporterte behandlinger) med produksjonsområde, måned og tid i sjø som forklaringsvariabler. Raten justeres med en faktor per lokalitet: observerte delt på forventede behandlinger 2021 til 2025, trukket mot selskapets nivå i området med vekt tilsvarende 20 behandlinger. Rensefisk reduserer raten direkte. Barrett mfl. (2020, International Journal for Parasitology 50, 787–796, doi.org/10.1016/j.ijpara.2019.12.005) fant svak og variabel effekt på nasjonalt nivå, så standardverdien på 10 % er et forsiktig anslag. Utsettstidspunkt er et strategisk tiltak: automatikken velger plan og slakt som gir høyest netto produksjon etter tap fra avlusning. Områdesamarbeid og koordinert brakklegging er ikke med, fordi effekten avhenger av smitte mellom lokaliteter som modellen ikke fanger. Raten viser samvariasjon og ikke årsakseffekter, avhenger av tid i sjø og ikke fiskens størrelse, og historiske data inneholder allerede tiltak som ikke er registrert. Tiltak reduserer raten med lusereduksjonen ganget med andelen som gir færre avlusninger. Andelen på 60 % er et anslag basert på et forsøk der om lag 80 % færre lus ga halvparten så mange avlusninger (omtalt i fagpressen, ikke fagfellevurdert).</p>
     <p><b>Tap fra avlusning:</b> VF3 er en observert vekst som allerede inneholder tapene fra dagens avlusninger. Fane 3 regner derfor bare endringen mot dagens drift: antall avlusninger hver fisk får, og tapet per avlusning ut fra metodemiksen. Dagens miks er hentet fra tidsserien for selskapets lokaliteter i området, 2021 til 2025. Dødelighet per avlusning: termisk 0,53 % og mekanisk 0,62 % av fisken, etter median antall døde to uker etter behandling i en merd med 150 000 fisk (790 og 928) i Walde mfl. (2021). Medikamentell bad er satt til 0,1 %, fordi samme studie fant at dødeligheten etter termisk og mekanisk avlusning var 5,4 og 6,3 ganger høyere enn etter medikamentell behandling. Ferskvann og annen behandling har ikke eget tall i kildene jeg har hatt tilgang til og er satt lik snittet for termisk og mekanisk. Fôrbehandling er satt til null tap (anslag). Tapte vekstdøgn: 11 for ikke medikamentelle metoder, avledet fra eksempelet i Walde mfl. (2022), der 31 200 kg tapt biomasse i en merd med 150 000 fisk på 3 kg ved 10 °C tilsvarer rundt 11 døgn tilvekst ved VF3 3,0. Medikamentell bad er satt til 2 døgn (anslag for sulting). Tapte vekstdøgn er trolig et øvre anslag.</p>
@@ -385,6 +418,11 @@ function buildTemp(weekly) {
 }
 
 // Én utsettsdato (dag i året, 0 = 1. januar): vekstkurve, produksjonstid og biomasse per smolt.
+// Driftsregler som gjelder alle løp
+const MIN_SPREAD = 30;      // slakt av en generasjon tar minst 1 måned (30 dager)
+const MIN_N = 100000;       // minste utsett, antall smolt per utsett
+const CLOSED = [14, 89];    // stengt for utsett 15.01 til 31.03 (dag i året, 0 = 1. januar)
+const isClosed = doy => doy >= CLOSED[0] && doy <= CLOSED[1];
 function slotModel(sp, env, doy, spread) {
   const C = env.temp.C, k = sp.vf3 / 1000, c0 = Math.cbrt(sp.w0);
   const W = new Float64Array(AMAX + 1); let cyc = -1;
@@ -393,15 +431,18 @@ function slotModel(sp, env, doy, spread) {
     if (cyc < 0 && W[a] >= env.HW) cyc = a;
   }
   const reached = cyc >= 0; if (!reached) cyc = AMAX;
-  const S = Math.min(spread || 0, cyc), h0 = cyc - S / 2, h1 = cyc + S / 2;
+  const S = Math.min(Math.max(spread || 0, MIN_SPREAD), cyc), h0 = cyc - S / 2, h1 = cyc + S / 2;
+  // annen dødelighet: jevn daglig risiko ut fra årlig dødelighet (env.mort, andel per år)
+  const hz = env.mort ? -Math.log(1 - Math.min(0.99, env.mort)) / 365 : 0;
   const bio = new Float64Array(AMAX + 1); let maxBio = 0;
   for (let a = 0; a <= AMAX; a++) {
     const f = S <= 0 ? (a < cyc ? 1 : 0) : Math.max(0, Math.min(1, 1 - (a - h0) / S));
-    bio[a] = W[a] * f; if (bio[a] > maxBio) maxBio = bio[a];
+    bio[a] = W[a] * f * Math.exp(-hz * a); if (bio[a] > maxBio) maxBio = bio[a];
   }
-  let hw;
-  if (S <= 0) hw = W[cyc]; else { let s = 0, n = 0; for (let a = Math.ceil(h0); a < h1 && a <= AMAX; a++) { s += W[a]; n++; } hw = s / n; }
-  return { doy, W, bio, cyc, h0, h1, S, hw, maxBio, reached,
+  let hw, yld;
+  if (S <= 0) { hw = W[cyc]; yld = W[cyc] * Math.exp(-hz * cyc); }
+  else { let s = 0, y = 0, n = 0; for (let a = Math.ceil(h0); a < h1 && a <= AMAX; a++) { s += W[a]; y += W[a] * Math.exp(-hz * a); n++; } hw = s / n; yld = y / n; }
+  return { doy, W, bio, cyc, h0, h1, S, hw, yld, hz, maxBio, reached,
     wFrom: W[Math.max(0, Math.ceil(h0))], wTo: W[Math.min(AMAX, Math.floor(h1))] };
 }
 
@@ -458,8 +499,28 @@ function chooseN(slots, B, env, optimize, m) {
   const A = [], b = [];
   if (useCo) for (let d = 0; d < 365; d++) { A.push(B.map(r => r[d])); b.push(env.mtbCo); } // tonn per 1000 smolt
   if (useSite) slots.forEach((s, i) => { const r = new Array(slots.length).fill(0); r[i] = 1; A.push(r); b.push(capSite[i] / 1000); });
-  const x = lpMax(slots.map(s => s.hw), A, b);
-  return x.map(v => Math.floor(v + 1e-9) * 1000);
+  // Minste utsett: hvert utsett er enten 0 eller minst MIN_N. Løses som LP med nedre grense
+  // (x = L + y), og utsett under grensen avgjøres ett om gangen: tvinges opp til L eller tas bort.
+  const c = slots.map(s => s.yld), L = MIN_N / 1000, n = c.length;
+  const solve = (lb, off) => {
+    const b2 = b.map((v, r) => v - A[r].reduce((s, a, j) => s + a * lb[j], 0));
+    if (b2.some(v => v < -1e-7)) return null;
+    const c2 = c.map((v, j) => off[j] ? 0 : v), A2 = A.map(r => r.map((a, j) => off[j] ? 0 : a));
+    const y = lpMax(c2, A2, b2.map(v => Math.max(0, v)));
+    const x = y.map((v, j) => off[j] ? 0 : v + lb[j]);
+    return { x, z: x.reduce((s, v, j) => s + v * c[j], 0) };
+  };
+  let lb = new Array(n).fill(0), off = new Array(n).fill(false), sol = solve(lb, off);
+  for (let it = 0; it < n; it++) {
+    const small = sol.x.map((v, j) => [v, j]).filter(([v, j]) => !off[j] && lb[j] === 0 && v > 1e-6 && v < L - 1e-6).sort((p, q) => p[0] - q[0]);
+    if (!small.length) break;
+    const j = small[0][1];
+    const lbA = lb.slice(); lbA[j] = L; const sA = solve(lbA, off);
+    const offB = off.slice(); offB[j] = true; const sB = solve(lb, offB);
+    if (sA && (!sB || sA.z >= sB.z)) { lb = lbA; sol = sA; } else { off = offB; sol = sB; }
+  }
+  // utsett som LP setter til 0 tas også bort, og resten rundes ned til hele 1000
+  return sol.x.map(v => { const r = Math.floor(v + 1e-9) * 1000; return r < MIN_N ? 0 : r; });
 }
 
 // Tidslinje fra modellstart: generasjoner, lokaliteter og daglig biomasse.
@@ -467,7 +528,7 @@ function timeline(slots, N, plan, env, m) {
   const gens = [], y0 = new Date(env.start).getUTCFullYear(), y1 = new Date(env.end).getUTCFullYear();
   for (let y = y0; y <= y1; y++) plan.forEach((p, i) => {
     const ms = Date.UTC(y, p.m - 1, p.d);
-    if (ms >= env.start && ms <= env.end) gens.push({ slot: i, year: y, t0: Math.round((ms - env.start) / DAYMS), N: N[i] });
+    if (ms >= env.start && ms <= env.end && N[i] > 0) gens.push({ slot: i, year: y, t0: Math.round((ms - env.start) / DAYMS), N: N[i] });
   });
   gens.sort((a, b) => a.t0 - b.t0);
   const fallowDays = env.fallowMonths * 365.25 / 12, freeFrom = new Array(env.sites).fill(-Infinity); let short = 0;
@@ -491,8 +552,8 @@ function timeline(slots, N, plan, env, m) {
 
 const planDoy = p => Math.round((Date.UTC(2026, p.m - 1, p.d) - Date.UTC(2026, 0, 1)) / DAYMS);
 function doyToMD(doy) { const d = new Date(Date.UTC(2026, 0, 1) + doy * DAYMS); return { m: d.getUTCMonth() + 1, d: d.getUTCDate() }; }
-// n utsett med jevn avstand mellom 1. april og 30. desember (ingen utsett i januar til mars)
-function evenPlan(n) { const a = 90, b = 363, out = []; for (let i = 0; i < n; i++) out.push(doyToMD(Math.round(a + i * (b - a) / (n - 1)))); return out; }
+// n utsett med jevn avstand i åpen periode, 1. april til 14. januar året etter
+function evenPlan(n) { const a = 90, b = 365 + 13, out = []; for (let i = 0; i < n; i++) out.push(doyToMD(Math.round(a + i * (b - a) / (n - 1)) % 365)); return out; }
 
 // Ett løp: utsettsplan, slakteperiode og antall smolt.
 function runCase(sp, plan, spread, env, Nfixed, optimize, mFixed) {
@@ -508,12 +569,13 @@ function runCase(sp, plan, spread, env, Nfixed, optimize, mFixed) {
     if (tl.short === 0 || m === 1 || mFixed) break;
   }
   const st = steadyStats(B, N);
-  const prod = N.reduce((s, v, i) => s + v * slots[i].hw, 0) / 1000;
+  const prod = N.reduce((s, v, i) => s + v * slots[i].yld, 0) / 1000;
   const Nsum = N.reduce((a, b) => a + b, 0);
   const maxGen = Math.max(...N.map((v, i) => v * slots[i].maxBio / 1000));
-  return { sp, plan, spread, slots, B, N, Nsum, prod, m, peak: st.peak, avg: st.avg, util: st.avg / st.peak, maxGen, ...tl };
+  const minViol = N.filter(v => v > 0 && v < MIN_N).length, closedViol = plan.filter(p => isClosed(planDoy(p))).length, nUts = N.filter(v => v > 0).length;
+  return { sp, plan, spread, slots, B, N, Nsum, prod, m, peak: st.peak, avg: st.avg, util: st.avg / st.peak, maxGen, minViol, closedViol, nUts, ...tl };
 }
-
+if (typeof module !== "undefined") module.exports = { buildTemp, slotModel, runCase, evenPlan, lpMax, planDoy, chooseN, MIN_N };
 
 // Forventet antall avlusninger: empirisk rate per uke i sjø etter produksjonsområde, måned og tid i sjø.
 // RATES[po][måned 0..11][aldersbånd 0..6] = behandlinger per lokalitet og uke (Poisson, 2021 til 2025).
@@ -594,7 +656,188 @@ function liceSites(cs, env, sites, rates) {
   const cum = new Float64Array(n); let c = 0; for (let t = 0; t < n; t++) { c += inc[t]; cum[t] = c; }
   return { annual, F, gday: F > 0 ? G / F : 0, monthly, perSite, cum };
 }
-if (typeof module !== "undefined") module.exports = { liceSource, liceCase, liceSites };
+
+
+// Import og simulering av produksjonsplan. Alt skjer lokalt i nettleseren.
+
+/* ---------- lesing av xlsx uten bibliotek (zip + xml) ---------- */
+async function inflateRaw(u8) {
+  const ds = new DecompressionStream("deflate-raw");
+  const stream = new Blob([u8]).stream().pipeThrough(ds);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+async function unzip(buf) {
+  const u8 = new Uint8Array(buf), dv = new DataView(buf); let eocd = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65557); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw new Error("Filen ser ikke ut som en gyldig Excel fil (xlsx).");
+  const n = dv.getUint16(eocd + 10, true); let p = dv.getUint32(eocd + 16, true); const files = {};
+  for (let k = 0; k < n; k++) {
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lo = dv.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nl));
+    const lnl = dv.getUint16(lo + 26, true), lel = dv.getUint16(lo + 28, true), start = lo + 30 + lnl + lel;
+    const data = u8.subarray(start, start + csize);
+    files[name] = { method, data }; p += 46 + nl + el + cl;
+  }
+  const get = async name => { const f = files[name]; if (!f) return null; const raw = f.method === 8 ? await inflateRaw(f.data) : f.data; return new TextDecoder().decode(raw); };
+  return { names: Object.keys(files), get };
+}
+function colIdx(ref) { const m = ref.match(/^[A-Z]+/)[0]; let n = 0; for (const c of m) n = n * 26 + c.charCodeAt(0) - 64; return n - 1; }
+async function readXlsx(buf) {
+  const z = await unzip(buf), xp = new DOMParser();
+  const ss = await z.get("xl/sharedStrings.xml"), shared = [];
+  if (ss) { const d = xp.parseFromString(ss, "application/xml"); for (const si of d.getElementsByTagName("si")) { let t = ""; for (const x of si.getElementsByTagName("t")) t += x.textContent; shared.push(t); } }
+  // første ark i arbeidsboken
+  let sheetPath = "xl/worksheets/sheet1.xml";
+  const wb = await z.get("xl/workbook.xml"), rels = await z.get("xl/_rels/workbook.xml.rels");
+  if (wb && rels) {
+    const d = xp.parseFromString(wb, "application/xml"), s0 = d.getElementsByTagName("sheet")[0];
+    const rid = s0 && (s0.getAttribute("r:id") || s0.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id"));
+    const r = xp.parseFromString(rels, "application/xml");
+    for (const rel of r.getElementsByTagName("Relationship")) if (rel.getAttribute("Id") === rid) { const tg = rel.getAttribute("Target"); sheetPath = tg.startsWith("/") ? tg.slice(1) : "xl/" + tg.replace(/^\.\//, ""); }
+  }
+  const sx = await z.get(sheetPath); if (!sx) throw new Error("Fant ikke regnearket i filen.");
+  const d = xp.parseFromString(sx, "application/xml"), rows = [];
+  for (const row of d.getElementsByTagName("row")) {
+    const r = [];
+    for (const c of row.getElementsByTagName("c")) {
+      const ref = c.getAttribute("r"), t = c.getAttribute("t"), v = c.getElementsByTagName("v")[0];
+      let val = v ? v.textContent : "";
+      if (t === "s") val = shared[+val] ?? ""; else if (t === "inlineStr") { const is = c.getElementsByTagName("t")[0]; val = is ? is.textContent : ""; }
+      else if (t !== "str" && val !== "" && !isNaN(+val)) val = +val;
+      r[ref ? colIdx(ref) : r.length] = val;
+    }
+    rows.push(Array.from(r, x => x === undefined ? "" : x));
+  }
+  return rows;
+}
+function readDelimited(text) {
+  const lines = text.replace(/\r/g, "").split("\n").filter(l => l.trim() !== "");
+  if (!lines.length) return [];
+  const first = lines[0], sep = (first.match(/\t/g) || []).length ? "\t" : (first.match(/;/g) || []).length >= (first.match(/,/g) || []).length ? ";" : ",";
+  return lines.map(l => { const out = []; let cur = "", q = false;
+    for (let i = 0; i < l.length; i++) { const ch = l[i];
+      if (ch === '"') { if (q && l[i + 1] === '"') { cur += '"'; i++; } else q = !q; }
+      else if (ch === sep && !q) { out.push(cur); cur = ""; } else cur += ch; }
+    out.push(cur); return out.map(x => x.trim()); });
+}
+
+/* ---------- tolking ---------- */
+const PLAN_COLS = [
+  ["gen", /^(gen|generasjon|årsklasse|aarsklasse|year.?class)/i],
+  ["merd", /^(merd|cage|enhet|pen)/i],
+  ["loknr", /(lok.*(nr|nummer|id)|lokalitetsnummer|site.?(id|no|nr)|locality.?(id|no))/i],
+  ["lokname", /^(lokalitet|lok\.?navn|lokalitetsnavn|site|locality)(\s*navn)?$/i],
+  ["date", /(utsett|utsatt|stocking|transfer)/i],
+  ["n", /(antall|ant\.|number|count)/i],
+  ["w0", /(smoltvekt|snittvekt|vekt.*utsett|smolt.*(g|gram)|weight)/i],
+  ["hstart", /(slakt.*start|start.*slakt|harvest.*start)/i],
+  ["hend", /(slakt.*(slutt|stopp|end)|slutt.*slakt|harvest.*end)/i],
+  ["hw", /(slaktevekt|høstevekt|harvest.*weight)/i]
+];
+function mapHeader(h) {
+  const map = {};
+  h.forEach((raw, i) => { const x = String(raw).trim(); if (!x) return;
+    // slaktekolonner først, så de ikke tolkes som dato eller vekt
+    for (const key of ["hstart", "hend", "hw", "w0", "date", "n", "loknr", "lokname", "gen", "merd"]) {
+      const re = PLAN_COLS.find(c => c[0] === key)[1];
+      if (map[key] === undefined && re.test(x)) { map[key] = i; break; }
+    } });
+  return map;
+}
+function parseNum(v) { if (typeof v === "number") return v; const s = String(v).replace(/[\s ]/g, "").replace(",", "."); const x = parseFloat(s); return isNaN(x) ? null : x; }
+function parseDate(v) {
+  if (v === "" || v === null || v === undefined) return null;
+  if (typeof v === "number") { if (v > 20000 && v < 80000) return Date.UTC(1899, 11, 30) + Math.round(v) * 86400000; return null; }
+  const s = String(v).trim(); let m;
+  if ((m = s.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})$/))) { let y = +m[3]; if (y < 100) y += 2000; return Date.UTC(y, +m[2] - 1, +m[1]); }
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  return null;
+}
+// rader -> utsettsgrupper (lokalitet og generasjon). Returnerer også meldinger.
+function parsePlan(rows, siteList) {
+  const msgs = [], out = [];
+  let hi = rows.findIndex(r => { const m = mapHeader(r); return m.date !== undefined && (m.loknr !== undefined || m.lokname !== undefined); });
+  if (hi < 0) return { groups: [], msgs: ["Fant ikke kolonner for utsettsdato og lokalitet. Bruk malen, eller gi kolonnene navn som «Utsettsdato» og «Lokalitetsnr»."], map: {} };
+  const map = mapHeader(rows[hi]);
+  const byNr = new Map(siteList.map(s => [String(s.id), s])), byName = new Map(siteList.map(s => [s.name.toLowerCase(), s]));
+  let nRows = 0, skipped = 0;
+  for (let r = hi + 1; r < rows.length; r++) {
+    const row = rows[r]; if (!row || row.every(x => String(x).trim() === "")) continue;
+    const g = k => map[k] === undefined ? "" : row[map[k]];
+    const date = parseDate(g("date")); const nrRaw = String(g("loknr")).trim(), nameRaw = String(g("lokname")).trim();
+    let site = nrRaw && byNr.get(String(parseInt(nrRaw))) || (nameRaw && byName.get(nameRaw.toLowerCase())) || null;
+    if (!date) { skipped++; continue; }
+    nRows++;
+    out.push({ row: r + 1, gen: String(g("gen")).trim(), merd: String(g("merd")).trim(), loknr: nrRaw ? parseInt(nrRaw) : null, lokname: nameRaw, site, date,
+      n: parseNum(g("n")), w0: parseNum(g("w0")), hstart: parseDate(g("hstart")), hend: parseDate(g("hend")), hw: parseNum(g("hw")) });
+  }
+  if (skipped) msgs.push(`${skipped} rader uten gyldig utsettsdato ble hoppet over.`);
+  // grupper per lokalitet og generasjon (eller utsettsuke)
+  const gm = new Map();
+  for (const x of out) {
+    const lok = x.site ? "s" + x.site.id : "u" + (x.loknr || x.lokname);
+    const key = lok + "|" + (x.gen || Math.round(x.date / (7 * 86400000)));
+    if (!gm.has(key)) gm.set(key, { site: x.site, loknr: x.loknr || (x.site && x.site.id), lokname: x.lokname || (x.site && x.site.name), gen: x.gen, rows: [] });
+    gm.get(key).rows.push(x);
+  }
+  const groups = [];
+  for (const g of gm.values()) {
+    const N = g.rows.reduce((a, x) => a + (x.n || 0), 0);
+    const wN = g.rows.reduce((a, x) => a + (x.n || 0) * (x.w0 || 0), 0), nW = g.rows.reduce((a, x) => a + (x.w0 ? (x.n || 0) : 0), 0);
+    const dN = g.rows.reduce((a, x) => a + (x.n || 1) * x.date, 0) / g.rows.reduce((a, x) => a + (x.n || 1), 0);
+    const pick = k => { const v = g.rows.map(x => x[k]).filter(v => v !== null && v !== undefined); return v.length ? v : null; };
+    const hs = pick("hstart"), he = pick("hend"), hw = pick("hw");
+    groups.push({ ...g, N: N || null, w0: nW ? wN / nW : null, date: Math.round(dN / 86400000) * 86400000,
+      hstart: hs ? Math.min(...hs) : null, hend: he ? Math.max(...he) : null, hw: hw ? hw.reduce((a, b) => a + b, 0) / hw.length : null, merds: g.rows.length });
+  }
+  groups.sort((a, b) => a.date - b.date);
+  const unknown = [...new Set(groups.filter(g => !g.site).map(g => g.loknr || g.lokname))];
+  if (unknown.length) msgs.push(`${unknown.length} ${unknown.length===1?"lokalitet":"lokaliteter"} finnes ikke blant selskapets lokaliteter i valgt område (${unknown.slice(0, 6).join(", ")}${unknown.length > 6 ? " …" : ""}). De telles mot selskapets MTB, men uten egen lokalitetsgrense.`);
+  const noN = groups.filter(g => !g.N).length; if (noN) msgs.push(`${noN} utsett mangler antall smolt og er satt til null fisk.`);
+  return { groups, msgs, map, nRows };
+}
+
+/* ---------- simulering ---------- */
+// p: {temp (buildTemp), vf3, w0def, HW, mort (annen dødelighet per år), mtbCo, rates, mix og tap via callback}
+function simulatePlan(groups, p) {
+  const DAY = 86400000, t0 = Math.min(...groups.map(g => g.date));
+  const yStart = Date.UTC(new Date(t0).getUTCFullYear(), 0, 1);
+  const hz = p.mort ? -Math.log(1 - Math.min(0.99, p.mort)) / 365 : 0, k = p.vf3 / 1000, C = p.temp.C;
+  // vekst og slakt per gruppe
+  let tEnd = t0;
+  const G = groups.map(g => {
+    const doy = Math.round((g.date - Date.UTC(new Date(g.date).getUTCFullYear(), 0, 1)) / DAY) % 365;
+    const c0 = Math.cbrt(g.w0 || p.w0def), W = [];
+    const target = g.hw || p.HW; let hDay = null;
+    for (let a = 0; a <= 1460; a++) { W.push(Math.pow(c0 + k * (C[doy + a] - C[doy]), 3) / 1000); if (hDay === null && W[a] >= target) hDay = a; }
+    let hs, he;
+    // slakt tar minst 1 måned (p.minSpread dager). Uten datoer sentreres perioden på dagen målvekten nås
+    const MS = p.minSpread || 30; let hExt = false;
+    if (g.hstart) { hs = Math.round((g.hstart - g.date) / DAY); he = g.hend ? Math.round((g.hend - g.date) / DAY) : hs + MS; if (he - hs < MS) { hExt = !!g.hend; he = hs + MS; } }
+    else if (g.hend) { he = Math.round((g.hend - g.date) / DAY); hs = he - MS; }
+    else { const c = hDay === null ? 1460 - MS / 2 : hDay; hs = Math.round(c - MS / 2); he = hs + MS; }
+    hs = Math.max(0, Math.min(1460, hs)); he = Math.max(hs, Math.min(1460, he));
+    tEnd = Math.max(tEnd, g.date + he * DAY);
+    return { ...g, doy, W, hs, he, hExt, start: Math.round((g.date - yStart) / DAY) };
+  });
+  const nDays = Math.round((tEnd - yStart) / DAY) + 2;
+  const total = new Float64Array(nDays), harvest = new Float64Array(nDays), siteBio = new Map(), siteGens = new Map();
+  for (const g of G) {
+    const N = g.N || 0, key = g.site ? g.site.id : "u" + g.loknr;
+    if (!siteBio.has(key)) siteBio.set(key, new Float64Array(nDays));
+    const sb = siteBio.get(key); let prevF = 1;
+    for (let a = 0; a <= g.he + 1 && g.start + a < nDays; a++) {
+      const frac = a < g.hs ? 1 : g.he > g.hs ? Math.max(0, 1 - (a - g.hs + 1) / (g.he - g.hs + 1)) : (a < g.hs ? 1 : 0);
+      const surv = Math.exp(-hz * a), b = N * g.W[a] * surv * frac / 1000;
+      total[g.start + a] += b; sb[g.start + a] += b;
+      if (frac < prevF) harvest[g.start + a] += N * g.W[a] * surv * (prevF - frac) / 1000;
+      prevF = frac; g.endDay = g.start + a;
+    }
+    if (!siteGens.has(key)) siteGens.set(key, []); siteGens.get(key).push(g);
+  }
+  return { G, total, harvest, siteBio, siteGens, yStart, nDays, hz };
+}
+
 
 const $=id=>document.getElementById(id);
 const nb=(x,d=0)=>x.toLocaleString("nb-NO",{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -612,18 +855,28 @@ let t=0,playing=false,last=null,acc=0,tab="t1",cur=null;
 const S={}; // resultater per fane
 
 /* ---------- felles valg ---------- */
-const PLANS=[["dagens","Som i dag: 4 utsett, ujevn avstand"],["4","4 utsett, jevn avstand april til desember"],["5","5 utsett, jevn avstand april til desember"],["6","6 utsett, jevn avstand april til desember"],["7","7 utsett, jevn avstand april til desember"],["8","8 utsett, jevn avstand april til desember"]];
-const SPREADS=[["0","På én dag ved 5 kg"],["30","Spredt over 1 måned"],["61","Spredt over 2 måneder"],["91","Spredt over 3 måneder"]];
+const PLANS=[["dagens","Som i dag: 4 utsett, ujevn avstand"],["4","4 utsett, jevn avstand 1.04 til 14.01"],["5","5 utsett, jevn avstand 1.04 til 14.01"],["6","6 utsett, jevn avstand 1.04 til 14.01"],["7","7 utsett, jevn avstand 1.04 til 14.01"],["8","8 utsett, jevn avstand 1.04 til 14.01"]];
+const SPREADS=[["30","Over 1 måned (minimum)"],["61","Spredt over 2 måneder"],["91","Spredt over 3 måneder"]];
 document.querySelectorAll(".planSel").forEach(s=>PLANS.forEach(([v,tx])=>{const o=document.createElement("option");o.value=v;o.textContent=tx;s.appendChild(o);}));
 document.querySelectorAll(".spreadSel").forEach(s=>SPREADS.forEach(([v,tx])=>{const o=document.createElement("option");o.value=v;o.textContent=tx;s.appendChild(o);}));
 [["none","Ingen ny barriere"],["skirt","Skjørt"],["snorkel","Snorkel"],["sub","Nedsenket merd"]].forEach(([v,tx])=>{const o=document.createElement("option");o.value=v;o.textContent=tx;$("bar3").appendChild(o);});
 $("bar3").value="none";
-const planOf=k=>k==="dagens"?DAGENS:evenPlan(+k);
+let customPlan=DAGENS.map(x=>({...x}));
+const planOf=k=>k==="dagens"?DAGENS:k==="egen"?customPlan.slice().sort((a,b)=>(a.m-b.m)||(a.d-b.d)):evenPlan(+k);
+{const o=document.createElement("option");o.value="egen";o.textContent="Egen årsplan (under)";$("plan3").appendChild(o);}
+function drawEgen(){
+  const box=$("egenplan");
+  box.innerHTML=customPlan.map((p,i)=>`<span><input type="text" inputmode="numeric" value="${fmtMD(p)}" data-i="${i}" aria-label="Utsett ${i+1}, dag og måned"> <button type="button" data-del="${i}" aria-label="Fjern utsett ${i+1}">×</button></span>`).join("")+`<button type="button" id="addutsett">Legg til utsett</button>`;
+  box.querySelectorAll("input").forEach(inp=>inp.addEventListener("change",()=>{const m=inp.value.trim().match(/^(\d{1,2})[.\/-](\d{1,2})$/); if(m){const d=+m[1],mo=+m[2]; if(mo>=1&&mo<=12&&d>=1&&d<=31){const p={m:mo,d:Math.min(d,[31,28,31,30,31,30,31,31,30,31,30,31][mo-1])}; if(isClosed(planDoy(p))){$("egenmsg").textContent=`${fmtMD(p)} er i stengt periode for utsett (15.01 til 31.03). Datoen ble ikke endret.`;} else {customPlan[+inp.dataset.i]=p; $("egenmsg").textContent="";}}} drawEgen(); schedule3();}));
+  box.querySelectorAll("button[data-del]").forEach(b=>b.addEventListener("click",()=>{if(customPlan.length>1){customPlan.splice(+b.dataset.del,1);drawEgen();schedule3();}}));
+  $("addutsett").addEventListener("click",()=>{customPlan.push({m:10,d:1});drawEgen();schedule3();});
+}
+drawEgen();
 function pickBest(sp,env,tag){
   let best=null;
-  for(const [pl] of PLANS) for(const sd of [0,30,61]){
+  for(const [pl] of PLANS) for(const sd of [30,61]){
     const r=runCase(sp,planOf(pl),sd,env,null,true);
-    if(r.short>0) continue;
+    if(r.short>0||r.minViol>0||r.closedViol>0) continue;
     if(!best||r.prod>best.prod+1) best={prod:r.prod,pl,sd};
   }
   if(best){$("plan"+tag).value=best.pl;$("spread"+tag).value=String(best.sd);$("opt"+tag).checked=true;}
@@ -765,7 +1018,7 @@ function drawFreed(env,ref,scen){
 
 /* ---------- fane 1 ---------- */
 function computeT1(){
-  const ref=runCase(cur.ref,DAGENS,0,FIX,null,false), sc=runCase(cur.scen,DAGENS,0,FIX,ref.N[0]);
+  const ref=runCase(cur.ref,DAGENS,30,FIX,null,false), sc=runCase(cur.scen,DAGENS,30,FIX,ref.N[0]);
   S.t1={ref,sc}; drawFreed(FIX,ref,sc);
   const fr=ref.peak-sc.peak;
   $("a1").textContent=(fr<0?"−":"")+nb(Math.abs(fr))+" t"; $("a1s").textContent=`${nb(fr/780,2)} tillatelser, ved jevn biomasse ${nb(ref.avg-sc.avg)} t`;
@@ -773,7 +1026,7 @@ function computeT1(){
   $("a2").textContent=`${mm(ref)} → ${mm(sc)} mnd`; $("a3").textContent=nb(ref.N[0]); $("a4").textContent=nb(ref.prod)+" t";
   // varmekart
   const vfs=[2.5,2.75,3,3.25,3.5], ws=[100,200,300,400,500], vals=[];
-  for(const w of ws){const row=[];for(const v of vfs){const r=runCase({vf3:v,w0:w},DAGENS,0,FIX,ref.N[0]);row.push(ref.peak-r.peak);}vals.push(row);}
+  for(const w of ws){const row=[];for(const v of vfs){const r=runCase({vf3:v,w0:w},DAGENS,30,FIX,ref.N[0]);row.push(ref.peak-r.peak);}vals.push(row);}
   const flat=vals.flat(), lo=Math.min(...flat), hi=Math.max(...flat);
   const col=v=>{ if(v>=0){const f=hi>0?v/hi:0;return `rgba(127,201,127,${0.12+0.78*f})`;} const f=lo<0?v/lo:0; return `rgba(251,128,114,${0.12+0.78*f})`; };
   let html=`<tr><th>Smoltvekt ↓ VF3 →</th>${vfs.map(v=>`<th>${nb(v,2)}</th>`).join("")}</tr>`;
@@ -788,10 +1041,10 @@ function computeT1(){
 
 /* ---------- fane 2 ---------- */
 function measuresHtml(cs,o,env,extra){
-  const n=cs.N.length, equal=cs.N.every(v=>v===cs.N[0]), wf=Math.min(...cs.slots.map(s=>s.wFrom)), wt=Math.max(...cs.slots.map(s=>s.wTo)), hw=cs.prod*1000/cs.Nsum;
+  const n=cs.N.length, equal=cs.N.every(v=>v===cs.N[0]), wf=Math.min(...cs.slots.map(s=>s.wFrom)), wt=Math.max(...cs.slots.map(s=>s.wTo)), hw=cs.slots.reduce((x,s)=>x+s.hw,0)/cs.slots.length;
   const items=[
-    [o.key==="dagens"?"Utsettsplan som i dag":`${n} utsett per år, april til desember`, o.key==="dagens"?"30.04, 30.06, 31.08 og 30.12.":`${o.plan.map(fmtMD).join(", ")}. I dag: 4 utsett med 2, 2, 4 og 4 måneders mellomrom.`],
-    [o.spread>0?`Slakt spredt over ${o.spread<45?"1 måned":o.spread<75?"2 måneder":"3 måneder"}`:"Slakt på én dag", o.spread>0?`Slaktevekt fra ${nb(wf,1)} til ${nb(wt,1)} kg, snitt ${nb(hw,2)} kg.`:`Hele generasjonen slaktes ved ${nb(hw,2)} kg i snitt.`],
+    [o.key==="dagens"?"Utsettsplan som i dag":o.key==="egen"?`Egen årsplan med ${n} utsett`:`${n} utsett per år, jevnt fra 1.04 til 14.01`, o.key==="dagens"?"30.04, 30.06, 31.08 og 30.12.":`${o.plan.map(fmtMD).join(", ")}.`+(o.key==="egen"?"":" I dag: 4 utsett med 2, 2, 4 og 4 måneders mellomrom.")],
+    [`Slakt over ${o.spread<45?"1 måned":o.spread<75?"2 måneder":"3 måneder"}`, o.spread>0?`Slaktevekt fra ${nb(wf,1)} til ${nb(wt,1)} kg, snitt ${nb(hw,2)} kg.`:`Hele generasjonen slaktes ved ${nb(hw,2)} kg i snitt.`],
     [o.optimize?(equal?"Gruppestørrelse optimert, lik i alle utsett":"Tilpasset gruppestørrelse per utsett"):"Lik gruppestørrelse", (equal?`${nb(cs.N[0])} smolt per utsett`:`${cs.N.map((v,i)=>"U"+(i+1)+" "+nb(v/1000)+"k").join(", ")}`)+`, ${nb(cs.Nsum/1e6,2)} mill per år${cs.m>1?`, fordelt på ${cs.m} lokaliteter per utsett`:""}.`]
   ].concat(extra||[]);
   return items.map(([h,d])=>`<li><b>${h}</b><span>${d}</span></li>`).join("");
@@ -804,12 +1057,12 @@ function bindOf(cs,env){
 function computeT2(){
   if($("auto2").checked) pickBest(cur.scen,FIX,"2");
   const o={key:$("plan2").value,plan:planOf($("plan2").value),spread:+$("spread2").value,optimize:$("opt2").checked};
-  const ref=runCase(cur.ref,DAGENS,0,FIX,null,false), s2=runCase(cur.scen,o.plan,o.spread,FIX,null,o.optimize);
+  const ref=runCase(cur.ref,DAGENS,30,FIX,null,false), s2=runCase(cur.scen,o.plan,o.spread,FIX,null,o.optimize);
   S.t2={ref,s2,o};
   // trinn
-  const w1=runCase(cur.scen,DAGENS,0,FIX,null,false), w2=runCase(cur.scen,o.plan,0,FIX,null,false), w3=runCase(cur.scen,o.plan,o.spread,FIX,null,false);
-  waterfall("wf1",[{label:"Referanse",v:ref.prod,total:true,color:"var(--ref)"},{label:"Vekst og smolt, flere smolt",v:w1.prod},{label:"Utsettsplan",v:w2.prod},{label:"Spredt slakt",v:w3.prod},{label:"Gruppestørrelse",v:s2.prod},{label:"Optimert drift",v:s2.prod,total:true,color:"var(--scen2)"}]);
-  $("measures2").innerHTML=measuresHtml(s2,o,FIX,[["Rammer som holdes","MTB selskap 6 240 t og MTB per lokalitet 2 340 t, én generasjon per lokalitet, 8 lokaliteter og ingen utsett i januar til mars."]]);
+  const w1=runCase(cur.scen,DAGENS,30,FIX,null,false), w2=runCase(cur.scen,o.plan,30,FIX,null,false), w3=runCase(cur.scen,o.plan,o.spread,FIX,null,false);
+  waterfall("wf1",[{label:"Referanse",v:ref.prod,total:true,color:"var(--ref)"},{label:"Vekst og smolt, flere smolt",v:w1.prod},{label:"Utsettsplan",v:w2.prod},{label:"Lengre slakteperiode",v:w3.prod},{label:"Gruppestørrelse",v:s2.prod},{label:"Optimert drift",v:s2.prod,total:true,color:"var(--scen2)"}]);
+  $("measures2").innerHTML=measuresHtml(s2,o,FIX,[["Rammer som holdes","MTB selskap 6 240 t og MTB per lokalitet 2 340 t, én generasjon per lokalitet, 8 lokaliteter, ingen utsett 15.01 til 31.03, minst 100 000 smolt per utsett og slakt over minst 1 måned."]]);
   $("res2").innerHTML=`<div><span class="lbl">Produksjon per år</span><span class="v">${nb(s2.prod)} t</span></div><div><span class="lbl">Utnyttelse av MTB</span><span class="v">${nb(s2.avg/FIX.mtbCo*100,0)} %</span></div><div><span class="lbl">Begrenses av</span><span class="v small">${bindOf(s2,FIX)}</span></div><div><span class="lbl">Lokaliteter i bruk</span><span class="v small">${s2.maxOcc} av 8 inkl. brakklegging</span></div>`;
   const dP=s2.prod-ref.prod;
   $("b1").textContent=sgn(dP)+" t"; $("b1s").textContent=`${sgn(dP/ref.prod*100)} % mot referansen, samme MTB`;
@@ -865,7 +1118,8 @@ function drawMix(A){
   $("mixd").textContent=METH.map(([k,l],i)=>`${l.toLowerCase()} ${nb(dm[i]*100,0)} %`).filter((x,i)=>dm[i]>=0.005).join(", ");
   const mixT=METH.map(([k])=>Math.max(0,+$("mx-"+k).value||0)), sT=mixT.reduce((a,b)=>a+b,0)||1;
   const par=METH.map(([k])=>({mo:(+$("mo-"+k).value||0)/100,dy:+$("dy-"+k).value||0}));
-  return {ref:dm,tilt:mixT.map(v=>v/sT),par};
+  const same=METH.every(([k],i)=>mixT[i]===Math.round(dm[i]*100));
+  return {ref:dm,tilt:same?dm.slice():mixT.map(v=>v/sT),par};
 }
 function lpt(mix,par,hw,gday){ // tonn tapt per fisk og avlusning
   let mo=0,dy=0; mix.forEach((w,i)=>{mo+=w*par[i].mo; dy+=w*par[i].dy;});
@@ -904,16 +1158,31 @@ function computeT3(){
       const cyc=cs.slots.reduce((a,s)=>a+s.h1,0)/cs.slots.length, w=Math.min(1,st[0].partial.days/cyc);
       st=st.map(x=>({...x,red:1-(1-x.red)*(1-w*x.partial.red)})); }
     return liceSites(cs,env,st,RATES); };
-  const d=runCase(cur.ref,DAGENS,0,env,null,false), Ld=liceSites(d,env,sitesRef,RATES);
-  const lptRef=lpt(MX.ref,MX.par,d.prod*1000/d.Nsum,Ld.gday), kRef=Ld.F/d.Nsum;
-  const netOf=(cs,L,mix)=>{const lp=lpt(mix,MX.par,cs.prod*1000/cs.Nsum,L.gday); const base=cs.Nsum*kRef*(lptRef.m+lptRef.g), act=L.F*(lp.m+lp.g);
+  const dPlan=planOf($("dplan3").value);
+  // dødelighet: total for alle årsaker, minus forventet dødelighet fra avlusning i dagens drift
+  const Mtot=Math.max(0,Math.min(60,+$("mort3").value||0))/100;
+  env.mort=Mtot;
+  let d=runCase(cur.ref,dPlan,30,env,null,false), Ld=liceSites(d,env,sitesRef,RATES);
+  const mixMort=MX.ref.reduce((a,w,i)=>a+w*MX.par[i].mo,0), cycY=d.slots.reduce((a,x)=>a+x.h1,0)/d.slots.length/365;
+  const Mtreat=1-Math.pow(1-mixMort,(Ld.F/d.Nsum)/Math.max(0.1,cycY));
+  env.mort=Math.max(0,1-(1-Mtot)/(1-Mtreat));
+  d=runCase(cur.ref,dPlan,30,env,null,false); Ld=liceSites(d,env,sitesRef,RATES);
+  $("mortinfo").textContent=`Annen dødelighet ${nb(env.mort*100,1)} % per år. Avlusning står for om lag ${nb(Mtreat*100,1)} % i dagens drift.`;
+  S.t3mort=env.mort;
+  const lptRef=lpt(MX.ref,MX.par,d.slots.reduce((x,s)=>x+s.hw,0)/d.slots.length,Ld.gday), kRef=Ld.F/d.Nsum;
+  const netOf=(cs,L,mix)=>{const lp=lpt(mix,MX.par,cs.slots.reduce((x,s)=>x+s.hw,0)/cs.slots.length,L.gday); const base=cs.Nsum*kRef*(lptRef.m+lptRef.g), act=L.F*(lp.m+lp.g);
     return {net:cs.prod+base-act, av:base-act, avM:cs.Nsum*kRef*lptRef.m-L.F*lp.m, avG:cs.Nsum*kRef*lptRef.g-L.F*lp.g, k:L.F/cs.Nsum};};
   if($("auto3").checked){ let best=null;
-    for(const [pl] of PLANS) for(const sd of [0,30,61]){ const r=runCase(cur.scen,planOf(pl),sd,env,null,true); if(r.short>0) continue;
+    for(const pl of PLANS.map(x=>x[0]).concat(["egen"])) for(const sd of [30,61]){ const r=runCase(cur.scen,planOf(pl),sd,env,null,true); if(r.short>0||r.minViol>0||r.closedViol>0) continue;
       const nn=netOf(r,liceT(r,sitesT),MX.tilt).net; if(!best||nn>best.n+1) best={n:nn,pl,sd}; }
     if(best){$("plan3").value=best.pl;$("spread3").value=String(best.sd);$("opt3").checked=true;} }
   const o={key:$("plan3").value,plan:planOf($("plan3").value),spread:+$("spread3").value,optimize:$("opt3").checked};
-  const w1=runCase(cur.scen,DAGENS,0,env,null,false), tt=runCase(cur.scen,o.plan,o.spread,env,null,o.optimize);
+  S.t3warn="";
+  const w1=runCase(cur.scen,dPlan,30,env,null,false), tt=runCase(cur.scen,o.plan,o.spread,env,null,o.optimize);
+  { const wv=[]; if(d.minViol) wv.push(`Dagens drift gir ${nb(d.N[0])} smolt per utsett, under minste utsett på ${nb(MIN_N)}. Velg færre utsett.`);
+    if(tt.minViol) wv.push(`Løpet med tiltak har utsett under ${nb(MIN_N)} smolt.`);
+    const dropped=tt.N.filter(v=>v===0).length; if(dropped&&o.optimize) wv.push(`${dropped} av ${tt.N.length} utsett i planen får ingen fisk, fordi de ellers ville blitt under ${nb(MIN_N)} smolt.`);
+    S.t3warn=wv.join(" "); }
   const L1=liceSites(w1,env,sitesRef,RATES), L2=liceSites(tt,env,sitesRef,RATES), Lt=liceT(tt,sitesT);
   const n1=netOf(w1,L1,MX.ref), n2=netOf(tt,L2,MX.ref), n3=netOf(tt,Lt,MX.ref), nt=netOf(tt,Lt,MX.tilt);
   S.t3={env,A,sites,d,tt,Ld,Lt};
@@ -932,7 +1201,7 @@ function computeT3(){
   const key=$("co").value+"|"+$("area").value+"|"+sites.length;
   if(S.t3key!==key){buildPanel("p3d","Dagens drift","ref",sites.length);buildPanel("p3t","Med tiltak","scen2",sites.length);S.t3key=key;}
   S.t3.names=sites.map(s=>{const n=s.name.charAt(0)+s.name.slice(1).toLowerCase(); return n.length>11?n.slice(0,10)+"…":n;});
-  $("p3dmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g, 4 utsett på ${d.m} lokaliteter hver. MTB behov ${nb(d.peak)} t.`+(d.short?` ${d.short} utsett manglet lokalitet.`:"");
+  $("p3dmeta").textContent=`VF3 ${nb(cur.ref.vf3,2)}, ${cur.ref.w0} g, ${d.N.length} utsett på ${d.m} lokaliteter hver. MTB behov ${nb(d.peak)} t.`+(d.short?` ${d.short} utsett manglet lokalitet.`:"");
   $("p3tmeta").textContent=`VF3 ${nb(cur.scen.vf3,2)}, ${cur.scen.w0} g, ${tt.N.length} utsett på ${tt.m} lokaliteter hver. MTB behov ${nb(tt.peak)} t.`+(tt.short?` ${tt.short} utsett manglet lokalitet.`:"");
   $("leg3").textContent=`Biomassetak ${nb(A.mtb)} tonn`;
   S.t3.chart=buildBio("c3",env,[{total:d.total,color:"var(--ref)"},{total:tt.total,color:"var(--scen2)"}]);
@@ -942,7 +1211,9 @@ function computeT3(){
   if(barTxt||nCf||closedD>0) extra.push(["Forebyggende og kontrollerende",[barTxt, nCf?`rensefisk på ${nCf} lokaliteter`:"", closedD>0?`${$("cl3").value} måneder i lukket merd etter utsett`:""].filter(Boolean).join(", ")+"."]);
   const mixTxt=METH.map(([k,l],i)=>`${l.toLowerCase()} ${nb(MX.tilt[i]*100,0)} %`).filter((x,i)=>MX.tilt[i]>=0.005).join(", ");
   extra.push(["Behandlingsmetoder",mixTxt+"."]);
-  $("t3note").innerHTML=`<b>Tiltak i løpet «med tiltak»:</b> `+measuresHtml(tt,o,env,extra).replace(/<li><b>/g," ").replace(/<\/b><span>/g,": ").replace(/<\/span><\/li>/g,"")+` <b>Merk:</b> modellen er optimistisk fordi den ikke har annen dødelighet enn ved avlusning, og tapet per avlusning er trolig et øvre anslag.`;
+  $("t3note").innerHTML=`<b>Tiltak i løpet «med tiltak»:</b> `+measuresHtml(tt,o,env,extra).replace(/<li><b>/g," ").replace(/<\/b><span>/g,": ").replace(/<\/span><\/li>/g,"")+` Annen dødelighet ${nb(env.mort*100,1)} % per år i alle løp.`+(S.t3warn?` <b>${S.t3warn}</b>`:"")+` <b>Merk:</b> tapet per avlusning er trolig et øvre anslag.`;
+  S.t3ctx={env,A,sites,sitesRef,sitesT,MX,lptRef};
+  if(PLANDATA) renderPlan();
 }
 function drawTempT3(env,A){
   const s=$("tempsvg"); s.innerHTML="";
@@ -955,6 +1226,90 @@ function drawTempT3(env,A){
   let p="";for(let d=0;d<365;d++)p+=(d?"L":"M")+x(d).toFixed(1)+","+y(T[d]).toFixed(1); el("path",{d:p,fill:"none",stroke:"#000","stroke-width":"2"},s);
   const mean=T.reduce((a,b)=>a+b,0)/365;
   $("tempcap").textContent=`Snitt ${nb(mean,1)} °C, fra ${nb(Math.min(...T),1)} til ${nb(Math.max(...T),1)} °C. `+({lok:"Ukesnitt 2015 til 2025 for selskapets lokaliteter i området.",blandet:"Selskapets lokaliteter der det finnes data, ellers snitt for produksjonsområdet.",po:"Snitt for produksjonsområdet, fordi selskapets lokaliteter mangler temperaturdata."}[A.tempSrc]);
+}
+
+/* ---------- produksjonsplan ---------- */
+let PLANDATA=null;
+const TMPL="Generasjon;Merd;Lokalitetsnr;Lokalitetsnavn;Utsettsdato;Antall smolt;Smoltvekt (g);Planlagt slaktestart;Planlagt slakteslutt;Planlagt slaktevekt (kg)\nEksempel 2027 V;M1;12345;Eksempelholmen;30.04.2027;250000;250;;;5,0\nEksempel 2027 V;M2;12345;Eksempelholmen;30.04.2027;250000;250;;;5,0\nEksempel 2027 H;M1;23456;Prøvevika;31.08.2027;400000;300;01.09.2028;31.10.2028;";
+$("tmpl").href="data:text/csv;charset=utf-8,"+encodeURIComponent("\ufeff"+TMPL);
+// nedlasting: i Claude-visningen går filen via downloads, ellers vanlig lenke (GitHub Pages)
+let DL=null; if(window.claude&&typeof window.claude.use==="function") window.claude.use("downloads").then(d=>{DL=d;}).catch(()=>{});
+function dlVia(id,name,getData){ $(id).addEventListener("click",async e=>{ if(!DL) return; e.preventDefault();
+  try{ await DL.save({filename:name,data:await getData()}); }catch(err){ if(err&&err.code!=="declined") $(id).textContent="Nedlasting er ikke tilgjengelig her"; } }); }
+dlVia("tmpl","produksjonsplan_mal.csv",()=>"\ufeff"+TMPL);
+dlVia("tmplx","Produksjonsplan_mal.xlsx",()=>{const b=atob($("tmplx").getAttribute("href").split(",")[1]), u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u;});
+$("copytmpl").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(TMPL.replace(/;/g,"\t"));$("copytmpl").textContent="Malen er kopiert";}catch(e){$("copytmpl").textContent="Kopiering ble ikke tillatt";}});
+$("clearplan").addEventListener("click",()=>{PLANDATA=null;$("planout").innerHTML="";$("planfile").value="";});
+$("planfile").addEventListener("change",async e=>{const f=e.target.files[0]; if(!f) return;
+  try{ const rows=/\.xlsx$/i.test(f.name)?await readXlsx(await f.arrayBuffer()):readDelimited(await f.text()); PLANDATA={rows,src:f.name}; renderPlan(); }
+  catch(err){ $("planout").innerHTML=`<p class="warnline">Kunne ikke lese filen: ${String(err.message||err)}</p>`; }});
+$("usepaste").addEventListener("click",()=>{const tx=$("planpaste").value; if(!tx.trim()) return; PLANDATA={rows:readDelimited(tx),src:"innlimt tabell"}; renderPlan();});
+function renderPlan(){
+  const out=$("planout"), ctx=S.t3ctx; if(!PLANDATA||!ctx){return;}
+  const {env,A,sites,sitesRef,sitesT,MX,lptRef}=ctx;
+  const res=parsePlan(PLANDATA.rows,A.sites);
+  if(!res.groups.length){ out.innerHTML=`<ul class="msgs">${res.msgs.map(m=>`<li class="w">${m}</li>`).join("")}</ul>`; return; }
+  const sim=simulatePlan(res.groups,{temp:env.temp,vf3:cur.ref.vf3,w0def:cur.ref.w0,HW:5,mort:env.mort});
+  const DAY=86400000, Y0=new Date(sim.yStart).getUTCFullYear(), nY=Math.ceil(sim.nDays/365.25);
+  // avlusninger per lokalitet og gruppe, uten og med tiltak
+  const idx=new Map(A.sites.map(s=>[s.id,s])), fSite=s=>(s.O+20*A.f)/(s.E+20);
+  const selIdx=new Map(sites.map((s,j)=>[s.id,j])), redAvg=sitesT.length?sitesT.reduce((a,x)=>a+x.red,0)/sitesT.length:0;
+  const yr=Array.from({length:nY},(_,i)=>({y:Y0+i,stock:0,harv:0,bsum:0,bdays:0,bmax:0,td:0,tt:0,Fd:0,Ft:0,Gd:0,Gt:0}));
+  const yOf=t=>Math.min(nY-1,Math.floor((t)/365.25+((sim.yStart-Date.UTC(Y0,0,1))/DAY)/365.25));
+  for(let t=0;t<sim.nDays;t++){ const y=new Date(sim.yStart+t*DAY).getUTCFullYear()-Y0; if(y<0||y>=nY) continue; const Y=yr[y]; Y.harv+=sim.harvest[t]; Y.bsum+=sim.total[t]; Y.bdays++; Y.bmax=Math.max(Y.bmax,sim.total[t]); }
+  for(const g of sim.G){
+    const y=new Date(g.date).getUTCFullYear()-Y0; if(y>=0&&y<nY) yr[y].stock+=g.N||0;
+    const s=g.site, po=String(s?s.po:A.pos[0]);
+    const j=s?selIdx.get(s.id):undefined, fac=j!==undefined?sitesRef[j].f:s?fSite(s):A.f;
+    const redT=j!==undefined?sitesT[j].red:redAvg, clD=j!==undefined?sitesT[j].closedD:0;
+    const tab=RATES[po]; if(!tab) continue;
+    for(let a=0;a<=g.he&&g.start+a<sim.nDays;a++){
+      const frac=a<g.hs?1:g.he>g.hs?Math.max(0,1-(a-g.hs+1)/(g.he-g.hs+1)):0; if(frac<=0) continue;
+      const m=DOY_MONTH[(g.doy+a)%365], ab=Math.min(6,Math.floor(a/91.31)), base=tab[m][ab]*fac/7*frac;
+      const y2=new Date(sim.yStart+(g.start+a)*DAY).getUTCFullYear()-Y0; if(y2<0||y2>=nY) continue;
+      const fish=(g.N||0)*Math.exp(-sim.hz*a), dW=a<1460?g.W[a+1]-g.W[a]:0, rt=a<clD?0:base*(1-redT);
+      yr[y2].td+=base; yr[y2].tt+=rt; yr[y2].Fd+=fish*base; yr[y2].Ft+=fish*rt; yr[y2].Gd+=fish*base*dW; yr[y2].Gt+=fish*rt*dW;
+    }
+  }
+  const lpOf=(mix,F,G)=>{let mo=0,dy=0; mix.forEach((w,i)=>{mo+=w*MX.par[i].mo;dy+=w*MX.par[i].dy;}); return F*mo*5/1000+dy*G/1000;};
+  yr.forEach(Y=>{Y.lossD=lpOf(MX.ref,Y.Fd,Y.Gd); Y.lossT=lpOf(MX.tilt,Y.Ft,Y.Gt); Y.av=Y.lossD-Y.lossT; Y.avg=Y.bdays?Y.bsum/Y.bdays:0;});
+  // kontroller
+  const msgs=res.msgs.slice(); const warn=[];
+  let over=0,first=null,mx=0; for(let t=0;t<sim.nDays;t++){ if(sim.total[t]>env.mtbCo+0.5){over++; if(first===null) first=t;} mx=Math.max(mx,sim.total[t]); }
+  if(over) warn.push(`Samlet biomasse er over biomassetaket (${nb(env.mtbCo)} t) i ${over} dager, første gang ${fmtDate(sim.yStart+first*DAY)}. Høyeste biomasse ${nb(mx)} t.`);
+  const siteRows=[];
+  for(const [key,arr] of sim.siteBio){ const s=idx.get(key), cap=s?s.cap:null; let m=0,mt=0,od=0; for(let t=0;t<arr.length;t++){ if(arr[t]>m){m=arr[t];mt=t;} if(cap&&arr[t]>cap+0.5) od++; }
+    const gens=sim.siteGens.get(key).slice().sort((a,b)=>a.date-b.date); let ovl=false, shortF=false;
+    for(let i=1;i<gens.length;i++){ const prevEnd=gens[i-1].endDay, st=gens[i].start; if(Math.abs(gens[i].date-gens[i-1].date)>60*DAY){ if(st<=prevEnd) ovl=true; else if(st-prevEnd<60) shortF=true; } }
+    siteRows.push({name:s?s.name:("Ukjent "+key.toString().replace(/^u/,"")),nr:s?s.id:"",cap,m,mt,od,ovl,shortF,n:gens.length});
+    if(od) warn.push(`${s?s.name:key}: over lokalitetens MTB (${nb(cap)} t) i ${od} dager, høyest ${nb(m)} t ${fmtDate(sim.yStart+mt*DAY)}.`);
+    if(ovl) warn.push(`${s?s.name:key}: to generasjoner står samtidig på lokaliteten.`);
+    if(shortF) msgs.push(`${s?s.name:key}: under 2 måneder brakklegging mellom generasjoner.`);
+  }
+  const doyOf=t=>{const d=new Date(t);return Math.round((Date.UTC(2026,d.getUTCMonth(),d.getUTCDate())-Date.UTC(2026,0,1))/DAY);};
+  const jm=sim.G.filter(g=>isClosed(doyOf(g.date))).length; if(jm) warn.push(`${jm} utsett er i stengt periode for utsett (15.01 til 31.03).`);
+  const byDate=new Map(); sim.G.forEach(g=>byDate.set(g.date,(byDate.get(g.date)||0)+(g.N||0)));
+  const lowN=[...byDate].filter(([t,n])=>n<MIN_N); if(lowN.length) warn.push(`${lowN.length} utsett er under ${nb(MIN_N)} smolt: ${lowN.slice(0,4).map(([t,n])=>fmtDate(t)+" ("+nb(n)+")").join(", ")}${lowN.length>4?" …":""}.`);
+  const shortH=sim.G.filter(g=>g.hExt).length; if(shortH) warn.push(`${shortH} utsett har planlagt slakt over kortere tid enn 1 måned. De er simulert med 1 måned fra planlagt start.`);
+  siteRows.sort((a,b)=>(b.cap||0)-(a.cap||0));
+  const nGen=sim.G.length, nSite=sim.siteBio.size, totN=sim.G.reduce((a,g)=>a+(g.N||0),0);
+  out.innerHTML=`<p class="note2" style="margin:0 0 8px">Lest fra ${PLANDATA.src}: ${res.nRows} rader, ${nGen} utsett på ${nSite} lokaliteter, ${nb(totN/1e6,2)} mill smolt. VF3 ${nb(cur.ref.vf3,2)}, annen dødelighet ${nb(env.mort*100,1)} % per år.</p>`+
+    (warn.length||msgs.length?`<ul class="msgs">${warn.map(m=>`<li class="w">${m}</li>`).join("")}${msgs.map(m=>`<li>${m}</li>`).join("")}</ul>`:`<p class="note2"><b>Ingen brudd på biomassetaket eller lokalitetenes MTB.</b></p>`)+
+    `<div style="overflow-x:auto"><table class="ytab"><tr><th>År</th><th>Utsatt (mill)</th><th>Slaktet (t)</th><th>Snitt biomasse (t)</th><th>Utnyttelse</th><th>Høyeste biomasse (t)</th><th>Avlusninger, plan → med tiltak</th><th>Unngått tap (t)</th><th>Netto med tiltak (t)</th></tr>`+
+    yr.filter(Y=>Y.bdays).map(Y=>`<tr><td>${Y.y}</td><td>${nb(Y.stock/1e6,2)}</td><td>${nb(Y.harv)}</td><td>${nb(Y.avg)}</td><td>${nb(Y.avg/env.mtbCo*100,0)} %</td><td>${nb(Y.bmax)}</td><td>${nb(Y.td)} → ${nb(Y.tt)}</td><td>${sgn(Y.av)}</td><td>${nb(Y.harv+Y.av)}</td></tr>`).join("")+`</table></div>`+
+    `<p class="note2">Første og siste år er ufullstendige hvis planen ikke dekker hele året. «Med tiltak» bruker de forebyggende og kontrollerende tiltakene og metodemiksen som er valgt over, på samme plan. Lokaliteter i planen som ikke er valgt i lokalitetstabellen får snittet av de valgte lokalitetenes tiltakseffekt.</p>`+
+    `<div class="chart-wrap"><svg id="planchart" viewBox="0 0 1000 300" role="img" aria-label="Biomasse etter produksjonsplanen mot biomassetaket"></svg></div>`+
+    `<details style="margin-top:8px"><summary class="lbl" style="cursor:pointer">Lokaliteter i planen</summary><div style="overflow-x:auto"><table class="ytab"><tr><th>Lokalitet</th><th>Nr</th><th>Utsett</th><th>MTB (t)</th><th>Høyeste biomasse (t)</th><th>Dato</th><th>Dager over MTB</th></tr>`+
+    siteRows.map(r=>`<tr><td>${r.name}</td><td>${r.nr}</td><td>${r.n}</td><td>${r.cap?nb(r.cap):"ukjent"}</td><td>${nb(r.m)}</td><td>${fmtDate(sim.yStart+r.mt*DAY)}</td><td>${r.od||""}</td></tr>`).join("")+`</table></div></details>`;
+  // graf
+  const sv=$("planchart"), X0=56,X1=985,Y1=14,Yb=260, top=Math.max(env.mtbCo*1.1,mx), raw=top/6, mag=Math.pow(10,Math.floor(Math.log10(raw))), step=[1,2,5,10].map(k=>k*mag).find(v=>v>=raw), ymax=Math.ceil(top/step)*step;
+  const xs=i=>X0+(X1-X0)*i/(sim.nDays-1), ys=v=>Yb-(Yb-Y1)*v/ymax;
+  for(let v=0;v<=ymax+1e-9;v+=step){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:"var(--line)"},sv);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},sv);tx.textContent=nb(v);}
+  for(let i=0;i<=nY;i++){const t=Math.round((Date.UTC(Y0+i,0,1)-sim.yStart)/DAY); if(t<0||t>=sim.nDays) continue; el("line",{x1:xs(t),x2:xs(t),y1:Y1,y2:Yb,stroke:"var(--line)"},sv);const tx=el("text",{x:xs(t)+4,y:Yb+18},sv);tx.textContent=Y0+i;}
+  let d="";for(let i=0;i<sim.nDays;i+=2)d+=(i?"L":"M")+xs(i).toFixed(1)+","+ys(sim.total[i]).toFixed(1);
+  el("path",{d,fill:"none",stroke:"var(--ref)","stroke-width":"2.4"},sv);
+  el("line",{x1:X0,x2:X1,y1:ys(env.mtbCo),y2:ys(env.mtbCo),stroke:"#000","stroke-width":"2"},sv);
+  const lt=el("text",{x:X1-4,y:ys(env.mtbCo)-6,"text-anchor":"end",style:"font-weight:700"},sv); lt.textContent=`Biomassetak ${nb(env.mtbCo)} t`;
 }
 
 /* ---------- styring ---------- */
@@ -980,7 +1335,7 @@ document.querySelectorAll(".presets button").forEach(b=>b.addEventListener("clic
 ["plan2","spread2","opt2"].forEach(id=>$(id).addEventListener("change",()=>{$("auto2").checked=false;schedule();}));
 $("auto2").addEventListener("change",schedule);
 ["plan3","spread3","opt3"].forEach(id=>$(id).addEventListener("change",()=>{$("auto3").checked=false;schedule3();}));
-["auto3","bar3","cf3","cl3","ef-skirt","ef-snorkel","ef-sub","ef-closed","ef-conv","ef-cf","mode3"].forEach(id=>$(id).addEventListener("change",schedule3));
+["auto3","dplan3","mort3","bar3","cf3","cl3","ef-skirt","ef-snorkel","ef-sub","ef-closed","ef-conv","ef-cf","mode3"].forEach(id=>$(id).addEventListener("change",schedule3));
 $("co").addEventListener("change",()=>{fillArea();schedule3();});
 $("area").addEventListener("change",schedule3);
 $("selall").addEventListener("click",()=>{const A=areaData();siteSel[$("co").value+"|"+$("area").value]=new Set(A.sites.map(s=>s.id));schedule3();});
