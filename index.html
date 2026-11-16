@@ -148,6 +148,14 @@ select{max-width:100%}
 .msgs{margin:0 0 10px;padding-left:18px;font-size:13px}
 .msgs li.w{font-weight:700}
 .ytab{width:100%;border-collapse:collapse;font-size:13px}
+.tabs{overflow-x:auto;scrollbar-width:none}.tabs button{white-space:nowrap;flex:0 0 auto}
+@media (max-width:560px){.tabs button{padding:8px 10px;font-size:13px}}
+.params4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px}
+.params4 input,.mtab input.e4{width:100%;max-width:9em}
+.mtab input.e4{width:6.5em}
+.mtab input.pq{width:5.2em}
+.ytab td.neg{color:#b00020}
+.ytab tr.sum td{font-weight:700;border-top:1px solid #000}
 .ytab th,.ytab td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
 .ytab th:first-child,.ytab td:first-child{text-align:left}
 .ytab th{font-size:12px;border-bottom:1px solid #000}
@@ -215,6 +223,7 @@ select{max-width:100%}
     <button role="tab" id="tb-t1" aria-controls="t1" aria-selected="true">1 Grunnlag</button>
     <button role="tab" id="tb-t2" aria-controls="t2" aria-selected="false">2 Optimert drift</button>
     <button role="tab" id="tb-t3" aria-controls="t3" aria-selected="false">3 Din virksomhet</button>
+    <button role="tab" id="tb-t4" aria-controls="t4" aria-selected="false">4 Økonomi</button>
   </nav>
 
   <!-- ================= FANE 1 ================= -->
@@ -370,8 +379,61 @@ select{max-width:100%}
     <p class="note2" id="t3note"></p>
   </div>
 
+  <div class="tabpane" id="t4" role="tabpanel" aria-labelledby="tb-t4" hidden>
+    <p class="fixed" id="t4src"></p>
+    <section class="kpis" aria-label="Nøkkeltall fane 4">
+      <div class="kpi"><div class="lbl">Nåverdi uten tiltak</div><div class="v" id="e1v"></div><div class="s" id="e1s"></div></div>
+      <div class="kpi"><div class="lbl">Nåverdi med tiltak</div><div class="v" id="e2v"></div><div class="s" id="e2s"></div></div>
+      <div class="kpi"><div class="lbl">Gevinst av tiltakene</div><div class="v" id="e3v"></div><div class="s" id="e3s"></div></div>
+      <div class="kpi"><div class="lbl">Driftsresultat per kg</div><div class="v" id="e4v"></div><div class="s" id="e4s"></div></div>
+    </section>
+    <section class="card"><h2 class="d">Driftsresultat per år</h2>
+      <div class="legend"><span><i style="background:var(--ref)"></i>Uten tiltak</span><span><i style="background:var(--scen2)"></i>Med tiltak</span></div>
+      <div class="chart-wrap"><svg id="ebitchart" class="bio" viewBox="0 0 1000 300" role="img" aria-label="Driftsresultat per år uten og med tiltak"></svg></div>
+      <div style="overflow-x:auto;margin-top:10px"><table class="ytab" id="econtab"></table></div>
+      <p class="note2" id="e4note"></p>
+    </section>
+    <section class="card"><h2 class="d">Prisbane og slakt</h2>
+      <div class="legend"><span><i style="background:#000"></i>Pris NOK/kg HOG</span><span><i style="background:var(--ref)"></i>Slakt per måned, uten tiltak (t)</span></div>
+      <div class="chart-wrap"><svg id="pricechart" class="bio" viewBox="0 0 1000 300" role="img" aria-label="Prisbane og slakt per måned"></svg></div>
+    </section>
+    <div class="cols2">
+      <section class="card"><h2 class="d">Pris</h2>
+        <div class="params4">
+          <label class="field">EUR/NOK<input type="number" id="e4-eurnok" step="0.01" value="11.0"></label>
+          <label class="field">Prisjustering (kr/kg HOG)<input type="number" id="e4-adj" step="0.5" value="0"></label>
+          <label class="field">Diskonteringsrente (%)<input type="number" id="e4-r" step="0.5" value="8"></label>
+        </div>
+        <p class="note2">Referansepris i EUR per tonn sløyd med hode (Superior 3 til 6 kg, FCA Oslo), per kvartal. Prisjustering trekker fra eller legger til for størrelse, kvalitet, kontrakter og frakt til Oslo.</p>
+        <div style="overflow-x:auto"><table class="mtab" id="pricetab"></table></div>
+        <button type="button" id="pricereset" class="btnlink" style="margin-top:8px">Tilbakestill prisbanen</button>
+      </section>
+      <section class="card"><h2 class="d">Produksjonskostnad</h2>
+        <div class="params4">
+          <label class="field">Smolt (kr per stk)<input type="number" id="e4-smolt" step="0.5" value="29.67"></label>
+          <label class="field">Tillegg per 100 g over 100 g (kr per stk)<input type="number" id="e4-smoltadd" step="0.5" value="0"></label>
+          <label class="field">Fôrpris (kr/kg)<input type="number" id="e4-fp" step="0.1" value="19.73"></label>
+          <label class="field">Økonomisk fôrfaktor<input type="number" id="e4-fcr" step="0.01" value="1.30"></label>
+          <label class="field">Slakt inkl. frakt (kr/kg)<input type="number" id="e4-slakt" step="0.1" value="4.67"></label>
+          <label class="field">Lønn, forsikring, avskrivninger og andre driftskostnader uten fiskehelse (kr/kg)<input type="number" id="e4-other" step="0.1" value="21.34"></label>
+          <label class="field">Fiskehelse i dag, totalt (kr/kg)<input type="number" id="e4-helse" step="0.05" value="3.65"></label>
+        </div>
+        <p class="note2" id="helseinfo"></p>
+        <h3 class="lbl" style="margin-top:12px">Avlusning, direkte kostnad per kg behandlet fisk</h3>
+        <div style="overflow-x:auto"><table class="mtab" id="treattab"></table></div>
+        <label class="field" style="margin-top:8px">Prisjustering av avlusningskostnad fra 2017 (faktor)<input type="number" id="e4-kpi" step="0.05" value="1.00"></label>
+      </section>
+    </div>
+    <section class="card"><h2 class="d">Kostnad ved tiltak</h2>
+      <p class="note2">Kostnad per kg produsert fisk (rund vekt) på lokaliteter med tiltaket. Kapitalkostnad er årlig kostnad for investeringen (avskrivning og rente). Investeringen per lokalitet beregnes fra kapitalkostnaden, produksjonen på lokaliteten, levetid og rente.</p>
+      <div style="overflow-x:auto"><table class="mtab" id="tiltaktab"></table></div>
+      <label class="field" style="margin-top:8px;max-width:260px">Levetid for investering (år)<input type="number" id="e4-life" step="1" value="10"></label>
+      <p class="note2" id="investinfo"></p>
+    </section>
+  </div>
+
   <footer class="foot">
-    <p><b>Felles forutsetninger:</b> høstevekt 5 kg rund vekt, ingen dødelighet utover det som følger av avlusning i fane 3, 2 måneders brakklegging og én generasjon per lokalitet. Tre driftsregler gjelder alle løp, også dagens drift: slakt av en generasjon tar minst 1 måned, ingen utsett fra 15.01 til 31.03, og hvert utsett er minst 100 000 smolt. Antall smolt per utsett settes så høyt som restriksjonene tillater. Ved optimering er hvert utsett enten tomt eller minst 100 000 smolt. Gruppestørrelser optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over 1 og 2 måneder. Store selskap setter ut på flere lokaliteter samtidig. Modellen velger flest mulig lokaliteter per utsett uten at noen generasjon står uten lokalitet, og fordeler fisken etter lokalitetenes MTB.</p>
+    <p><b>Felles forutsetninger:</b> høstevekt 5 kg, ingen dødelighet i fane 1 og 2 (fane 3 og 4 har dødelighet, se under), 2 måneders brakklegging og én generasjon per lokalitet. Tre driftsregler gjelder alle løp, også dagens drift: slakt av en generasjon tar minst 1 måned, ingen utsett fra 15.01 til 31.03, og hvert utsett er minst 100 000 smolt. Antall smolt per utsett settes så høyt som restriksjonene tillater. Ved optimering er hvert utsett enten tomt eller minst 100 000 smolt. Gruppestørrelser optimeres med lineær programmering. Spredt slakt er modellert som jevnt uttak av fisk over perioden, sentrert rundt dagen snittvekten når 5 kg. Automatisk valg vurderer slakt over 1 og 2 måneder. Store selskap setter ut på flere lokaliteter samtidig. Modellen velger flest mulig lokaliteter per utsett uten at noen generasjon står uten lokalitet, og fordeler fisken etter lokalitetenes MTB.</p>
     <p><b>Selskap og lokaliteter (fane 3):</b> Akvakulturregisteret, uttrekk per 16.11.2026 (Fiskeridirektoratet). Kommersielle tillatelser til matfisk av laks, ørret og regnbueørret i sjø, inkludert grønne tillatelser og tillatelser med 5 % MTB økning. MTB per område er summen av tillatelsene i området. Biomassetaket regnes per produksjonsområde, med valg om å slå sammen områder (felles biomassetak). Dette bygger på et høringsutkast og bør kontrolleres mot gjeldende akvakulturdriftsforskrift. Lokalitetene er de som er knyttet til selskapets tillatelser, med kapasitet fra registeret. Registrerte tiltak (nedsenket, lukket eller semilukket) er hentet fra tidsserien.</p>
     <p><b>Dødelighet (fane 3):</b> dødelighet i sjø for alle årsaker er satt til 14,2 % per år etter Veterinærinstituttets beregning for 2025, og kan endres. Modellens forventede dødelighet fra avlusning i dagens drift trekkes fra, og resten brukes som jevn daglig risiko for annen dødelighet i alle løp. Færre avlusninger gir dermed en gevinst uten at dødeligheten telles to ganger.</p>
     <p><b>Produksjonsplan (fane 3):</b> en importert plan simuleres dag for dag fra første utsett til siste slakt. Hvert utsett vokser etter VF3 for dagens drift og temperaturen for området, med annen dødelighet som over. Slakt følger planlagt start og slutt (jevnt uttak). Uten slaktedatoer slaktes utsettet over 1 måned rundt planlagt slaktevekt eller 5 kg. Kortere slakteperiode enn 1 måned utvides til 1 måned og flagges, det samme gjelder utsett i stengt periode og utsett under 100 000 smolt (summert over lokaliteter med samme utsettsdato). Produksjonen er slaktet volum per kalenderår. Avlusninger regnes per lokalitet med samme rate som ellers, uten og med de forebyggende og kontrollerende tiltakene som er valgt over.</p>
@@ -379,6 +441,7 @@ select{max-width:100%}
     <p><b>Lus og avlusninger:</b> modellen regner avlusninger per lokalitet, ut fra hvilke generasjoner som står der. Forventet antall er en empirisk rate per lokalitet og uke i sjø, anslått med Poisson regresjon på tidsserien for 2021 til 2025 (138 464 lokalitetsuker i sjø, 21 718 rapporterte behandlinger) med produksjonsområde, måned og tid i sjø som forklaringsvariabler. Raten justeres med en faktor per lokalitet: observerte delt på forventede behandlinger 2021 til 2025, trukket mot selskapets nivå i området med vekt tilsvarende 20 behandlinger. Rensefisk reduserer raten direkte. Barrett mfl. (2020, International Journal for Parasitology 50, 787–796, doi.org/10.1016/j.ijpara.2019.12.005) fant svak og variabel effekt på nasjonalt nivå, så standardverdien på 10 % er et forsiktig anslag. Utsettstidspunkt er et strategisk tiltak: automatikken velger plan og slakt som gir høyest netto produksjon etter tap fra avlusning. Områdesamarbeid og koordinert brakklegging er ikke med, fordi effekten avhenger av smitte mellom lokaliteter som modellen ikke fanger. Raten viser samvariasjon og ikke årsakseffekter, avhenger av tid i sjø og ikke fiskens størrelse, og historiske data inneholder allerede tiltak som ikke er registrert. Tiltak reduserer raten med lusereduksjonen ganget med andelen som gir færre avlusninger. Andelen på 60 % er et anslag basert på et forsøk der om lag 80 % færre lus ga halvparten så mange avlusninger (omtalt i fagpressen, ikke fagfellevurdert).</p>
     <p><b>Tap fra avlusning:</b> VF3 er en observert vekst som allerede inneholder tapene fra dagens avlusninger. Fane 3 regner derfor bare endringen mot dagens drift: antall avlusninger hver fisk får, og tapet per avlusning ut fra metodemiksen. Dagens miks er hentet fra tidsserien for selskapets lokaliteter i området, 2021 til 2025. Dødelighet per avlusning: termisk 0,53 % og mekanisk 0,62 % av fisken, etter median antall døde to uker etter behandling i en merd med 150 000 fisk (790 og 928) i Walde mfl. (2021). Medikamentell bad er satt til 0,1 %, fordi samme studie fant at dødeligheten etter termisk og mekanisk avlusning var 5,4 og 6,3 ganger høyere enn etter medikamentell behandling. Ferskvann og annen behandling har ikke eget tall i kildene jeg har hatt tilgang til og er satt lik snittet for termisk og mekanisk. Fôrbehandling er satt til null tap (anslag). Tapte vekstdøgn: 11 for ikke medikamentelle metoder, avledet fra eksempelet i Walde mfl. (2022), der 31 200 kg tapt biomasse i en merd med 150 000 fisk på 3 kg ved 10 °C tilsvarer rundt 11 døgn tilvekst ved VF3 3,0. Medikamentell bad er satt til 2 døgn (anslag for sulting). Tapte vekstdøgn er trolig et øvre anslag.</p>
     <p><b>Kilder:</b> Iwama, G.K. og Tautz, A.F. (1981), Canadian Journal of Fisheries and Aquatic Sciences 38(6), 649–656, <a href="https://doi.org/10.1139/f81-087">doi.org/10.1139/f81-087</a>. Barrett, L.T. mfl. (2020), Reviews in Aquaculture 12(4), 2527–2543, <a href="https://doi.org/10.1111/raq.12456">doi.org/10.1111/raq.12456</a>. Oppedal, F. mfl. (2019), Aquaculture Environment Interactions 11, 445–457, <a href="https://doi.org/10.3354/aei00321">doi.org/10.3354/aei00321</a>. Warren-Myers, F. mfl. (2022), Aquaculture 548, 737570, <a href="https://doi.org/10.1016/j.aquaculture.2021.737570">doi.org/10.1016/j.aquaculture.2021.737570</a>. Nilsen, A. mfl. (2017), Aquaculture 466, 41–50. Walde, C.S. mfl. (2021), Journal of Fish Diseases 44(7), 899–912, <a href="https://doi.org/10.1111/jfd.13348">doi.org/10.1111/jfd.13348</a>. Walde, C.S. mfl. (2022), How delousing affects the short-term growth of Atlantic salmon (Salmo salar), Aquaculture.</p>
+    <p><b>Økonomi (fane 4):</b> fane 4 tar planen fra fane 3. Er en produksjonsplan lastet opp, brukes den, og «med tiltak» er samme plan med de forebyggende og kontrollerende tiltakene og metodemiksen fra fane 3. Uten plan brukes dagens drift og løpet med tiltak fra fane 3, simulert fra 2023 slik at 2027 til 2030 viser stabil drift. Mengder i modellen er levende vekt. De regnes om til rund vekt (levende 1,067 = rund 1) og sløyd med hode (0,889 av rund vekt) etter NS 9417:2012, slik Fiskeridirektoratet gjengir faktorene. Inntekt er slaktet volum sløyd med hode ganger pris i slaktemåneden. Unngått tap fra færre avlusninger legges til som slaktet volum og belastes fôr og slakt. Kostnader: smolt per stk ved utsett, fôr som fôrfaktor ganger fôrpris ganger tilvekst, øvrige kostnader per kg tilvekst og slakt per kg slaktet. Standardverdiene er fra Fiskeridirektoratets lønnsomhetsundersøkelse for 2024 (tabell C.4.1, C.4.3, C.5.1, C.5.3 og C.4.6): smolt 29,67 kr per stk, fôrpris 19,73 kr/kg, økonomisk fôrfaktor 1,30, slakt inkl. frakt 4,67 kr/kg, lønn 3,72, forsikring 0,26, avskrivninger 0,79 og andre driftskostnader 20,22 kr/kg, der fiskehelse er 3,65 kr/kg. Fiskehelse er trukket ut av andre driftskostnader og deles i modellert avlusning og annen fiskehelse (rensefisk, vaksine, veterinær), slik at summen i dagens drift blir 3,65 kr/kg. Netto finans er holdt utenfor. Avlusning: direkte kostnad per kg behandlet fisk uten dødelighet, fra Nofima rapport 10/2017 (Holan mfl., MEDFRI, tabell 1 til 3): termisk 0,33, mekanisk 0,22 og ferskvann i brønnbåt 1,11 kr/kg, for full lokalitetsbehandling av 4 000 tonn og i 2017 kroner. Medikamentelt bad er satt som ferskvann i brønnbåt, fôrbehandling og annen behandling er anslag. Dødelighet og tapt tilvekst ved avlusning kommer fra fane 3. Tiltak: skjørt og snorkel 1 kr/kg i kapitalkostnad og 1 kr/kg i drift, lukket merd i sjø 5 og 4 kr/kg, etter Menon Economics (2021), Havbruk: nye virkemidler, publikasjon 79/2021, tabell 2. Lukket merd belastes for andelen av tiden i sjø fisken står lukket. Nedsenket merd har ingen kilde og er satt lik snorkel. Rensefisk utover dagens bruk er 1,2 kr/kg (Nofima, Iversen, Aqua Nor 2019, omtalt i The Fish Site 21.08.2019). Prisbane: forwardpriser og realiserte priser fra Fish Pool og Euronext gjengitt i SeafoodSource og Salmon Business, juni til august 2026. 2028 er årskontrakten (7 540 EUR/t) fordelt med sesongprofilen i 2027 kurven. Etter 2028 holdes prisen flat. EUR/NOK 11,0 som i Arctic Securities sin antakelse (Salmon Business, oktober 2026). Diskonteringsrenten på 8 % er et eget anslag. Resultatet er driftsresultat før skatt. Grunnrenteskatt, produksjonsavgift utover Fiskeridirektoratets snitt og arbeidskapital er ikke med. Oppdater pris og kostnader før bruk.</p>
     <div class="disclaimer">
       <div>
         <div class="lbl" style="margin-bottom:4px">Ansvarsfraskrivelse</div>
@@ -575,7 +638,7 @@ function runCase(sp, plan, spread, env, Nfixed, optimize, mFixed) {
   const minViol = N.filter(v => v > 0 && v < MIN_N).length, closedViol = plan.filter(p => isClosed(planDoy(p))).length, nUts = N.filter(v => v > 0).length;
   return { sp, plan, spread, slots, B, N, Nsum, prod, m, peak: st.peak, avg: st.avg, util: st.avg / st.peak, maxGen, minViol, closedViol, nUts, ...tl };
 }
-if (typeof module !== "undefined") module.exports = { buildTemp, slotModel, runCase, evenPlan, lpMax, planDoy, chooseN, MIN_N };
+
 
 // Forventet antall avlusninger: empirisk rate per uke i sjø etter produksjonsområde, måned og tid i sjø.
 // RATES[po][måned 0..11][aldersbånd 0..6] = behandlinger per lokalitet og uke (Poisson, 2021 til 2025).
@@ -821,21 +884,94 @@ function simulatePlan(groups, p) {
     return { ...g, doy, W, hs, he, hExt, start: Math.round((g.date - yStart) / DAY) };
   });
   const nDays = Math.round((tEnd - yStart) / DAY) + 2;
-  const total = new Float64Array(nDays), harvest = new Float64Array(nDays), siteBio = new Map(), siteGens = new Map();
+  const total = new Float64Array(nDays), harvest = new Float64Array(nDays), growth = new Float64Array(nDays), siteBio = new Map(), siteGens = new Map(), siteGrow = new Map();
   for (const g of G) {
     const N = g.N || 0, key = g.site ? g.site.id : "u" + g.loknr;
-    if (!siteBio.has(key)) siteBio.set(key, new Float64Array(nDays));
-    const sb = siteBio.get(key); let prevF = 1;
+    if (!siteBio.has(key)) { siteBio.set(key, new Float64Array(nDays)); siteGrow.set(key, new Float64Array(nDays)); }
+    const sb = siteBio.get(key), sg = siteGrow.get(key); let prevF = 1;
     for (let a = 0; a <= g.he + 1 && g.start + a < nDays; a++) {
       const frac = a < g.hs ? 1 : g.he > g.hs ? Math.max(0, 1 - (a - g.hs + 1) / (g.he - g.hs + 1)) : (a < g.hs ? 1 : 0);
       const surv = Math.exp(-hz * a), b = N * g.W[a] * surv * frac / 1000;
       total[g.start + a] += b; sb[g.start + a] += b;
+      // tilvekst (levende vekt, tonn) for fisken som står i sjø denne dagen
+      if (a < 1460 && frac > 0) { const gr = N * surv * frac * (g.W[a + 1] - g.W[a]) / 1000; growth[g.start + a] += gr; sg[g.start + a] += gr; }
       if (frac < prevF) harvest[g.start + a] += N * g.W[a] * surv * (prevF - frac) / 1000;
       prevF = frac; g.endDay = g.start + a;
     }
     if (!siteGens.has(key)) siteGens.set(key, []); siteGens.get(key).push(g);
   }
-  return { G, total, harvest, siteBio, siteGens, yStart, nDays, hz };
+  return { G, total, harvest, growth, siteBio, siteGrow, siteGens, yStart, nDays, hz };
+}
+
+
+/* ---------- fane 4: økonomi ----------
+   Alle mengder i modellen er levende vekt (biomasse i sjø). Omregning etter NS 9417:2012,
+   gjengitt av Fiskeridirektoratet: levende 1,067 = rund (WFE) 1 = sløyd med hode 0,889.
+   Pris gjelder sløyd med hode (HOG), kostnader per kg gjelder rund vekt (WFE) som i
+   Fiskeridirektoratets lønnsomhetsundersøkelse. */
+const LIVE_PER_WFE = 1.067, HOG_PER_WFE = 0.889;
+
+// Standard prisbane, EUR per tonn HOG per kvartal (Q1 til Q4). Kilder i fotnoten.
+const PRICE_SRC = {
+  2026: [7810, 6360, 6183, 6800],   // Q1 og Q2 realisert (Salmon Business), Q3 og Q4 forward (Fish Pool, uke 23 og 31)
+  2027: [8410, 7967, 6567, 6567]    // forward: Q1 uke 32, Q2 og 2. halvår uke 26 (SeafoodSource)
+};
+const PRICE_YEAR = { 2028: 7540 }; // forward årskontrakt 2028 (uke 23 og 26)
+function priceDefault(y) {
+  if (PRICE_SRC[y]) return PRICE_SRC[y].slice();
+  const q = PRICE_SRC[2027], m = q.reduce((a, b) => a + b, 0) / 4;     // sesongprofil fra 2027 kurven
+  const lvl = PRICE_YEAR[y] || PRICE_YEAR[2028];                         // etter 2028 holdes nivået flatt
+  if (y < 2026) return PRICE_SRC[2026].slice();
+  return q.map(v => Math.round(lvl * v / m));
+}
+
+// Daglige avlusninger, behandlet biomasse og tap for en simulert plan.
+// siteOf(g) -> {po, fac, red, clD}. mix: andeler per metode, par: [{mo, dy}] per metode.
+function liceDaily(sim, siteOf, rates, par, mix) {
+  const n = sim.nDays, cnt = new Float64Array(n), kg = new Float64Array(n), loss = new Float64Array(n);
+  let mo = 0, dy = 0; mix.forEach((w, i) => { mo += w * par[i].mo; dy += w * par[i].dy; });
+  for (const g of sim.G) {
+    const s = siteOf(g), tab = rates[s.po]; if (!tab) continue;
+    for (let a = 0; a <= g.he && g.start + a < n; a++) {
+      const frac = a < g.hs ? 1 : g.he > g.hs ? Math.max(0, 1 - (a - g.hs + 1) / (g.he - g.hs + 1)) : 0; if (frac <= 0) continue;
+      if (a < s.clD) continue;
+      const m = DOY_MONTH[(g.doy + a) % 365], ab = Math.min(6, Math.floor(a / 91.31));
+      const r = tab[m][ab] * s.fac / 7 * frac * (1 - s.red), t = g.start + a;
+      if (t < 0) continue;
+      const fish = (g.N || 0) * Math.exp(-sim.hz * a), dW = a < 1460 ? g.W[a + 1] - g.W[a] : 0;
+      cnt[t] += r; kg[t] += r * fish * g.W[a] / 1000;                     // tonn levende vekt behandlet
+      loss[t] += r * fish * (mo * 5 + dy * dW) / 1000;                     // tonn tapt (død fisk ved 5 kg og tapt tilvekst)
+    }
+  }
+  return { cnt, kg, loss, mo, dy };
+}
+
+// Resultat per måned og år for én plan og ett tiltaksregime.
+// L: avlusning i regimet, Lref: avlusning for samme plan i dagens regime (VF3 inneholder dagens tap).
+function econCase(sim, L, Lref, P, tiltakKg, years) {
+  const DAY = 86400000, out = new Map();
+  years.forEach(y => out.set(y, { y, harvT: 0, extraT: 0, wfe: 0, rev: 0, smolt: 0, feed: 0, other: 0, health: 0, treat: 0, tiltak: 0, slakt: 0, cnt: 0, months: new Float64Array(12) }));
+  const price = (y, m) => { const q = P.prices[y] || priceDefault(y); return q[Math.floor(m / 3)] / 1000 * P.eurnok + P.adj; };
+  let pend = 0; // unngått tap som ennå står i sjøen (tonn levende). Slaktes ut i samme takt som fisken som står
+  for (let t = 0; t < sim.nDays; t++) {
+    pend += Lref.loss[t] - L.loss[t];
+    const stand = sim.total[t] + sim.harvest[t], extra = stand > 1e-9 ? pend * sim.harvest[t] / stand : 0; pend -= extra;
+    const d = new Date(sim.yStart + t * DAY), y = d.getUTCFullYear(), m = d.getUTCMonth(), Y = out.get(y); if (!Y) continue;
+    const hv = sim.harvest[t] + extra, hvWfe = hv * 1000 / LIVE_PER_WFE, grWfe = (sim.growth[t] + Math.max(0, extra)) * 1000 / LIVE_PER_WFE;
+    const rev = hvWfe * HOG_PER_WFE * price(y, m);
+    const feed = grWfe * P.fcr * P.feedPrice, other = sim.growth[t] * 1000 / LIVE_PER_WFE * P.other;
+    const health = sim.growth[t] * 1000 / LIVE_PER_WFE * P.healthOther;
+    const treat = L.kg[t] * 1000 / LIVE_PER_WFE * P.treatKg * P.kpi;
+    const tk = tiltakKg(t), slakt = hvWfe * P.slakt;
+    Y.harvT += sim.harvest[t]; Y.extraT += extra; Y.wfe += hvWfe; Y.rev += rev; Y.feed += feed; Y.other += other; Y.health += health;
+    Y.treat += treat; Y.tiltak += tk; Y.slakt += slakt; Y.cnt += L.cnt[t];
+    Y.months[m] += rev - feed - other - health - treat - tk - slakt;
+  }
+  for (const g of sim.G) { const y = new Date(g.date).getUTCFullYear(), Y = out.get(y); if (Y) { const c = (g.N || 0) * P.smolt; Y.smolt += c; Y.months[new Date(g.date).getUTCMonth()] -= c; } }
+  const rows = years.map(y => { const Y = out.get(y); Y.cost = Y.smolt + Y.feed + Y.other + Y.health + Y.treat + Y.tiltak + Y.slakt; Y.ebit = Y.rev - Y.cost; return Y; });
+  // nåverdi av månedlig driftsresultat, diskontert til 1. januar første år
+  let npv = 0; rows.forEach((Y, i) => Y.months.forEach((v, m) => { npv += v / Math.pow(1 + P.r, i + (m + 0.5) / 12); }));
+  return { rows, npv };
 }
 
 
@@ -1213,7 +1349,8 @@ function computeT3(){
   extra.push(["Behandlingsmetoder",mixTxt+"."]);
   $("t3note").innerHTML=`<b>Tiltak i løpet «med tiltak»:</b> `+measuresHtml(tt,o,env,extra).replace(/<li><b>/g," ").replace(/<\/b><span>/g,": ").replace(/<\/span><\/li>/g,"")+` Annen dødelighet ${nb(env.mort*100,1)} % per år i alle løp.`+(S.t3warn?` <b>${S.t3warn}</b>`:"")+` <b>Merk:</b> tapet per avlusning er trolig et øvre anslag.`;
   S.t3ctx={env,A,sites,sitesRef,sitesT,MX,lptRef};
-  if(PLANDATA) renderPlan();
+  if(PLANDATA) renderPlan(); else S.planSim=null;
+  S.t3dirty=false;
 }
 function drawTempT3(env,A){
   const s=$("tempsvg"); s.innerHTML="";
@@ -1239,7 +1376,7 @@ function dlVia(id,name,getData){ $(id).addEventListener("click",async e=>{ if(!D
 dlVia("tmpl","produksjonsplan_mal.csv",()=>"\ufeff"+TMPL);
 dlVia("tmplx","Produksjonsplan_mal.xlsx",()=>{const b=atob($("tmplx").getAttribute("href").split(",")[1]), u=new Uint8Array(b.length); for(let i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u;});
 $("copytmpl").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(TMPL.replace(/;/g,"\t"));$("copytmpl").textContent="Malen er kopiert";}catch(e){$("copytmpl").textContent="Kopiering ble ikke tillatt";}});
-$("clearplan").addEventListener("click",()=>{PLANDATA=null;$("planout").innerHTML="";$("planfile").value="";});
+$("clearplan").addEventListener("click",()=>{PLANDATA=null;S.planSim=null;$("planout").innerHTML="";$("planfile").value="";});
 $("planfile").addEventListener("change",async e=>{const f=e.target.files[0]; if(!f) return;
   try{ const rows=/\.xlsx$/i.test(f.name)?await readXlsx(await f.arrayBuffer()):readDelimited(await f.text()); PLANDATA={rows,src:f.name}; renderPlan(); }
   catch(err){ $("planout").innerHTML=`<p class="warnline">Kunne ikke lese filen: ${String(err.message||err)}</p>`; }});
@@ -1248,8 +1385,9 @@ function renderPlan(){
   const out=$("planout"), ctx=S.t3ctx; if(!PLANDATA||!ctx){return;}
   const {env,A,sites,sitesRef,sitesT,MX,lptRef}=ctx;
   const res=parsePlan(PLANDATA.rows,A.sites);
-  if(!res.groups.length){ out.innerHTML=`<ul class="msgs">${res.msgs.map(m=>`<li class="w">${m}</li>`).join("")}</ul>`; return; }
+  if(!res.groups.length){ S.planSim=null; out.innerHTML=`<ul class="msgs">${res.msgs.map(m=>`<li class="w">${m}</li>`).join("")}</ul>`; return; }
   const sim=simulatePlan(res.groups,{temp:env.temp,vf3:cur.ref.vf3,w0def:cur.ref.w0,HW:5,mort:env.mort});
+  S.planSim={sim,res};
   const DAY=86400000, Y0=new Date(sim.yStart).getUTCFullYear(), nY=Math.ceil(sim.nDays/365.25);
   // avlusninger per lokalitet og gruppe, uten og med tiltak
   const idx=new Map(A.sites.map(s=>[s.id,s])), fSite=s=>(s.O+20*A.f)/(s.E+20);
@@ -1312,11 +1450,152 @@ function renderPlan(){
   const lt=el("text",{x:X1-4,y:ys(env.mtbCo)-6,"text-anchor":"end",style:"font-weight:700"},sv); lt.textContent=`Biomassetak ${nb(env.mtbCo)} t`;
 }
 
+/* ---------- fane 4: økonomi ---------- */
+// Standardverdier med kilde. Se fotnoten for full referanse.
+const TREAT_DEF={termisk:0.33,mekanisk:0.22,ferskvann:1.11,bad:1.11,for:0.30,annen:0.33};
+const TREAT_SRC={termisk:"Nofima 10/2017, tabell 1",mekanisk:"Nofima 10/2017, tabell 2",ferskvann:"Nofima 10/2017, tabell 3",bad:"Anslag, som ferskvann i brønnbåt",for:"Anslag",annen:"Anslag"};
+const TILTAK=[["skirt","Skjørt",1,1,"Menon 2021, tabell 2"],["snorkel","Snorkel",1,1,"Menon 2021, tabell 2"],["sub","Nedsenket merd",1,1,"Anslag, satt lik snorkel"],["closed","Lukket eller semilukket merd",5,4,"Menon 2021, lukket i sjø"],["cf","Rensefisk utover dagens bruk",0,1.2,"Nofima, Aqua Nor 2019"]];
+let priceOv={}, t4built=false, t4years=[], t4timer=null;
+const num=(id,def)=>{const v=parseFloat(String($(id).value).replace(",","."));return isFinite(v)?v:def;};
+function schedule4(){ clearTimeout(t4timer); t4timer=setTimeout(computeT4,150); }
+function buildT4(){
+  if(t4built) return; t4built=true;
+  $("treattab").innerHTML=`<tr><th>Metode</th><th>Kr/kg behandlet</th><th>Kilde</th></tr>`+METH.map(([k,l])=>`<tr><td>${l}</td><td><input type="number" class="e4" id="tc-${k}" step="0.01" value="${TREAT_DEF[k]}"></td><td class="src">${TREAT_SRC[k]}</td></tr>`).join("");
+  $("tiltaktab").innerHTML=`<tr><th>Tiltak</th><th>Kapitalkostnad (kr/kg)</th><th>Drift (kr/kg)</th><th>Kilde</th></tr>`+TILTAK.map(([k,l,kap,dr,src])=>`<tr><td>${l}</td><td><input type="number" class="e4" id="tk-${k}-kap" step="0.1" value="${kap}"></td><td><input type="number" class="e4" id="tk-${k}-dr" step="0.1" value="${dr}"></td><td class="src">${src}</td></tr>`).join("");
+  $("t4").querySelectorAll("input").forEach(i=>i.addEventListener("change",schedule4));
+  $("pricereset").addEventListener("click",()=>{priceOv={};drawPriceTab(t4years,true);schedule4();});
+}
+function drawPriceTab(years,force){
+  if(!force&&$("pricetab").dataset.years===years.join(",")) return;
+  $("pricetab").dataset.years=years.join(",");
+  $("pricetab").innerHTML=`<tr><th>År</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Snitt NOK/kg</th></tr>`+years.map(y=>{const q=priceOv[y]||priceDefault(y);
+    return `<tr><td>${y}</td>${q.map((v,i)=>`<td><input type="number" class="e4 pq" data-y="${y}" data-q="${i}" step="10" value="${v}"></td>`).join("")}<td id="pavg-${y}"></td></tr>`;}).join("");
+  $("pricetab").querySelectorAll("input.pq").forEach(inp=>inp.addEventListener("change",()=>{const y=+inp.dataset.y; const q=(priceOv[y]||priceDefault(y)).slice(); q[+inp.dataset.q]=parseFloat(inp.value)||0; priceOv[y]=q; schedule4();}));
+}
+// generasjoner fra et løp i fane 3 -> utsettsgrupper per lokalitet
+function caseGroups(cs,env,sites){
+  const DAY=86400000, out=[];
+  for(const g of cs.gens){ const s=cs.slots[g.slot]; if(!g.sites||!g.sites.length||!g.N) continue;
+    const capSum=g.sites.reduce((a,j)=>a+env.sitesCap[j],0), date=env.start+g.t0*DAY;
+    for(const j of g.sites) out.push({site:sites[j],loknr:sites[j].id,N:g.N*env.sitesCap[j]/capSum,w0:cs.sp.w0,date,hstart:date+Math.round(s.h0)*DAY,hend:date+Math.round(s.h1)*DAY,hw:null});
+  }
+  return out.sort((a,b)=>a.date-b.date);
+}
+function computeT4(){
+  buildT4();
+  const ctx=S.t3ctx, T3=S.t3;
+  if(!ctx||!T3||!T3.d){ $("t4src").textContent="Velg selskap og lokaliteter i fane 3 først."; return; }
+  const {env,A,sites,sitesRef,sitesT,MX}=ctx, d=T3.d, tt=T3.tt, DAY=86400000;
+  // planene som skal prises
+  let simU,simM,years,src;
+  if(S.planSim){
+    simU=simM=S.planSim.sim;
+    const y0=new Date(simU.yStart).getUTCFullYear(), y1=new Date(simU.yStart+(simU.nDays-1)*DAY).getUTCFullYear();
+    years=[]; for(let y=y0;y<=y1;y++) years.push(y);
+    src=`Produksjonsplanen fra ${PLANDATA.src} (fane 3). Uten tiltak er planen med dagens lusenivå og metodemiks. Med tiltak er samme plan med tiltakene og metodemiksen valgt i fane 3. Første og siste år er ufullstendige hvis planen ikke dekker hele året.`;
+  } else {
+    const env4={...env,start:Date.UTC(2023,3,30),end:Date.UTC(2031,11,31)}; env4.nDays=Math.round((env4.end-env4.start)/DAY)+1;
+    const dd=runCase(d.sp,d.plan,d.spread,env4,d.N,false,d.m), t2=runCase(tt.sp,tt.plan,tt.spread,env4,tt.N,false,tt.m);
+    simU=simulatePlan(caseGroups(dd,env4,sites),{temp:env.temp,vf3:d.sp.vf3,w0def:d.sp.w0,HW:5,mort:env.mort});
+    simM=simulatePlan(caseGroups(t2,env4,sites),{temp:env.temp,vf3:tt.sp.vf3,w0def:tt.sp.w0,HW:5,mort:env.mort});
+    years=[2027,2028,2029,2030];
+    src=`Ingen produksjonsplan er lastet opp, så fane 4 bruker dagens drift og løpet med tiltak fra fane 3 (${A.c.n}, ${$("area").selectedOptions[0].textContent}). Løpene er simulert fra 2023, slik at 2027 til 2030 viser stabil drift. Last opp en plan i fane 3 for å prise en faktisk plan.`;
+  }
+  t4years=years; drawPriceTab(years);
+  // regime for avlusning per utsett
+  const selIdx=new Map(sites.map((s,j)=>[s.id,j])), redAvg=sitesT.length?sitesT.reduce((a,x)=>a+x.red,0)/sitesT.length:0;
+  const fSite=s=>(s.O+20*A.f)/(s.E+20);
+  const siteRef=g=>{const s=g.site, j=s?selIdx.get(s.id):undefined; return {po:String(s?s.po:A.pos[0]),fac:j!==undefined?sitesRef[j].f:s&&s.E!==undefined?fSite(s):A.f,red:0,clD:0};};
+  const siteTil=g=>{const r=siteRef(g), s=g.site, j=s?selIdx.get(s.id):undefined; return {...r,red:j!==undefined?sitesT[j].red:redAvg,clD:j!==undefined?sitesT[j].closedD:0};};
+  const LU=liceDaily(simU,siteRef,RATES,MX.par,MX.ref), LMref=S.planSim?LU:liceDaily(simM,siteRef,RATES,MX.par,MX.ref), LM=liceDaily(simM,siteTil,RATES,MX.par,MX.tilt);
+  // priser og kostnader
+  const prices={}; years.forEach(y=>prices[y]=priceOv[y]||priceDefault(y));
+  const tcU=MX.ref.reduce((a,w,i)=>a+w*num("tc-"+METH[i][0],0),0), tcM=MX.tilt.reduce((a,w,i)=>a+w*num("tc-"+METH[i][0],0),0);
+  const smoltBase=num("e4-smolt",29.67), smoltAdd=num("e4-smoltadd",0);
+  const base={eurnok:num("e4-eurnok",11),adj:num("e4-adj",0),r:num("e4-r",8)/100,smolt:0,feedPrice:num("e4-fp",19.73),fcr:num("e4-fcr",1.3),slakt:num("e4-slakt",4.67),other:num("e4-other",21.34),kpi:num("e4-kpi",1),prices};
+  const smoltOf=g=>smoltBase+smoltAdd*((g.w0||100)-100)/100;
+  // tiltakskostnad per lokalitet (kr/kg rund vekt produsert)
+  const tk=k=>({kap:num("tk-"+k+"-kap",0),dr:num("tk-"+k+"-dr",0)});
+  const closedM=Math.max(0,Math.min(12,+$("cl3").value||0));
+  const meanHe=key=>{const gs=simM.siteGens.get(key)||[]; return gs.length?gs.reduce((a,g)=>a+(g.hs+g.he)/2,0)/gs.length:500;};
+  const siteCost=(st,key)=>{let kap=0,dr=0; if(st.bar&&st.bar!=="none"){const c=tk(st.bar);kap+=c.kap;dr+=c.dr;} if(st.cf){const c=tk("cf");kap+=c.kap;dr+=c.dr;}
+    if(closedM>0&&+$("ef-closed").value>0){const c=tk("closed"), w=Math.min(1,closedM*30.44/meanHe(key)); kap+=c.kap*w; dr+=c.dr*w;} return {kap,dr};};
+  const keyCost=new Map(); let avgK=0,avgD=0;
+  sites.forEach((s,j)=>{const c=siteCost(sitesT[j],s.id); keyCost.set(s.id,c); avgK+=c.kap/sites.length; avgD+=c.dr/sites.length;});
+  const keysM=[...simM.siteGrow.keys()], costArr=keysM.map(k=>keyCost.get(k)||{kap:avgK,dr:avgD});
+  const tilM=t=>{let v=0; keysM.forEach((k,i)=>{const c=costArr[i]; if(c.kap+c.dr) v+=simM.siteGrow.get(k)[t]*1000/LIVE_PER_WFE*(c.kap+c.dr);}); return v;};
+  const zero=()=>0;
+  // smolt per utsett: econCase bruker P.smolt per fisk, så vi legger smoltprisen inn per gruppe
+  const run=(sim,L,Lr,tc,tilFn,hOther)=>{ const P={...base,treatKg:tc,healthOther:hOther,smolt:0}; const r=econCase(sim,L,Lr,P,tilFn,years);
+    // smolt med vektavhengig pris
+    r.rows.forEach(Y=>{Y.smolt=0;});
+    for(const g of sim.G){const y=new Date(g.date).getUTCFullYear(), Y=r.rows.find(x=>x.y===y); if(Y){const c=(g.N||0)*smoltOf(g); Y.smolt+=c; Y.months[new Date(g.date).getUTCMonth()]-=c;}}
+    r.rows.forEach(Y=>{Y.cost=Y.smolt+Y.feed+Y.other+Y.health+Y.treat+Y.tiltak+Y.slakt; Y.ebit=Y.rev-Y.cost;});
+    let npv=0; r.rows.forEach((Y,i)=>Y.months.forEach((v,m)=>{npv+=v/Math.pow(1+base.r,i+(m+0.5)/12);})); r.npv=npv; return r; };
+  // kalibrer annen fiskehelse slik at fiskehelse i dagens drift blir lik Fiskeridirektoratets snitt
+  const r0=run(simU,LU,LU,tcU,zero,0), prodU=r0.rows.reduce((a,Y)=>a+Y.wfe,0);
+  let grWfe=0; for(let t=0;t<simU.nDays;t++){const y=new Date(simU.yStart+t*DAY).getUTCFullYear(); if(years.includes(y)) grWfe+=simU.growth[t]*1000/LIVE_PER_WFE;}
+  const treatPerKg=grWfe>0?r0.rows.reduce((a,Y)=>a+Y.treat,0)/grWfe:0, helse=num("e4-helse",3.65), hOther=Math.max(0,helse-treatPerKg);
+  $("helseinfo").textContent=`Fiskehelse i dagens drift: avlusning ${nb(treatPerKg,2)} kr/kg (modellert) og annen fiskehelse ${nb(hOther,2)} kr/kg.`+(treatPerKg>helse?" Modellert avlusning er høyere enn total fiskehelse, så annen fiskehelse er satt til null.":"");
+  const RU=run(simU,LU,LU,tcU,zero,hOther), RM=run(simM,LM,LMref,tcM,tilM,hOther);
+  // investering som tilsvarer kapitalkostnaden
+  const r=base.r, life=Math.max(1,num("e4-life",10)), ann=r>0?(1-Math.pow(1+r,-life))/r:life;
+  let inv=0; keysM.forEach((k,i)=>{const kap=costArr[i].kap; if(!kap) return; let g=0; for(let t=0;t<simM.nDays;t++){const y=new Date(simM.yStart+t*DAY).getUTCFullYear(); if(years.includes(y)) g+=simM.siteGrow.get(k)[t];} inv+=kap*g*1000/LIVE_PER_WFE/years.length*ann;});
+  const nTil=costArr.filter(c=>c.kap>0).length;
+  $("investinfo").textContent=nTil?`Kapitalkostnaden tilsvarer en investering på om lag ${nb(inv/1e6,0)} MNOK samlet for ${nTil} ${nTil===1?"lokalitet":"lokaliteter"}, med ${life} års levetid og ${nb(r*100,1)} % rente.`:"Ingen tiltak med kapitalkostnad er valgt i fane 3.";
+  // visning
+  $("t4src").textContent=src;
+  const M=v=>nb(v/1e6,1), sumY=(R,k)=>R.rows.reduce((a,Y)=>a+Y[k],0), kgU=sumY(RU,"wfe"), kgM=sumY(RM,"wfe");
+  const span=years.length>1?`${years[0]} til ${years[years.length-1]}`:String(years[0]);
+  $("e1v").textContent=`${M(RU.npv)} MNOK`; $("e1s").textContent=`driftsresultat ${span}, diskontert med ${nb(r*100,1)} %`;
+  $("e2v").textContent=`${M(RM.npv)} MNOK`; $("e2s").textContent=`samme periode og rente`;
+  $("e3v").textContent=`${(RM.npv-RU.npv<0?"−":"+")+nb(Math.abs(RM.npv-RU.npv)/1e6,1)} MNOK`;
+  $("e3s").textContent=`i nåverdi. Udiskontert ${(sumY(RM,"ebit")-sumY(RU,"ebit")<0?"−":"+")+nb(Math.abs(sumY(RM,"ebit")-sumY(RU,"ebit"))/1e6,1)} MNOK`;
+  $("e4v").textContent=`${nb(kgU?sumY(RU,"ebit")/kgU:0,2)} → ${nb(kgM?sumY(RM,"ebit")/kgM:0,2)} kr`; $("e4s").textContent=`per kg rund vekt, uten → med tiltak`;
+  const rowsDef=[["Slaktet (t rund vekt)","wfe",v=>nb(v/1000)],["Avlusninger","cnt",v=>nb(v,0)],["Inntekt","rev",M],["Smolt","smolt",M],["Fôr","feed",M],["Lønn, avskrivninger og andre","other",M],["Annen fiskehelse","health",M],["Avlusning, direkte","treat",M],["Tiltak","tiltak",M],["Slakt og frakt","slakt",M],["Driftsresultat","ebit",M],["Driftsresultat per kg","ebitkg",v=>nb(v,2)]];
+  const block=(R,title)=>`<tr><th colspan="${years.length+1}" style="text-align:left;padding-top:10px">${title}</th></tr>`+rowsDef.map(([l,k,f])=>`<tr class="${k==="ebit"?"sum":""}"><td>${l}${k!=="wfe"&&k!=="cnt"&&k!=="ebitkg"?" (MNOK)":k==="ebitkg"?" (kr)":""}</td>${R.rows.map(Y=>{const big=Math.max(...R.rows.map(x=>x.wfe)); if(k==="ebitkg"&&Y.wfe<0.1*big) return `<td>–</td>`; const v=k==="ebitkg"?Y.ebit/Y.wfe:Y[k]; return `<td class="${(k==="ebit"||k==="ebitkg")&&v<0?"neg":""}">${f(v)}</td>`;}).join("")}</tr>`).join("");
+  $("econtab").innerHTML=`<tr><th></th>${years.map(y=>`<th>${y}</th>`).join("")}</tr>`+block(RU,"Uten tiltak")+block(RM,"Med tiltak")+
+    `<tr class="sum"><td>Endring i driftsresultat (MNOK)</td>${years.map((y,i)=>{const v=RM.rows[i].ebit-RU.rows[i].ebit;return `<td class="${v<0?"neg":""}">${(v<0?"−":"+")+nb(Math.abs(v)/1e6,1)}</td>`;}).join("")}</tr>`;
+  years.forEach(y=>{const q=prices[y]; const c=$("pavg-"+y); if(c) c.textContent=nb(q.reduce((a,b)=>a+b,0)/4/1000*base.eurnok+base.adj,1);});
+  const wv=[]; if(!S.planSim&&d.sp.w0!==tt.sp.w0&&smoltAdd===0) wv.push(`Løpet med tiltak bruker ${tt.sp.w0} g smolt mot ${d.sp.w0} g i dagens drift, men smoltprisen er lik per stk. Legg inn tillegg per 100 g for å få med merkostnaden ved større smolt.`);
+  if(S.t3warn) wv.push(S.t3warn);
+  $("e4note").innerHTML=(wv.length?`<b>${wv.join(" ")}</b> `:"")+`Inntekt og kostnad er i løpende kroner. Pris per kg gjelder sløyd med hode, kostnad per kg gjelder rund vekt. Kostnader føres når fisken vokser, inntekt når den slaktes, så år med lite slakt får negativt resultat. Driftsresultat per kg vises ikke for år med lite slakt. Unngått tap fra færre avlusninger slaktes ut sammen med fisken som står.`;
+  drawEbit(years,RU,RM); drawPrice(years,prices,base,simU);
+}
+function drawEbit(years,RU,RM){
+  const sv=$("ebitchart"); sv.innerHTML=""; const X0=70,X1=985,Y1=16,Yb=262;
+  const vals=[...RU.rows,...RM.rows].map(Y=>Y.ebit/1e6), lo=Math.min(0,...vals), hi=Math.max(0,...vals);
+  const raw=(hi-lo||1)/5, mag=Math.pow(10,Math.floor(Math.log10(raw))), step=[1,2,5,10].map(k=>k*mag).find(v=>v>=raw), ymin=Math.floor(lo/step)*step, ymax=Math.ceil(hi/step)*step||step;
+  const ys=v=>Yb-(Yb-Y1)*(v-ymin)/(ymax-ymin);
+  for(let v=ymin;v<=ymax+1e-9;v+=step){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:v===0?"#000":"var(--line)"},sv);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},sv);tx.textContent=nb(v);}
+  const bw=(X1-X0)/years.length;
+  years.forEach((y,i)=>{[[RU,"var(--ref)",0],[RM,"var(--scen2)",1]].forEach(([R,col,k])=>{const v=R.rows[i].ebit/1e6, x=X0+i*bw+bw*0.18+k*bw*0.32;
+      el("rect",{x,y:Math.min(ys(v),ys(0)),width:bw*0.3,height:Math.abs(ys(v)-ys(0)),fill:col},sv);
+      const tx=el("text",{x:x+bw*0.15,y:v>=0?ys(v)-5:ys(v)+14,"text-anchor":"middle"},sv); tx.textContent=nb(v,0);});
+    const tx=el("text",{x:X0+i*bw+bw/2,y:Yb+20,"text-anchor":"middle"},sv); tx.textContent=y;});
+  const t=el("text",{x:X0,y:Y1-2},sv); t.textContent="MNOK";
+}
+function drawPrice(years,prices,base,sim){
+  const sv=$("pricechart"); sv.innerHTML=""; const X0=60,X1=900,Y1=16,Yb=262, n=years.length*12, DAY=86400000;
+  const p=[], h=new Float64Array(n);
+  years.forEach(y=>{for(let m=0;m<12;m++) p.push(prices[y][Math.floor(m/3)]/1000*base.eurnok+base.adj);});
+  for(let t=0;t<sim.nDays;t++){const dt=new Date(sim.yStart+t*DAY), i=years.indexOf(dt.getUTCFullYear()); if(i>=0) h[i*12+dt.getUTCMonth()]+=sim.harvest[t]*1000/LIVE_PER_WFE/1000;}
+  const pmax=Math.ceil(Math.max(...p)/20)*20||20, hmax=Math.max(1,...h);
+  const xs=i=>X0+(X1-X0)*(i+0.5)/n, ys=v=>Yb-(Yb-Y1)*v/pmax, yh=v=>Yb-(Yb-Y1)*v/hmax/1.05;
+  for(let v=0;v<=pmax;v+=20){el("line",{x1:X0,x2:X1,y1:ys(v),y2:ys(v),stroke:"var(--line)"},sv);const tx=el("text",{x:X0-8,y:ys(v)+4,"text-anchor":"end"},sv);tx.textContent=v;}
+  const bw=(X1-X0)/n*0.7;
+  for(let i=0;i<n;i++) if(h[i]>0) el("rect",{x:xs(i)-bw/2,y:yh(h[i]),width:bw,height:Yb-yh(h[i]),fill:"var(--ref)",opacity:"0.55"},sv);
+  let dd=""; p.forEach((v,i)=>{dd+=(i?"L":"M")+xs(i).toFixed(1)+","+ys(v).toFixed(1);}); el("path",{d:dd,fill:"none",stroke:"#000","stroke-width":"2.2"},sv);
+  years.forEach((y,i)=>{const tx=el("text",{x:X0+(X1-X0)*(i*12+6)/n,y:Yb+20,"text-anchor":"middle"},sv);tx.textContent=y; if(i) el("line",{x1:X0+(X1-X0)*i*12/n,x2:X0+(X1-X0)*i*12/n,y1:Y1,y2:Yb,stroke:"var(--line)"},sv);});
+  const t1=el("text",{x:X0,y:Y1-2},sv); t1.textContent="NOK/kg";
+  const t2=el("text",{x:995,y:Y1+10,"text-anchor":"end"},sv); t2.textContent=`slakt maks ${nb(hmax)} t`;
+}
+
 /* ---------- styring ---------- */
 function hero(){
-  $("herosub").textContent={t1:"Fane 1 viser mekanismen: hvor mye MTB som blir ledig når fisken står kortere i sjøen, ved samme produksjon.",t2:"Fane 2 viser hva som kan hentes ut når den ledige kapasiteten brukes og driften optimeres med utsettsplan, slakt og gruppestørrelse.",t3:"Fane 3 bruker et selskaps egne tillatelser, lokaliteter, temperatur og lusehistorikk, og viser effekten av optimaliserende og forebyggende tiltak på netto produksjon."}[tab];
+  $("herosub").textContent={t1:"Fane 1 viser mekanismen: hvor mye MTB som blir ledig når fisken står kortere i sjøen, ved samme produksjon.",t2:"Fane 2 viser hva som kan hentes ut når den ledige kapasiteten brukes og driften optimeres med utsettsplan, slakt og gruppestørrelse.",t3:"Fane 3 bruker et selskaps egne tillatelser, lokaliteter, temperatur og lusehistorikk, og viser effekten av optimaliserende og forebyggende tiltak på netto produksjon.",t4:"Fane 4 priser planen fra fane 3: inntekt etter prisbane for laks sløyd med hode, kostnader ved produksjon, avlusning og tiltak, og nåverdi uten og med tiltak."}[tab];
 }
-function computeActive(){ readCur(); if(tab==="t1") computeT1(); else if(tab==="t2") computeT2(); else computeT3(); hero(); render(); }
+function computeActive(){ readCur(); if(tab==="t1") computeT1(); else if(tab==="t2") computeT2(); else if(tab==="t3") computeT3(); else { if(S.t3dirty!==false) computeT3(); computeT4(); } hero(); render(); }
 function render(){
   $("scrub").value=t; $("date").textContent=fmtDate(START+t*DAYMS);
   if(tab==="t1"&&S.t1){drawPanel("p1ref",S.t1.ref,FIX);drawPanel("p1scen",S.t1.sc,FIX,{gainTo:S.t1.ref.peak});drawBioCursor(S.t1.chart);}
@@ -1326,8 +1605,8 @@ function render(){
 function setPlay(on){playing=on;$("playicon").setAttribute("d",on?"M4 2h4v14H4zM10 2h4v14h-4z":"M4 2l12 7-12 7z");$("play").setAttribute("aria-label",on?"Pause":"Spill av");last=null;if(on){if(t>=NDAYS-1)t=0;requestAnimationFrame(tick);}}
 function tick(ts){ if(!playing)return; if(last!==null){acc+=(ts-last)/1000*(+$("speed").value);const step=Math.floor(acc);if(step>0){acc-=step;t=Math.min(t+step,NDAYS-1);render();if(t>=NDAYS-1){setPlay(false);return;}}} last=ts; requestAnimationFrame(tick); }
 let pending=false; function schedule(){ if(pending)return; pending=true; requestAnimationFrame(()=>{pending=false;computeActive();}); }
-let t3timer=null; function schedule3(){ clearTimeout(t3timer); t3timer=setTimeout(computeActive,120); }
-function setTab(id){ tab=id; for(const k of ["t1","t2","t3"]){$("tb-"+k).setAttribute("aria-selected",k===id);$(k).hidden=k!==id;} try{history.replaceState(null,"","#"+id)}catch(e){} computeActive(); }
+let t3timer=null; function schedule3(){ S.t3dirty=true; clearTimeout(t3timer); t3timer=setTimeout(computeActive,120); }
+function setTab(id){ tab=id; for(const k of ["t1","t2","t3","t4"]){$("tb-"+k).setAttribute("aria-selected",k===id);$(k).hidden=k!==id;} document.querySelector(".player").style.display=id==="t4"?"none":""; if(id==="t4"&&playing) setPlay(false); try{history.replaceState(null,"","#"+id)}catch(e){} computeActive(); }
 
 $("scrub").max=NDAYS-1;
 ["rv","rw","sv","sw"].forEach(id=>$(id).addEventListener("input",()=>tab==="t3"?schedule3():schedule()));
@@ -1340,13 +1619,13 @@ $("co").addEventListener("change",()=>{fillArea();schedule3();});
 $("area").addEventListener("change",schedule3);
 $("selall").addEventListener("click",()=>{const A=areaData();siteSel[$("co").value+"|"+$("area").value]=new Set(A.sites.map(s=>s.id));schedule3();});
 $("selnone").addEventListener("click",()=>{siteSel[$("co").value+"|"+$("area").value]=new Set();schedule3();});
-for(const k of ["t1","t2","t3"]) $("tb-"+k).addEventListener("click",()=>setTab(k));
-window.addEventListener("hashchange",()=>{const h=location.hash.slice(1); if(["t1","t2","t3"].includes(h)&&h!==tab) setTab(h);});
+for(const k of ["t1","t2","t3","t4"]) $("tb-"+k).addEventListener("click",()=>setTab(k));
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1); if(["t1","t2","t3","t4"].includes(h)&&h!==tab) setTab(h);});
 $("scrub").addEventListener("input",e=>{t=+e.target.value;render();});
 $("play").addEventListener("click",()=>setPlay(!playing));
 document.addEventListener("keydown",e=>{if(e.code==="Space"&&!["INPUT","SELECT","BUTTON","SUMMARY"].includes(e.target.tagName)){e.preventDefault();setPlay(!playing);}});
 fillArea();
-const h0=location.hash.slice(1); setTab(["t1","t2","t3"].includes(h0)?h0:"t1");
+const h0=location.hash.slice(1); setTab(["t1","t2","t3","t4"].includes(h0)?h0:"t1");
 if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPlay(true);
 
 </script>
